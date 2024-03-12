@@ -47,7 +47,7 @@ public class PanelCover extends javax.swing.JPanel {
         g2.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(g);
         
-        
+        //idk
     }
 
 
