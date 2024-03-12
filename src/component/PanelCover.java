@@ -25,13 +25,7 @@ public class PanelCover extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     
-    @Override
-    protected void paintComponent(Graphics g){
-        Graphics2D g2 =  (Graphics2D)g;
-        GradientPaint
-        super.paintComponent(g);
-        
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
