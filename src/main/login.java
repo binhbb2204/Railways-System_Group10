@@ -1,11 +1,13 @@
 
 package main;
 import java.awt.*;
+import java.lang.*;
 public class login extends javax.swing.JFrame {
 
     public login() {
         initComponents();
         txtusername.setBackground(new Color(0, 0, 0, 1));
+        txtpassword.setBackground(new Color(0, 0, 0, 1));
     }
 
     @SuppressWarnings("unchecked")
@@ -23,7 +25,8 @@ public class login extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        disable = new javax.swing.JLabel();
+        show = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
         jLabel11 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -35,6 +38,11 @@ public class login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -92,10 +100,25 @@ public class login extends javax.swing.JFrame {
         jLabel9.setText("_____________________________________________________________________________");
         jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 373, 40));
 
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_invisible_20px_1.png"))); // NOI18N
-        jLabel10.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 220, 40, 33));
+        disable.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        disable.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_invisible_20px_1.png"))); // NOI18N
+        disable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        disable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                disableMouseClicked(evt);
+            }
+        });
+        jPanel2.add(disable, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 220, 40, 33));
+
+        show.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        show.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_eye_20px_1.png"))); // NOI18N
+        show.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        show.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                showMouseClicked(evt);
+            }
+        });
+        jPanel2.add(show, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 220, 40, 33));
 
         jCheckBox1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jCheckBox1.setForeground(new java.awt.Color(199, 226, 255));
@@ -143,8 +166,10 @@ public class login extends javax.swing.JFrame {
         jLabel14.setText("Welcome Back!");
         jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(194, 80, 125, -1));
 
-        txtusername.setFont(txtusername.getFont());
+        txtusername.setFont(txtusername.getFont().deriveFont(txtusername.getFont().getSize()+2f));
         txtusername.setForeground(new java.awt.Color(255, 255, 255));
+        txtusername.setBorder(null);
+        txtusername.setCaretColor(new java.awt.Color(255, 255, 255));
         txtusername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtusernameActionPerformed(evt);
@@ -152,8 +177,10 @@ public class login extends javax.swing.JFrame {
         });
         jPanel2.add(txtusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, 373, 33));
 
-        txtpassword.setFont(txtpassword.getFont());
+        txtpassword.setFont(txtpassword.getFont().deriveFont(txtpassword.getFont().getSize()+2f));
         txtpassword.setForeground(new java.awt.Color(255, 255, 255));
+        txtpassword.setBorder(null);
+        txtpassword.setCaretColor(new java.awt.Color(255, 255, 255));
         txtpassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtpasswordActionPerformed(evt);
@@ -187,6 +214,38 @@ public class login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtpasswordActionPerformed
 
+    private void disableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_disableMouseClicked
+        txtpassword.setEchoChar((char)0);
+        disable.setVisible(false);
+        disable.setEnabled(false);
+        show.setEnabled(true);
+        show.setEnabled(true);
+    }//GEN-LAST:event_disableMouseClicked
+
+    private void showMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showMouseClicked
+        txtpassword.setEchoChar((char)8226);
+        disable.setVisible(true);
+        disable.setEnabled(true);
+        show.setEnabled(false);
+        show.setEnabled(false);
+    }//GEN-LAST:event_showMouseClicked
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        for(double i = 0.0; i <= 1.0; i = i + 0.1){
+            String val = i + "";
+            float f = Float.valueOf(val);
+            this.setOpacity(f);
+            try{
+                Thread.sleep(10);
+            }
+            catch(Exception e){
+                
+            }
+            
+            
+        }
+    }//GEN-LAST:event_formWindowOpened
+     
     /**
      * @param args the command line arguments
      */
@@ -223,10 +282,10 @@ public class login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel disable;
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -241,6 +300,7 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel show;
     private javax.swing.JPasswordField txtpassword;
     private javax.swing.JTextField txtusername;
     // End of variables declaration//GEN-END:variables
