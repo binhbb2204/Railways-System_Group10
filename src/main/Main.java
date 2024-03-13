@@ -33,6 +33,7 @@ public class Main {
         }
         //</editor-fold>
         //draft
+        System.out.println("Hello, World!");
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
