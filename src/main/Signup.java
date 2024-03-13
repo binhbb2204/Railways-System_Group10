@@ -1,11 +1,15 @@
 
 package main;
 import java.awt.*;
-public class Signup extends javax.swing.JFrame {
-
+import javax.swing.*;
+public class Signup extends JFrame{
+    
 
     public Signup() {
+        
+        
         initComponents();
+        
         txtUsername.setBackground(new Color(0, 0, 0, 1));
         txtEmail.setBackground(new Color(0, 0, 0, 1));
         txtPassword.setBackground(new Color(0, 0, 0, 1));
@@ -17,7 +21,17 @@ public class Signup extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel(){
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                GradientPaint gp = new GradientPaint(0, 0, Color.decode("#0082c8"), 0, getHeight(), Color.decode("#667db6"));
+                g2.setPaint(gp);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
+            }
+        };
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -42,7 +56,6 @@ public class Signup extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1010, 470));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -50,7 +63,7 @@ public class Signup extends javax.swing.JFrame {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(0, 102, 51));
+        jPanel1.setBackground(new java.awt.Color(0, 153, 204));
         jPanel1.setPreferredSize(new java.awt.Dimension(550, 440));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -71,7 +84,7 @@ public class Signup extends javax.swing.JFrame {
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 450, 40));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(204, 255, 204));
+        jLabel5.setForeground(new java.awt.Color(0, 204, 204));
         jLabel5.setText("Username");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 74, -1));
 
@@ -80,7 +93,7 @@ public class Signup extends javax.swing.JFrame {
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 140, 38, 28));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(204, 255, 204));
+        jLabel7.setForeground(new java.awt.Color(0, 204, 204));
         jLabel7.setText("Email");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 74, -1));
 
@@ -94,7 +107,7 @@ public class Signup extends javax.swing.JFrame {
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 210, 38, 28));
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(204, 255, 204));
+        jLabel11.setForeground(new java.awt.Color(0, 204, 204));
         jLabel11.setText("Password");
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 74, -1));
 
@@ -130,7 +143,8 @@ public class Signup extends javax.swing.JFrame {
         });
         jPanel1.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 450, 40));
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 51, 204));
         jButton1.setText("SIGN UP");
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, 450, 40));
 
@@ -146,7 +160,7 @@ public class Signup extends javax.swing.JFrame {
         jPanel1.add(LoginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 390, 120, -1));
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(204, 255, 204));
+        jLabel15.setForeground(new java.awt.Color(0, 204, 204));
         jLabel15.setText("You already have the access?");
         jLabel15.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 390, 190, -1));
@@ -206,6 +220,8 @@ public class Signup extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(1010, 470));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         System.exit(0);

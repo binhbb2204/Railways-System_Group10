@@ -1,8 +1,9 @@
 
 package main;
 import java.awt.*;
-import java.lang.*;
-public class Login extends javax.swing.JFrame {
+import javax.swing.*;
+
+public class Login extends JFrame {
 
     public Login() {
         initComponents();
@@ -17,7 +18,17 @@ public class Login extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel(){
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                GradientPaint gp = new GradientPaint(0, 0, Color.decode("#0082c8"), 0, getHeight(), Color.decode("#667db6"));
+                g2.setPaint(gp);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
+            }
+        };
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -57,7 +68,7 @@ public class Login extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 470));
 
-        jPanel2.setBackground(new java.awt.Color(0, 102, 51));
+        jPanel2.setBackground(new java.awt.Color(0, 153, 204));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -79,7 +90,7 @@ public class Login extends javax.swing.JFrame {
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 34, 510, 44));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(204, 255, 204));
+        jLabel5.setForeground(new java.awt.Color(0, 204, 204));
         jLabel5.setText("Email/Username");
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 112, 415, -1));
 
@@ -92,7 +103,7 @@ public class Login extends javax.swing.JFrame {
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(455, 140, 40, 33));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(204, 255, 204));
+        jLabel8.setForeground(new java.awt.Color(0, 204, 204));
         jLabel8.setText("Password");
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 189, 415, -1));
 
@@ -121,7 +132,7 @@ public class Login extends javax.swing.JFrame {
         jPanel2.add(show, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 220, 40, 33));
 
         jCheckBox1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jCheckBox1.setForeground(new java.awt.Color(204, 255, 204));
+        jCheckBox1.setForeground(new java.awt.Color(0, 204, 204));
         jCheckBox1.setText("Remember Password?");
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,14 +142,14 @@ public class Login extends javax.swing.JFrame {
         jPanel2.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 272, -1, -1));
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(204, 255, 204));
+        jLabel11.setForeground(new java.awt.Color(0, 204, 204));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel11.setText("Forget Password?");
         jLabel11.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(292, 274, 159, -1));
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 153, 0));
+        jButton1.setForeground(new java.awt.Color(0, 51, 204));
         jButton1.setText("LOGIN");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -148,7 +159,7 @@ public class Login extends javax.swing.JFrame {
         jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 309, 429, 41));
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(204, 255, 204));
+        jLabel12.setForeground(new java.awt.Color(0, 204, 204));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setText("You don't have an access?");
         jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 368, 251, -1));
