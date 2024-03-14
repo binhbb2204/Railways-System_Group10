@@ -38,6 +38,8 @@ public class Main {
             public void run() {
                 new Login().setVisible(true);
                 new Signup().setVisible(false);
+                System.out.println("NghiaTestPushGit");
+                    
                 
             }
         });
