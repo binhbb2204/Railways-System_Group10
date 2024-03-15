@@ -1,6 +1,7 @@
 {
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "AbsoluteLayout-RELEASE200.jar"
+        "AbsoluteLayout-RELEASE200.jar",
+        "src/org/AbsoluteLayout-RELEASE200.jar"
     ]
 }
