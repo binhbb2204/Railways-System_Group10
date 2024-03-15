@@ -32,12 +32,15 @@ public class Main {
             java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        //test
+        //System.ou.println
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Login().setVisible(true);
                 new Signup().setVisible(false);
+                System.out.println("NghiaTestPushGit");
+                    
                 
             }
         });
