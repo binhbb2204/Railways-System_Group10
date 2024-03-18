@@ -11,6 +11,12 @@ public class Database {
 	    private Statement statement;
 
 	    public Database() throws SQLException {
+                try {
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                return;
+            }
 	        Connection connection = DriverManager.getConnection(url, user, pass);
 	        System.out.println("DB connected!!!!");
 	        statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
