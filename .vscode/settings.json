@@ -3,5 +3,6 @@
         "lib/**/*.jar",
         "AbsoluteLayout-RELEASE200.jar",
         "src/org/AbsoluteLayout-RELEASE200.jar"
-    ]
+    ],
+    "java.debug.settings.onBuildFailureProceed": true
 }
