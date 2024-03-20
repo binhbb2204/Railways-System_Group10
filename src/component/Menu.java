@@ -2,6 +2,11 @@
 package component;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+
+import javax.swing.JFrame;
 
 public class Menu extends javax.swing.JPanel {
 
@@ -64,6 +69,25 @@ public class Menu extends javax.swing.JPanel {
         g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
         g2.fillRect(getWidth() - 20, 0, getWidth(), getHeight());
         super.paintChildren(g);
+    }
+
+    private int x;
+    private int y;
+
+    public void initMoving(JFrame frame){
+        panelMoving.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+               x = e.getX();
+               y = e.getY();
+            }
+        });
+        panelMoving.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                frame.setLocation(e.getXOnScreen() - x, e.getYOnScreen() - y);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

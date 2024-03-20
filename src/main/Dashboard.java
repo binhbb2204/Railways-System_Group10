@@ -8,6 +8,7 @@ public class Dashboard extends javax.swing.JFrame {
     public Dashboard() {
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
+        menu1.initMoving(Dashboard.this);
         
     }
 
