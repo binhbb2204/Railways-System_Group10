@@ -35,18 +35,14 @@
   </Layout>
   <SubComponents>
     <Container class="swing.PanelBorder" name="panelBorder1">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-        </Property>
-      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <Component id="menu1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="817" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                  <Component id="header1" pref="811" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -54,13 +50,18 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  <Component id="menu1" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="header1" min="-2" max="-2" attributes="0"/>
+                      <Component id="menu1" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
         <Component class="component.Menu" name="menu1">
+        </Component>
+        <Component class="component.Header" name="header1">
         </Component>
       </SubComponents>
     </Container>
