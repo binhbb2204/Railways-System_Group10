@@ -23,6 +23,7 @@ public class Dashboard extends javax.swing.JFrame {
         panelBorder1 = new swing.PanelBorder();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
 
