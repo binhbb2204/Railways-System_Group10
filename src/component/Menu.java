@@ -1,6 +1,8 @@
 
 package component;
 
+import java.awt.*;
+
 public class Menu extends javax.swing.JPanel {
 
     public Menu() {
@@ -27,7 +29,15 @@ public class Menu extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    
+    @Override
+    protected void paintChildren(Graphics g){
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        GradientPaint gp = new GradientPaint(0, 0, Color.decode("#6190E8"), 0, getHeight(), Color.decode("#A7BFE8"));
+        g2.setPaint(gp);
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
+        super.paintChildren(g);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
