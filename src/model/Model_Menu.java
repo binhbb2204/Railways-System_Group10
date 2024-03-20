@@ -44,7 +44,7 @@ public class Model_Menu {
     }
 
     public Icon toIcon(){
-        return new ImageIcon(getClass().getResource("src/icons"+ icon +".png"));
+        return new ImageIcon(getClass().getResource("/icons/"+icon+".png"));
     }
     
     

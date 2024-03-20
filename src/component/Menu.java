@@ -8,13 +8,32 @@ import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JFrame;
 
+import model.Model_Menu;
+
 public class Menu extends javax.swing.JPanel {
 
     public Menu() {
         initComponents();
         setOpaque(false);
+        listMenu1.setOpaque(false);
+        init();
         
         
+    }
+    private void init(){
+        listMenu1.addItem(new Model_Menu("", "Railway Data", Model_Menu.MenuType.TITLE));
+        listMenu1.addItem(new Model_Menu("1", "Add Train", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("2", "Edit Train", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("3", "Add Employee", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("4", "Edit Employee", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("", " ", Model_Menu.MenuType.EMPTY));
+        listMenu1.addItem(new Model_Menu("", "Passenger Data", Model_Menu.MenuType.TITLE));
+        listMenu1.addItem(new Model_Menu("3", "Add Passenger", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("4", "Edit Passenger", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("5", "Add Schedule", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("2", "Edit Schedule", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
+        listMenu1.addItem(new Model_Menu("7", "Log out", Model_Menu.MenuType.MENU));
     }
 
 
@@ -24,6 +43,7 @@ public class Menu extends javax.swing.JPanel {
 
         panelMoving = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        listMenu1 = new swing.ListMenu<>();
 
         panelMoving.setOpaque(false);
 
@@ -36,14 +56,16 @@ public class Menu extends javax.swing.JPanel {
         panelMoving.setLayout(panelMovingLayout);
         panelMovingLayout.setHorizontalGroup(
             panelMovingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
+            .addComponent(listMenu1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelMovingLayout.setVerticalGroup(
             panelMovingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMovingLayout.createSequentialGroup()
                 .addContainerGap(21, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(16, 16, 16))
+                .addGap(15, 15, 15)
+                .addComponent(listMenu1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -56,7 +78,7 @@ public class Menu extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelMoving, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 435, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -64,7 +86,7 @@ public class Menu extends javax.swing.JPanel {
     protected void paintChildren(Graphics g){
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        GradientPaint gp = new GradientPaint(0, 0, Color.decode("#6190E8"), 0, getHeight(), Color.decode("#A7BFE8"));
+        GradientPaint gp = new GradientPaint(0, 0, Color.decode("#3a7bd5"), 0, getHeight(), Color.decode("#3a6073"));
         g2.setPaint(gp);
         g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
         g2.fillRect(getWidth() - 20, 0, getWidth(), getHeight());
@@ -92,6 +114,7 @@ public class Menu extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private swing.ListMenu<String> listMenu1;
     private javax.swing.JPanel panelMoving;
     // End of variables declaration//GEN-END:variables
 }
