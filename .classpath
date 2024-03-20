@@ -8,5 +8,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="src/org/mssql-jdbc-12.6.1.jre11.jar"/>
 	<classpathentry kind="lib" path="src/org/AbsoluteLayout-RELEASE200.jar"/>
+	<classpathentry kind="lib" path="src/org/mysql-connector-j-8.3.0.jar"/>>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
