@@ -1,6 +1,7 @@
 
 package model;
 
+import javax.swing.*;
 
 public class Model_Menu {
 
@@ -40,6 +41,10 @@ public class Model_Menu {
 
     public void setType(MenuType type) {
         this.type = type;
+    }
+
+    public Icon toIcon(){
+        return new ImageIcon(getClass().getResource("src/icons"+ icon +".png"));
     }
     
     
