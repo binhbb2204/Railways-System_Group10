@@ -35,6 +35,7 @@ public class Dashboard extends javax.swing.JFrame {
         setUndecorated(true);
 
         sp.setBorder(null);
+        sp.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         sp.setViewportView(form_Home1);
 
         javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
