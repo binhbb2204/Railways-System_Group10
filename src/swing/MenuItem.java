@@ -19,7 +19,7 @@ public class MenuItem extends javax.swing.JPanel {
         }
         else if(data.getType() == Model_Menu.MenuType.TITLE){
             lbIcon.setText(data.getName());
-            lbIcon.setFont(new Font("sansserif", 1, 16));
+            lbIcon.setFont(new Font("sansserif", 1, 18));
             lbName.setVisible(false);
 
         }
@@ -42,6 +42,7 @@ public class MenuItem extends javax.swing.JPanel {
 
         lbIcon.setForeground(new java.awt.Color(255, 255, 255));
 
+        lbName.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         lbName.setForeground(new java.awt.Color(255, 255, 255));
         lbName.setText("Menu Name");
 
