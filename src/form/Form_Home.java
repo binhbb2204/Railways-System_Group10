@@ -5,7 +5,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import swing.ScrollBar;
-
 import model.Model_Card;
 import model.StatusType;
 
@@ -18,6 +17,7 @@ public class Form_Home extends javax.swing.JPanel {
         card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", "131,227", "increased by 5%"));
         
         //add row table
+        
         table.addRow(new Object[]{"SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "22/03/2024 07:20pm", " 23/03/2024 05:33am", "Monday - Sunday", StatusType.ON_TIME});
         table.addRow(new Object[]{"SE3 34h22", "Biên Hòa Station", "Sài Gòn Station", "23/03/2024 05:36pm", " 23/03/2024 06:30am", "Monday - Sunday", StatusType.DELAYED});
         table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "22/03/2024 03:30pm", " 23/03/2024 08:26am", "Monday - Sunday", StatusType.CANCELLED});
@@ -42,7 +42,7 @@ public class Form_Home extends javax.swing.JPanel {
         card3 = new component.Card();
         panelBorder1 = new swing.PanelBorder();
         jLabel1 = new javax.swing.JLabel();
-        spTable = new javax.swing.JScrollPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
         table = new swing.Table();
 
         panel.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
@@ -65,7 +65,7 @@ public class Form_Home extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(127, 127, 127));
         jLabel1.setText("Standard Table Design");
 
-        spTable.setBorder(null);
+        jScrollPane1.setBorder(null);
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -83,7 +83,7 @@ public class Form_Home extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        spTable.setViewportView(table);
+        jScrollPane1.setViewportView(table);
 
         javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
         panelBorder1.setLayout(panelBorder1Layout);
@@ -95,7 +95,7 @@ public class Form_Home extends javax.swing.JPanel {
                     .addGroup(panelBorder1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(spTable))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         panelBorder1Layout.setVerticalGroup(
@@ -104,7 +104,7 @@ public class Form_Home extends javax.swing.JPanel {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -136,9 +136,9 @@ public class Form_Home extends javax.swing.JPanel {
     private component.Card card2;
     private component.Card card3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLayeredPane panel;
     private swing.PanelBorder panelBorder1;
-    private javax.swing.JScrollPane spTable;
     private swing.Table table;
     // End of variables declaration//GEN-END:variables
 }
