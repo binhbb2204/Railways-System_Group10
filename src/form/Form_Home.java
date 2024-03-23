@@ -28,13 +28,7 @@ public class Form_Home extends javax.swing.JPanel {
         table.addRow(new Object[]{"SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "22/03/2024 07:20pm", " 23/03/2024 05:33am", "Monday - Sunday", StatusType.ON_TIME});
         table.addRow(new Object[]{"SE3 34h22", "Biên Hòa Station", "Sài Gòn Station", "23/03/2024 05:36pm", " 23/03/2024 06:30am", "Monday - Sunday", StatusType.DELAYED});
         table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "22/03/2024 03:30pm", " 23/03/2024 08:26am", "Monday - Sunday", StatusType.CANCELLED});
-        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "22/03/2024 03:30pm", " 23/03/2024 08:26am", "Monday - Sunday", StatusType.CANCELLED});
-        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "22/03/2024 03:30pm", " 23/03/2024 08:26am", "Monday - Sunday", StatusType.CANCELLED});
-        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "22/03/2024 03:30pm", " 23/03/2024 08:26am", "Monday - Sunday", StatusType.CANCELLED});
-        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "22/03/2024 03:30pm", " 23/03/2024 08:26am", "Monday - Sunday", StatusType.CANCELLED});
-        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "22/03/2024 03:30pm", " 23/03/2024 08:26am", "Monday - Sunday", StatusType.CANCELLED});
-        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "22/03/2024 03:30pm", " 23/03/2024 08:26am", "Monday - Sunday", StatusType.CANCELLED});
-        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "22/03/2024 03:30pm", " 23/03/2024 08:26am", "Monday - Sunday", StatusType.CANCELLED});
+        
         
     }
 
