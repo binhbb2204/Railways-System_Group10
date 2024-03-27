@@ -9,6 +9,11 @@
 	<classpathentry kind="lib" path="src/org/mssql-jdbc-12.6.1.jre11.jar"/>
 	<classpathentry kind="lib" path="src/org/AbsoluteLayout-RELEASE200.jar"/>
 	<classpathentry kind="lib" path="src/org/mysql-connector-j-8.3.0.jar"/>
+	<classpathentry kind="lib" path="src/org/filters-2.0.235.jar"/>
+	<classpathentry kind="lib" path="src/org/swing-worker-1.1.jar"/>
+	<classpathentry kind="lib" path="src/org/swingx-1.6.1.jar"/>
+	<classpathentry kind="lib" path="src/org/TimingFramework-0.55.jar"/>
+
 	
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,7 +1,7 @@
 
 package swing;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 
-
-public class StatusComboUI {
+public class StatusComboUI extends BasicComboBoxUI{
     
 }
