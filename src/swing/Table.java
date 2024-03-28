@@ -13,53 +13,61 @@ import javax.swing.table.*;
 
 import model.StatusType;
 
-public class Table extends JTable{
-    public Table(){
+public class Table extends JTable {
+
+    public Table() {
         setShowHorizontalLines(true);
         setGridColor(new Color(230, 230, 230));
         setRowHeight(40);
         getTableHeader().setReorderingAllowed(false);
-        getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer(){
+        getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
-            public Component getTableCellRendererComponent(JTable table, Object o, boolean bln,
-                    boolean bln1, int i, int i1) {
+            public Component getTableCellRendererComponent(JTable table, Object o, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
                 TableHeader header = new TableHeader(o + "");
-                if(i1 == 6){
+                if (column == 6) {
                     header.setHorizontalAlignment(JLabel.CENTER);
                 }
-
                 return header;
             }
         });
-        setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
+
+        setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable jtable, Object o, boolean selected,
                     boolean bln1, int i, int i1) {
-                    if( i1 != 6){
+                try {
+                    if (i1 != 6) {
                         Component com = super.getTableCellRendererComponent(jtable, o, selected, bln1, i, i1);
                         com.setBackground(Color.WHITE);
                         setBorder(noFocusBorder);
-                        if(selected){
+                        if (selected) {
                             com.setForeground(new Color(15, 89, 140));
-                        }
-                        else{
+                        } else {
                             com.setForeground(new Color(102, 102, 102));
                         }
                         return com;
-                    }
-                    else{
+                    } 
+                    else {
                         StatusType type = (StatusType) o;
                         CellStatus cell = new CellStatus(type);
                         
                         return cell;
+                        
                     }
-                    
+                } catch (Exception e) {
+                    // Handle rendering exception
+                    return super.getTableCellRendererComponent(jtable, o, selected, bln1, i, i1);
+                }
             }
         });
+
+        // Set combo box for column 6
+        
     }
 
-    public void addRow(Object[] row){
-        DefaultTableModel model = (DefaultTableModel)getModel();
+    public void addRow(Object[] row) {
+        DefaultTableModel model = (DefaultTableModel) getModel();
         model.addRow(row);
     }
 

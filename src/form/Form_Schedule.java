@@ -3,16 +3,18 @@ package form;
 
 import java.awt.Color;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import swing.ScrollBar;
 import model.Model_Card;
 import model.StatusType;
 
-public class Form_Home extends javax.swing.JPanel {
+public class Form_Schedule extends javax.swing.JPanel {
 
-    public Form_Home() {
+    public Form_Schedule() {
         initComponents();
         card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
@@ -25,8 +27,17 @@ public class Form_Home extends javax.swing.JPanel {
         JPanel p = new JPanel();
         p.setBackground(Color.WHITE);
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
+        //table.getColumModel is used for the status column because it's a JComboBox
+        table.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(new JComboBox<>(StatusType.values())));
         table.addRow(new Object[]{"SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "22/03/2024 07:20pm", " 23/03/2024 05:33am", "Monday - Sunday", StatusType.ON_TIME});
-        table.addRow(new Object[]{"SE3 34h22", "Biên Hòa Station", "Sài Gòn Station", "23/03/2024 05:36pm", " 23/03/2024 06:30am", "Monday - Sunday", StatusType.DELAYED});
+        table.addRow(new Object[]{"SE3 34h22", "Biên Hòa Station", "Sài Gòn Station", "23/03/2024 05:36pm", " 23/03/2024 06:30am", "Monday - Sunday", StatusType.DELAYED });
+        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "22/03/2024 03:30pm", " 23/03/2024 08:26am", "Monday - Sunday", StatusType.CANCELLED});
+        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "22/03/2024 03:30pm", " 23/03/2024 08:26am", "Monday - Sunday", StatusType.CANCELLED});
+        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "22/03/2024 03:30pm", " 23/03/2024 08:26am", "Monday - Sunday", StatusType.CANCELLED});
+        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "22/03/2024 03:30pm", " 23/03/2024 08:26am", "Monday - Sunday", StatusType.CANCELLED});
+        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "22/03/2024 03:30pm", " 23/03/2024 08:26am", "Monday - Sunday", StatusType.CANCELLED});
+        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "22/03/2024 03:30pm", " 23/03/2024 08:26am", "Monday - Sunday", StatusType.CANCELLED});
+        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "22/03/2024 03:30pm", " 23/03/2024 08:26am", "Monday - Sunday", StatusType.CANCELLED});
         table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "22/03/2024 03:30pm", " 23/03/2024 08:26am", "Monday - Sunday", StatusType.CANCELLED});
         
         
@@ -75,15 +86,7 @@ public class Form_Home extends javax.swing.JPanel {
             new String [] {
                 "Train", "Origin", "Destination", "Departure Time", "Arrival Time", "Day Operation", "Status"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                true, true, true, true, true, true, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         spTable.setViewportView(table);
 
         javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
