@@ -12,9 +12,9 @@ import swing.ScrollBar;
 import model.Model_Card;
 import model.StatusType;
 
-public class Form_Schedule extends javax.swing.JPanel {
+public class Form_Home extends javax.swing.JPanel {
 
-    public Form_Schedule() {
+    public Form_Home() {
         initComponents();
         card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));

@@ -29,7 +29,7 @@ public class Dashboard extends javax.swing.JFrame {
         menu1 = new component.Menu();
         header1 = new component.Header();
         sp = new javax.swing.JScrollPane();
-        form_Home1 = new form.Form_Schedule();
+        form_Home1 = new form.Form_Home();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -115,7 +115,7 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private form.Form_Schedule form_Home1;
+    private form.Form_Home form_Home1;
     private component.Header header1;
     private component.Menu menu1;
     private swing.PanelBorder panelBorder1;
