@@ -8,7 +8,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import swing.ScrollBar;
@@ -20,12 +19,19 @@ import model.StatusType;
 
 public class Form_Home extends javax.swing.JPanel {
     private boolean editable = false;
+    private int editableRow = -1;
     public Form_Home() {
         initComponents();
         TableActionEvent event = new TableActionEvent() {
             @Override
             public void onEdit(int row) {
+                editableRow = row;
                 editable = true;
+                ((DefaultTableModel)table.getModel()).fireTableDataChanged();
+
+                table.repaint();
+                table.revalidate();
+                
                 
             }
             @Override
@@ -38,8 +44,12 @@ public class Form_Home extends javax.swing.JPanel {
             }
             @Override
             public void onView(int row) {
-                System.out.println("View row: "+ row);
+                editableRow = row;
                 editable = false;
+                ((DefaultTableModel)table.getModel()).fireTableDataChanged();
+                
+                table.repaint();
+                table.revalidate();
                 
             }
             
@@ -131,7 +141,7 @@ public class Form_Home extends javax.swing.JPanel {
                     return true;
                 }
                 // Other columns are editable based on the 'editable' flag
-                return editable;
+                return rowIndex == editableRow && editable;
             }
         });
         spTable.setViewportView(table);
