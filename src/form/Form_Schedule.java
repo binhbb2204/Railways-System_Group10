@@ -17,10 +17,10 @@ import swing.TableActionEvent;
 import model.Model_Card;
 import model.StatusType;
 
-public class Form_Home extends javax.swing.JPanel {
+public class Form_Schedule extends javax.swing.JPanel {
     private boolean editable = false;
     private int editableRow = -1;
-    public Form_Home() {
+    public Form_Schedule() {
         initComponents();
         TableActionEvent event = new TableActionEvent() {
             @Override
@@ -134,13 +134,12 @@ public class Form_Home extends javax.swing.JPanel {
                 "Train", "Origin", "Destination", "Departure Time", "Arrival Time", "Day Operation", "Status", "Action"
             }
         ) {
-            
+           
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                if (columnIndex == 7) {
+                if(columnIndex == 7){
                     return true;
                 }
-                // Other columns are editable based on the 'editable' flag
                 return rowIndex == editableRow && editable;
             }
         });

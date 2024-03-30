@@ -8,23 +8,24 @@ import event.EventMenuSelected;
 import form.Form_1;
 import form.Form_2;
 import form.Form_3;
-import form.Form_Home;
+import form.Form_Schedule;
+import form.Form_Train;
 import swing.ScrollBar;
 
 
 public class Dashboard extends javax.swing.JFrame {
 
-    private Form_Home schedule;
+    private Form_Schedule schedule;
     private Form_1 form1;
-    private Form_2 form2;
+    private Form_Train form2;
     private Form_3 form3;
 
     public Dashboard() {
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
-        schedule = new Form_Home();
+        schedule = new Form_Schedule();
         form1 = new Form_1();
-        form2 = new Form_2();
+        form2 = new Form_Train();
         form3 = new Form_3();
         menu.initMoving(Dashboard.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
@@ -45,7 +46,7 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
         //set the system is started/open, it starts at Schedule Form
-        setForm(new Form_Home());
+        setForm(new Form_Schedule());
         
     }
     private void setForm(JComponent com){
