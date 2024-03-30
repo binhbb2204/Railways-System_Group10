@@ -8,10 +8,16 @@ import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JFrame;
 
+import event.EventMenuSelected;
 import model.Model_Menu;
 
 public class Menu extends javax.swing.JPanel {
+    private EventMenuSelected event;
 
+    public void addEventMenuSelected(EventMenuSelected event){
+        this.event = event;
+        listMenu1.addEventMenuSelected(event);
+    }
     public Menu() {
         initComponents();
         setOpaque(false);

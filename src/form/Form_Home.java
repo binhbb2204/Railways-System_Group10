@@ -8,7 +8,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.table.DefaultTableModel;
+
 import swing.ScrollBar;
+import swing.TableActionCellEditor;
+import swing.TableActionCellRender;
+import swing.TableActionEvent;
 import model.Model_Card;
 import model.StatusType;
 
@@ -16,6 +21,39 @@ public class Form_Home extends javax.swing.JPanel {
 
     public Form_Home() {
         initComponents();
+        TableActionEvent event = new TableActionEvent() {
+            @Override
+            public void onEdit(int row) {
+                int actionColumnIndex = 7;
+                if(!table.isEditing()){
+                    
+                    table.editCellAt(row, actionColumnIndex);
+                }
+                
+            }
+            @Override
+            public void onDelete(int row) {
+                if(table.isEditing()){
+                    table.getCellEditor().stopCellEditing();
+                }
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.removeRow(row);
+            }
+            @Override
+            public void onView(int row) {
+                System.out.println("View row: "+ row);
+                
+            }
+        };
+        table.getColumnModel().getColumn(7).setCellRenderer(new TableActionCellRender());
+        table.getColumnModel().getColumn(7).setCellEditor(new TableActionCellEditor(event));
+
+
+
+
+
+
+
         card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
         card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", "131,227", "increased by 5%"));
@@ -84,9 +122,17 @@ public class Form_Home extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Train", "Origin", "Destination", "Departure Time", "Arrival Time", "Day Operation", "Status"
+                "Train", "Origin", "Destination", "Departure Time", "Arrival Time", "Day Operation", "Status", "Action"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         spTable.setViewportView(table);
 
         javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);

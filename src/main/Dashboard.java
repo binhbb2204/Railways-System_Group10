@@ -2,18 +2,57 @@
 package main;
 import java.awt.*;
 
+import javax.swing.JComponent;
+
+import event.EventMenuSelected;
+import form.Form_1;
+import form.Form_2;
+import form.Form_3;
+import form.Form_Home;
 import swing.ScrollBar;
 
 
 public class Dashboard extends javax.swing.JFrame {
 
+    private Form_Home schedule;
+    private Form_1 form1;
+    private Form_2 form2;
+    private Form_3 form3;
 
     public Dashboard() {
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
-        menu1.initMoving(Dashboard.this);
-        sp.setVerticalScrollBar(new ScrollBar());
+        schedule = new Form_Home();
+        form1 = new Form_1();
+        form2 = new Form_2();
+        form3 = new Form_3();
+        menu.initMoving(Dashboard.this);
+        menu.addEventMenuSelected(new EventMenuSelected() {
+            @Override
+            public void selected(int index) {
+                if(index == 1){
+                    setForm(form1);
+                }
+                else if(index == 2){
+                    setForm(form2);
+                }
+                else if(index == 3){
+                    setForm(form3);
+                }
+                else if(index == 4){
+                    setForm(schedule);
+                }
+            }
+        });
+        //set the system is started/open, it starts at Schedule Form
+        setForm(new Form_Home());
         
+    }
+    private void setForm(JComponent com){
+        mainPanel.removeAll();
+        mainPanel.add(com);
+        mainPanel.repaint();
+        mainPanel.revalidate();
     }
 
     /**
@@ -26,40 +65,39 @@ public class Dashboard extends javax.swing.JFrame {
     private void initComponents() {
 
         panelBorder1 = new swing.PanelBorder();
-        menu1 = new component.Menu();
+        menu = new component.Menu();
         header1 = new component.Header();
-        sp = new javax.swing.JScrollPane();
-        form_Home1 = new form.Form_Home();
+        mainPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
-        sp.setBorder(null);
-        sp.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        sp.setViewportView(form_Home1);
+        mainPanel.setOpaque(false);
+        mainPanel.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
         panelBorder1.setLayout(panelBorder1Layout);
         panelBorder1Layout.setHorizontalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
-                .addComponent(menu1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(header1, javax.swing.GroupLayout.DEFAULT_SIZE, 923, Short.MAX_VALUE)
                     .addGroup(panelBorder1Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(sp))))
+                        .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(menu1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
                     .addGroup(panelBorder1Layout.createSequentialGroup()
                         .addComponent(header1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sp, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
+                        .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())))
         );
 
@@ -115,10 +153,9 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private form.Form_Home form_Home1;
     private component.Header header1;
-    private component.Menu menu1;
+    private javax.swing.JPanel mainPanel;
+    private component.Menu menu;
     private swing.PanelBorder panelBorder1;
-    private javax.swing.JScrollPane sp;
     // End of variables declaration//GEN-END:variables
 }

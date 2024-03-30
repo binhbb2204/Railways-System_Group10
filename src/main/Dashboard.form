@@ -40,12 +40,13 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <Component id="menu1" max="32767" attributes="0"/>
+                  <Component id="menu" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="header1" pref="923" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                          <Component id="sp" max="32767" attributes="0"/>
+                          <Component id="mainPanel" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -56,11 +57,11 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="menu1" max="32767" attributes="0"/>
+                      <Component id="menu" pref="645" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Component id="header1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="sp" pref="588" max="32767" attributes="0"/>
+                          <Component id="mainPanel" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -69,23 +70,16 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="component.Menu" name="menu1">
+        <Component class="component.Menu" name="menu">
         </Component>
         <Component class="component.Header" name="header1">
         </Component>
-        <Container class="javax.swing.JScrollPane" name="sp">
+        <Container class="javax.swing.JPanel" name="mainPanel">
           <Properties>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="null"/>
-            </Property>
-            <Property name="horizontalScrollBarPolicy" type="int" value="31"/>
+            <Property name="opaque" type="boolean" value="false"/>
           </Properties>
 
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-          <SubComponents>
-            <Component class="form.Form_Home" name="form_Home1">
-            </Component>
-          </SubComponents>
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
         </Container>
       </SubComponents>
     </Container>
