@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import swing.ScrollBar;
@@ -18,17 +19,13 @@ import model.Model_Card;
 import model.StatusType;
 
 public class Form_Home extends javax.swing.JPanel {
-
+    private boolean editable = false;
     public Form_Home() {
         initComponents();
         TableActionEvent event = new TableActionEvent() {
             @Override
             public void onEdit(int row) {
-                int actionColumnIndex = 7;
-                if(!table.isEditing()){
-                    
-                    table.editCellAt(row, actionColumnIndex);
-                }
+                editable = true;
                 
             }
             @Override
@@ -42,8 +39,10 @@ public class Form_Home extends javax.swing.JPanel {
             @Override
             public void onView(int row) {
                 System.out.println("View row: "+ row);
+                editable = false;
                 
             }
+            
         };
         table.getColumnModel().getColumn(7).setCellRenderer(new TableActionCellRender());
         table.getColumnModel().getColumn(7).setCellEditor(new TableActionCellEditor(event));
@@ -125,12 +124,14 @@ public class Form_Home extends javax.swing.JPanel {
                 "Train", "Origin", "Destination", "Departure Time", "Arrival Time", "Day Operation", "Status", "Action"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, true
-            };
+            
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if (columnIndex == 7) {
+                    return true;
+                }
+                // Other columns are editable based on the 'editable' flag
+                return editable;
             }
         });
         spTable.setViewportView(table);
