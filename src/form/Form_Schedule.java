@@ -122,7 +122,7 @@ public class Form_Schedule extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(127, 127, 127));
-        jLabel1.setText("Standard Table Design");
+        jLabel1.setText("Train Table Design");
 
         spTable.setBorder(null);
 
@@ -134,13 +134,12 @@ public class Form_Schedule extends javax.swing.JPanel {
                 "Train", "Origin", "Destination", "Departure Time", "Arrival Time", "Day Operation", "Status", "Action"
             }
         ) {
-           
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                if(columnIndex == 7){
-                    return true;
-                }
-                return rowIndex == editableRow && editable;
+                return canEdit [columnIndex];
             }
         });
         spTable.setViewportView(table);
