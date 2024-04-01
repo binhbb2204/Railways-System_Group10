@@ -134,12 +134,13 @@ public class Form_Schedule extends javax.swing.JPanel {
                 "Train", "Origin", "Destination", "Departure Time", "Arrival Time", "Day Operation", "Status", "Action"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
-            };
+            
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(columnIndex == 7){
+                    return true;
+                }
+                return rowIndex == editableRow && editable;
             }
         });
         spTable.setViewportView(table);
