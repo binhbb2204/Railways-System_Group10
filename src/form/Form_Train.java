@@ -7,14 +7,17 @@ import model.Model_Card;
 
 public class Form_Train extends javax.swing.JPanel {
 
+    private String trainName;
+    private String trainID;
 
-    public Form_Train() {
+    public Form_Train(String trainName, String trainID) {
+        this.trainName = trainName;
+        this.trainID = trainID;
         initComponents();
         card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
         card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", "131,227", "increased by 5%"));
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -56,7 +59,21 @@ public class Form_Train extends javax.swing.JPanel {
                 .addContainerGap(344, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+ public String getTrainName() {
+        return trainName;
+    }
 
+    public void setTrainName(String trainName) {
+        this.trainName = trainName;
+    }
+
+    public String getTrainID() {
+        return trainID;
+    }
+
+    public void setTrainID(String trainID) {
+        this.trainID = trainID;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private component.Card card1;
