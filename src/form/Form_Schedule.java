@@ -102,7 +102,7 @@ public class Form_Schedule extends javax.swing.JPanel {
         panelBorder1 = new swing.PanelBorder();
         jLabel1 = new javax.swing.JLabel();
         spTable = new javax.swing.JScrollPane();
-        table = new swing.Table();
+        table = new swing.ScheduleTable();
 
         panel.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
 
@@ -199,6 +199,6 @@ public class Form_Schedule extends javax.swing.JPanel {
     private javax.swing.JLayeredPane panel;
     private swing.PanelBorder panelBorder1;
     private javax.swing.JScrollPane spTable;
-    private swing.Table table;
+    private swing.ScheduleTable table;
     // End of variables declaration//GEN-END:variables
 }

@@ -13,9 +13,9 @@ import javax.swing.table.*;
 
 import model.StatusType;
 
-public class Table extends JTable {
+public class ScheduleTable extends JTable {
 
-    public Table() {
+    public ScheduleTable() {
         setShowHorizontalLines(true);
         setGridColor(new Color(230, 230, 230));
         setRowHeight(40);
