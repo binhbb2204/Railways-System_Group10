@@ -65,16 +65,12 @@ public class Form_Train extends javax.swing.JPanel {
         p.setBackground(Color.WHITE);
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
         table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(new JComboBox<>(TrainType.values())));
-        table.addRow(new Object[]{"HN-SG-123", "SE3 34h22", "400", TrainType.SE});
-        table.addRow(new Object[]{"HN-HP-113", "SE5 37h00", "700", TrainType.TN});
-        table.addRow(new Object[]{"HN-HP-113", "SE5 37h00", "700", TrainType.TN});
-        table.addRow(new Object[]{"HN-HP-113", "SE5 37h00", "700", TrainType.TN});
-        table.addRow(new Object[]{"HN-HP-113", "SE5 37h00", "700", TrainType.TN});
-        table.addRow(new Object[]{"HN-HP-113", "SE5 37h00", "700", TrainType.TN});
-        table.addRow(new Object[]{"HN-HP-113", "SE5 37h00", "700", TrainType.TN});
-        table.addRow(new Object[]{"HN-HP-113", "SE5 37h00", "700", TrainType.TN});
-        table.addRow(new Object[]{"HN-HP-113", "SE5 37h00", "700", TrainType.TN});
-        table.addRow(new Object[]{"HN-HP-113", "SE5 37h00", "700", TrainType.TN});
+        table.addRow(new Object[]{"SE3 34h22", "HN-SG-123", "400", TrainType.SE});
+        table.addRow(new Object[]{"SE5 37h00", "HN-HP-113", "700", TrainType.TN});
+        table.addRow(new Object[]{"SE5 37h00", "HN-HP-113", "700", TrainType.TN});
+        table.addRow(new Object[]{"SE5 37h00", "HN-HP-113", "700", TrainType.TN});
+        table.addRow(new Object[]{"SE5 37h00", "HN-HP-113", "700", TrainType.TN});
+        table.addRow(new Object[]{"SE5 37h00", "HN-HP-113", "700", TrainType.TN});
 
     }
 
