@@ -29,19 +29,19 @@ public class Menu extends javax.swing.JPanel {
     private void init(){
         
         listMenu1.addItem(new Model_Menu("", "Railway Data", Model_Menu.MenuType.TITLE));
-        listMenu1.addItem(new Model_Menu("1", "Add Train", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("2", "Edit Train", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("5", "Add Schedule", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("2", "Edit Schedule", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("1", "Train Table", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("2", "Schedule Table", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("5", "Station Table", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("2", "Ticket Table", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("2", "Find Track", Model_Menu.MenuType.MENU));
         
         
         listMenu1.addItem(new Model_Menu("", "Human-Resource Data", Model_Menu.MenuType.TITLE));
-        listMenu1.addItem(new Model_Menu("3", "Add Employee", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("4", "Edit Employee", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("3", "Add Passenger", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("4", "Edit Passenger", Model_Menu.MenuType.MENU));
-        
+        listMenu1.addItem(new Model_Menu("3", "Employee Table", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("4", "Passenger Table", Model_Menu.MenuType.MENU));
+ 
+        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
+        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
         listMenu1.addItem(new Model_Menu("7", "Log out", Model_Menu.MenuType.MENU));
     }

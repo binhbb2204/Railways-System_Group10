@@ -32,16 +32,16 @@ public class Dashboard extends javax.swing.JFrame {
             @Override
             public void selected(int index) {
                 if(index == 1){
-                    setForm(form1);
-                }
-                else if(index == 2){
                     setForm(form2);
                 }
+                else if(index == 2){
+                    setForm(schedule);
+                }
                 else if(index == 3){
-                    setForm(form3);
+                    setForm(form1);
                 }
                 else if(index == 4){
-                    setForm(schedule);
+                    setForm(form3);
                 }
             }
         });
