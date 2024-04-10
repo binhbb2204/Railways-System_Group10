@@ -3,7 +3,7 @@ package main;
 import java.awt.*;
 
 import javax.swing.JComponent;
-
+import javax.swing.*;
 import event.EventMenuSelected;
 import form.Form_1;
 import form.Form_2;
@@ -17,7 +17,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     private Form_Schedule schedule;
     private Form_1 form1;
-    private Form_Train form2;
+    private Form_Train train;
     private Form_3 form3;
 
     public Dashboard() {
@@ -25,14 +25,14 @@ public class Dashboard extends javax.swing.JFrame {
         setBackground(new Color(0, 0, 0, 0));
         schedule = new Form_Schedule();
         form1 = new Form_1();
-        form2 = new Form_Train();
+        train = new Form_Train();
         form3 = new Form_3();
         menu.initMoving(Dashboard.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void selected(int index) {
                 if(index == 1){
-                    setForm(form2);
+                    setForm(train);
                 }
                 else if(index == 2){
                     setForm(schedule);
@@ -41,7 +41,14 @@ public class Dashboard extends javax.swing.JFrame {
                     setForm(form1);
                 }
                 else if(index == 4){
+                    setForm(form1);
+                }
+                else if(index == 5){
                     setForm(form3);
+                }
+                else if(index == 12){
+                    System.exit(0);
+
                 }
             }
         });
