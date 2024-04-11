@@ -32,6 +32,9 @@ public class PanelAction extends javax.swing.JPanel {
                 event.onView(row);
             }
         });
+        
+        
+        
     }
 
     /**
@@ -108,6 +111,10 @@ public class PanelAction extends javax.swing.JPanel {
     private void cmdViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdViewActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmdViewActionPerformed
+
+    private void cmdAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdView1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmdView1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

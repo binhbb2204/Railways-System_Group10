@@ -20,6 +20,8 @@ public class ScheduleTable extends JTable {
         setGridColor(new Color(230, 230, 230));
         setRowHeight(40);
         getTableHeader().setReorderingAllowed(false);
+
+        
         getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object o, boolean isSelected,
@@ -46,6 +48,7 @@ public class ScheduleTable extends JTable {
                         } else {
                             com.setForeground(new Color(102, 102, 102));
                         }
+                        setHorizontalAlignment(JLabel.CENTER);
                         return com;
                     } 
                     else {

@@ -12,13 +12,13 @@ public class TrainTable extends JTable {
         setRowHeight(40);
         getTableHeader().setReorderingAllowed(false);
 
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        // DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        // centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
-        // Apply the default renderer to the header and all cell types
-        getTableHeader().setDefaultRenderer(centerRenderer);
-        setDefaultRenderer(Object.class, centerRenderer);
-        setDefaultRenderer(TrainType.class, centerRenderer);
+        // // Apply the default renderer to the header and all cell types
+        // getTableHeader().setDefaultRenderer(centerRenderer);
+        // setDefaultRenderer(Object.class, centerRenderer);
+        // setDefaultRenderer(TrainType.class, centerRenderer);
 
         getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override

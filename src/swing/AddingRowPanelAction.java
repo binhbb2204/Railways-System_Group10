@@ -11,14 +11,14 @@ public class AddingRowPanelAction extends javax.swing.JPanel {
         initComponents();
     }
 
-    // public void initEvent(AddingActionEvent event, int row){
-    //     cmdAdding.addActionListener(new ActionListener() {
-    //         @Override
-    //         public void actionPerformed(ActionEvent ae) {
-    //             event.onAdding(row);
-    //         }
-    //     });
-    // }
+    public void initEvent(AddingActionEvent event, int row){
+        cmdAdding.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                event.onAdding(row);
+            }
+        });
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
