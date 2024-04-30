@@ -11,6 +11,7 @@ import form.Form_3;
 import form.Form_Schedule;
 import form.Form_Train;
 import swing.ScrollBar;
+import form.Form_Passenger;
 
 
 public class Dashboard extends javax.swing.JFrame {
@@ -19,6 +20,7 @@ public class Dashboard extends javax.swing.JFrame {
     private Form_1 form1;
     private Form_Train train;
     private Form_3 form3;
+    private Form_Passenger passenger;
 
     public Dashboard() {
         initComponents();
@@ -27,6 +29,7 @@ public class Dashboard extends javax.swing.JFrame {
         form1 = new Form_1();
         train = new Form_Train();
         form3 = new Form_3();
+        passenger = new Form_Passenger();
         menu.initMoving(Dashboard.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
@@ -45,6 +48,9 @@ public class Dashboard extends javax.swing.JFrame {
                 }
                 else if(index == 5){
                     setForm(form3);
+                }
+                else if(index == 8){
+                    setForm(passenger);
                 }
                 else if(index == 12){
                     System.exit(0);
