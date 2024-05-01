@@ -38,7 +38,7 @@
               <Component id="panel" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="panelBorder1" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -120,8 +120,8 @@
                       <Component id="cmdAdding" alignment="1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="spTable" pref="162" max="32767" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="spTable" pref="234" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -157,13 +157,18 @@
           </Properties>
         </Component>
         <Container class="javax.swing.JScrollPane" name="spTable">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
+            </Property>
+          </Properties>
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
           </AuxValues>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="swing.PassengerTable" name="passengerTable1">
+            <Component class="swing.PassengerTable" name="table">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;&#xa;    },&#xa;    new String [] {&#xa;        &quot;Passenger ID&quot;, &quot;First name&quot;, &quot;Last name&quot;, &quot;Telephone&quot;, &quot;Email&quot;, &quot;Status&quot;, &quot;Action&quot;&#xa;    }&#xa;) {&#xa;   public boolean isCellEditable(int rowIndex, int columnIndex) {&#xa;                if(columnIndex == 6){&#xa;                    return true;&#xa;                }&#xa;                return rowIndex == editableRow &amp;&amp; editable;&#xa;            }&#xa;}" type="code"/>
