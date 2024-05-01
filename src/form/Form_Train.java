@@ -9,7 +9,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
-
 import swing.AddingActionEvent;
 import swing.ScrollBar;
 import javax.swing.JScrollPane;
@@ -77,12 +76,14 @@ public class Form_Train extends javax.swing.JPanel {
         card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", "131,227", "increased by 5%"));
 
+
         spTable.setVerticalScrollBar(new ScrollBar());
         spTable.getVerticalScrollBar().setBackground(Color.WHITE);
         spTable.getViewport().setBackground(Color.WHITE);
         JPanel p = new JPanel();
         p.setBackground(Color.WHITE);
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
+        //this one is used to make the status into combo box
         table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(new JComboBox<>(TrainType.values())));
         table.addRow(new Object[]{"HN-SG-123", "SE3 34h22", "400", TrainType.SE});
         table.addRow(new Object[]{"HN-HP-113", "SE5 37h00", "700", TrainType.TN});

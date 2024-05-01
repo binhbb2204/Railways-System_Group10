@@ -4,6 +4,7 @@ package form;
 import model.CoachType;
 import model.Model_Card;
 import model.StatusType;
+import model.TrainType;
 import swing.AddingActionEvent;
 import swing.ScrollBar;
 import swing.TableActionCellEditor;
@@ -77,7 +78,9 @@ public class Form_Coach extends javax.swing.JPanel {
         JPanel p = new JPanel();
         p.setBackground(Color.WHITE);
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
+
         table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox<>(CoachType.values())));
+        
         table.addRow(new Object[]{"01", CoachType.SOFT_SEAT, "50", "HN-SG-123", "AC, Wi-Fi"});
         table.addRow(new Object[]{"02", CoachType.DOUBLE_DECK_COACH, "50", "HN-SG-123", "AC, Wi-Fi"});
         table.addRow(new Object[]{"01", CoachType.SOFT_SEAT, "50", "HN-SG-123", "AC, Wi-Fi"});

@@ -52,7 +52,7 @@ public class TrainTable extends JTable {
                     } else {
                         TrainType type = (TrainType) value;
                         CellType cell = new CellType(type);
-        
+                        setHorizontalAlignment(JLabel.CENTER);
                         return cell;
                     }
                 }

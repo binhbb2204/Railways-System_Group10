@@ -10,7 +10,7 @@ public class CellStatus extends javax.swing.JPanel  {
 
     public CellStatus(StatusType type) {
         initComponents();
-        tableStatus1.setType(type);
+        status.setType(type);
         
     }
     
@@ -21,31 +21,35 @@ public class CellStatus extends javax.swing.JPanel  {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        tableStatus1 = new swing.TableStatus();
+        status = new swing.TableStatus();
 
         setBackground(new java.awt.Color(255, 255, 255));
+
+        status.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        status.setText("tableStatus2");
+        status.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tableStatus1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE)
+                .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(10, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(tableStatus1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addComponent(status, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                .addGap(8, 8, 8))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private swing.TableStatus tableStatus1;
+    private swing.TableStatus status;
     // End of variables declaration//GEN-END:variables
 }

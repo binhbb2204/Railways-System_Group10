@@ -20,6 +20,7 @@ public class PassengerTable extends JTable {
             public Component getTableCellRendererComponent(JTable jtable, Object o, boolean bln, boolean bln1, int i, int i1) {
                 TableHeader header = new TableHeader(o + "");
                 if (i1 == 5) {
+
                     header.setHorizontalAlignment(JLabel.CENTER);
                 }
                 return header;

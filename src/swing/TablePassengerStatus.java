@@ -40,7 +40,7 @@ public class TablePassengerStatus extends JLabel {
                 g = new GradientPaint(0, 0, new Color(241, 208, 62), 0, getHeight(), new Color(211, 184, 61));
             }
             g2.setPaint(g);
-            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 1, 1);
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
         }
         super.paintComponent(grphcs);
     }

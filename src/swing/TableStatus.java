@@ -6,80 +6,63 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import model.StatusType;
 
-public class TableStatus extends JPanel {
+public class TableStatus extends JLabel{
 
-    private StatusType statusType;
+    private StatusType type;
     
-    private JComboBox<StatusType> statusCombo;
 
     public TableStatus() {
-        statusType = StatusType.ON_TIME;
-        
-        // Get all enum constants and create a combo box with them
-        StatusType[] statuses = StatusType.values();
-        statusCombo = new JComboBox<>(statuses);
-        statusCombo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                statusType = (StatusType) statusCombo.getSelectedItem();
-                repaint();
-            }
-        });
-        add(statusCombo);
+        setForeground(Color.WHITE);
     }
 
     public StatusType getType() {
-        return this.statusType;
+        return type;
     }
 
     public void setType(StatusType type) {
-        this.statusType = type;
-        statusCombo.setSelectedItem(type);
+        this.type = type;
+        setText(type.toString());
+        repaint();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        
-        super.paintComponent(g); // Paint the default component first
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        // Define color strings for the gradient
-        String topColorCode;
-        String bottomColorCode;
-
-        // Determine the colors based on the StatusType
-        if (getType().equals(StatusType.ON_TIME)) {
-            topColorCode = "#38ef7d"; 
-            bottomColorCode = "#11998e"; 
-        } else if (getType().equals(StatusType.DELAYED)) {
-            topColorCode = "#e65c00"; 
-            bottomColorCode = "#F9D423"; 
-        } else if (getType().equals(StatusType.CANCELLED)) {
-            topColorCode = "#e52d27"; 
-            bottomColorCode = "#b31217"; 
-        } else {
-            topColorCode = "#02AAB0"; // White
-            bottomColorCode = "#00CDAC"; 
+        if(type != null){
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            // Define color strings for the gradient
+            String topColorCode;
+            String bottomColorCode;
+            GradientPaint gp;
+            // Determine the colors based on the StatusType
+                if (type == StatusType.ON_TIME) {
+                    topColorCode = "#38ef7d"; 
+                    bottomColorCode = "#11998e"; 
+                    gp = new GradientPaint(0, 0, Color.decode(topColorCode), 0, getHeight(), Color.decode(bottomColorCode));
+                } 
+                else if (type == StatusType.DELAYED) {
+                    topColorCode = "#e65c00"; 
+                    bottomColorCode = "#F9D423"; 
+                    gp = new GradientPaint(0, 0, Color.decode(topColorCode), 0, getHeight(), Color.decode(bottomColorCode));
+                } 
+                else if (type == StatusType.CANCELLED) {
+                    topColorCode = "#e52d27"; 
+                    bottomColorCode = "#b31217"; 
+                    gp = new GradientPaint(0, 0, Color.decode(topColorCode), 0, getHeight(), Color.decode(bottomColorCode));
+                } 
+                else {
+                    topColorCode = "#02AAB0"; // White
+                    bottomColorCode = "#00CDAC"; 
+                    gp = new GradientPaint(0, 0, Color.decode(topColorCode), 0, getHeight(), Color.decode(bottomColorCode));
+                }
+                g2.setPaint(gp);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
         }
-
-        // Decode the color strings to Color objects
-        Color topColor = Color.decode(topColorCode);
-        Color bottomColor = Color.decode(bottomColorCode);
-
-        // Create a gradient paint with the two colors
-        GradientPaint gp = new GradientPaint(0, 0, topColor, 0, getHeight(), bottomColor);
-        g2.setPaint(gp);
-        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 1, 1);
-        
-        g2.dispose();
+        super.paintComponent(g); // Paint the default component first
     }
 }

@@ -6,6 +6,7 @@ public class CellCoachType extends javax.swing.JPanel {
     public CellCoachType(CoachType type) {
         initComponents();
         status.setType(type);
+
     }
 
     @SuppressWarnings("unchecked")
@@ -18,15 +19,16 @@ public class CellCoachType extends javax.swing.JPanel {
 
         status.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         status.setText("coachStatus1");
+        status.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5))
+                .addContainerGap(10, Short.MAX_VALUE)
+                .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(10, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
