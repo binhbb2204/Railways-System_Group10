@@ -5,7 +5,7 @@ import java.awt.*;
 import javax.swing.JComponent;
 import javax.swing.*;
 import event.EventMenuSelected;
-import form.Form_1;
+import form.Form_Coach;
 import form.Form_2;
 import form.Form_3;
 import form.Form_Schedule;
@@ -17,7 +17,7 @@ import form.Form_Passenger;
 public class Dashboard extends javax.swing.JFrame {
 
     private Form_Schedule schedule;
-    private Form_1 form1;
+    private Form_Coach coach;
     private Form_Train train;
     private Form_3 form3;
     private Form_Passenger passenger;
@@ -26,7 +26,7 @@ public class Dashboard extends javax.swing.JFrame {
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
         schedule = new Form_Schedule();
-        form1 = new Form_1();
+        coach = new Form_Coach();
         train = new Form_Train();
         form3 = new Form_3();
         passenger = new Form_Passenger();
@@ -41,10 +41,10 @@ public class Dashboard extends javax.swing.JFrame {
                     setForm(schedule);
                 }
                 else if(index == 3){
-                    setForm(form1);
+                    setForm(form3);
                 }
                 else if(index == 4){
-                    setForm(form1);
+                    setForm(coach);
                 }
                 else if(index == 5){
                     setForm(form3);
