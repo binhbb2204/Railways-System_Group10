@@ -64,7 +64,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="component.Card" name="card3">
+        <Component class="component.Card" name="card2">
           <Properties>
             <Property name="color1" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="f7" green="7b" red="ba" type="rgb"/>
@@ -74,7 +74,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="component.Card" name="card2">
+        <Component class="component.Card" name="card3">
           <Properties>
             <Property name="color1" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="99" red="33" type="rgb"/>

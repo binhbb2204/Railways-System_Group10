@@ -18,16 +18,30 @@ import javax.swing.JPanel;
 public class Form_Train extends javax.swing.JPanel {
     private boolean editable = false;
     private int editableRow = -1;
+
+
+
+    private void updateTotalPassengerCountDisplay() {
+        // Retrieve the total passenger count from the PassengerManager
+        int count = PassengerManager.getInstance().getTotalPassengers();
+        // Format the total count and update the card display
+        String formattedTotal = String.format("%,d", count);
+        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", formattedTotal, "increased by 5%"));
+    }
+    public void onSwitchBackToSchedule() {
+        updateTotalPassengerCountDisplay();
+    }
     public Form_Train() {
 
         initComponents();
+        updateTotalPassengerCountDisplay();
         AddingActionEvent event1 = new AddingActionEvent() {
             @Override
             public void onAdding(int row) {
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
                 model.addRow(new Object[]{"", "", "", TrainType.SE});
                 model.fireTableDataChanged();
-                
+                updateTotalPassengerCountDisplay();
             }
             
         };
@@ -42,6 +56,7 @@ public class Form_Train extends javax.swing.JPanel {
 
                 table.repaint();
                 table.revalidate();
+                updateTotalPassengerCountDisplay();
                 
                 
             }
@@ -52,15 +67,16 @@ public class Form_Train extends javax.swing.JPanel {
                 }
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
                 model.removeRow(row);
+                updateTotalPassengerCountDisplay();
             }
             @Override
             public void onView(int row) {
                 editableRow = row;
                 editable = false;
                 ((DefaultTableModel)table.getModel()).fireTableDataChanged();
-                
                 table.repaint();
                 table.revalidate();
+                updateTotalPassengerCountDisplay();
                 
             }
             
@@ -73,8 +89,8 @@ public class Form_Train extends javax.swing.JPanel {
 
 
         card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
-        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
-        card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", "131,227", "increased by 5%"));
+        card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
+        //card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", "131,227", "increased by 5%"));
 
 
         spTable.setVerticalScrollBar(new ScrollBar());
@@ -100,8 +116,8 @@ public class Form_Train extends javax.swing.JPanel {
         jTextField1 = new javax.swing.JTextField();
         panel = new javax.swing.JLayeredPane();
         card1 = new component.Card();
-        card3 = new component.Card();
         card2 = new component.Card();
+        card3 = new component.Card();
         panelBorder1 = new swing.PanelBorder();
         jLabel1 = new javax.swing.JLabel();
         spTable = new javax.swing.JScrollPane();
@@ -117,13 +133,13 @@ public class Form_Train extends javax.swing.JPanel {
         card1.setColor2(new java.awt.Color(102, 153, 255));
         panel.add(card1);
 
-        card3.setColor1(new java.awt.Color(186, 123, 247));
-        card3.setColor2(new java.awt.Color(167, 94, 236));
-        panel.add(card3);
-
-        card2.setColor1(new java.awt.Color(51, 153, 0));
-        card2.setColor2(new java.awt.Color(102, 204, 0));
+        card2.setColor1(new java.awt.Color(186, 123, 247));
+        card2.setColor2(new java.awt.Color(167, 94, 236));
         panel.add(card2);
+
+        card3.setColor1(new java.awt.Color(51, 153, 0));
+        card3.setColor2(new java.awt.Color(102, 204, 0));
+        panel.add(card3);
 
         panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
 

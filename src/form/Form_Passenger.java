@@ -17,11 +17,55 @@ import swing.TableActionCellRender;
 import swing.TableActionEvent;
 import model.Model_Card;
 import model.PassengerStatus;
-import model.StatusType;
+
+class PassengerManager {
+    private static PassengerManager instance;
+    private int totalPassengers;
+
+    private PassengerManager() {
+        // Private constructor to prevent instantiation
+    }
+
+    public static PassengerManager getInstance() {
+        if (instance == null) {
+            instance = new PassengerManager();
+        }
+        return instance;
+    }
+
+    public int getTotalPassengers() {
+        return totalPassengers;
+    }
+
+    public void setTotalPassengers(int totalPassengers) {
+        this.totalPassengers = totalPassengers;
+    }
+}
+
 
 public class Form_Passenger extends javax.swing.JPanel {
     private boolean editable = false;
     private int editableRow = -1;
+    private static int totalPassengers;
+
+
+    // Method to update the total passenger count
+    public void updateTotalPassengerCount() {
+        int count = table.getModel().getRowCount();
+        PassengerManager.getInstance().setTotalPassengers(count);
+        // Update the display
+        refreshDisplay();
+    }
+    public void refreshDisplay() {
+        int count = PassengerManager.getInstance().getTotalPassengers();
+        String formattedTotal = String.format("%,d", count);
+        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", formattedTotal, "increased by 5%"));
+    }
+
+
+    public static int getTotalPassengers(){
+        return totalPassengers;
+    }
     public Form_Passenger() {
         initComponents();
         AddingActionEvent event1 = new AddingActionEvent() {
@@ -30,6 +74,7 @@ public class Form_Passenger extends javax.swing.JPanel {
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
                 model.addRow(new Object[]{"", "", "", "", "", "", PassengerStatus.TICKETED});
                 model.fireTableDataChanged();
+                updateTotalPassengerCount();
                 
             }
             
@@ -55,6 +100,7 @@ public class Form_Passenger extends javax.swing.JPanel {
                 }
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
                 model.removeRow(row);
+                updateTotalPassengerCount();
             }
             @Override
             public void onView(int row) {
@@ -74,13 +120,15 @@ public class Form_Passenger extends javax.swing.JPanel {
 
 
 
-
+        
 
 
 
         card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
-        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", "131,227", "increased by 5%"));
+
+        
+        // card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", formattedTotal, "increased by 5%"));
         
         //add row table
         spTable.setVerticalScrollBar(new ScrollBar());
@@ -101,7 +149,10 @@ public class Form_Passenger extends javax.swing.JPanel {
         table.addRow(new Object[]{"08","Mc", "John", "0911122345", "john@gmail.com",PassengerStatus.CANCELLED});
         table.addRow(new Object[]{"09","Tran", "Van Cao", "0940459345", "tom@gmail.com",PassengerStatus.TICKETED});
         table.addRow(new Object[]{"10","Michael", "Jackson", "0983857491", "michael@gmail.com",PassengerStatus.TICKETED});
-        
+
+        //this calls is used to count the total passenger, which is from that method, placing it beneath the table.addRow 
+        updateTotalPassengerCount();
+
     }
 
     
@@ -186,13 +237,13 @@ public class Form_Passenger extends javax.swing.JPanel {
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
+                .addGap(15, 15, 15)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cmdAdding, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cmdAdding, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(10, 10, 10)
-                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
                 .addGap(24, 24, 24))
         );
 

@@ -16,16 +16,32 @@ import java.awt.*;
 public class Form_Coach extends javax.swing.JPanel {
     private boolean editable = false;
     private int editableRow = -1;
+
+    
+
+    private void updateTotalPassengerCountDisplay() {
+        // Retrieve the total passenger count from the PassengerManager
+        int count = PassengerManager.getInstance().getTotalPassengers();
+        // Format the total count and update the card display
+        String formattedTotal = String.format("%,d", count);
+        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", formattedTotal, "increased by 5%"));
+    }
+    public void onSwitchBackToSchedule() {
+        updateTotalPassengerCountDisplay();
+    }
+
     public Form_Coach() {
         initComponents();
+
+        updateTotalPassengerCountDisplay();
 
         AddingActionEvent event1 = new AddingActionEvent() {
             @Override
             public void onAdding(int row) {
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
-                model.addRow(new Object[]{"", "", "", "", "", "", StatusType.ON_TIME});
+                model.addRow(new Object[]{"", "", "", "", "", StatusType.ON_TIME});
                 model.fireTableDataChanged();
-                
+                updateTotalPassengerCountDisplay();
             }
             
         };
@@ -40,7 +56,7 @@ public class Form_Coach extends javax.swing.JPanel {
 
                 table.repaint();
                 table.revalidate();
-                
+                updateTotalPassengerCountDisplay();
                 
             }
             @Override
@@ -50,6 +66,7 @@ public class Form_Coach extends javax.swing.JPanel {
                 }
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
                 model.removeRow(row);
+                updateTotalPassengerCountDisplay();
             }
             @Override
             public void onView(int row) {
@@ -59,17 +76,18 @@ public class Form_Coach extends javax.swing.JPanel {
                 
                 table.repaint();
                 table.revalidate();
+                updateTotalPassengerCountDisplay();
                 
             }
             
             
         };
-        table.getColumnModel().getColumn(5).setCellRenderer(new TableActionCellRender());
-        table.getColumnModel().getColumn(5).setCellEditor(new TableActionCellEditor(event));
+        table.getColumnModel().getColumn(4).setCellRenderer(new TableActionCellRender());
+        table.getColumnModel().getColumn(4).setCellEditor(new TableActionCellEditor(event));
 
         card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
-        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", "131,227", "increased by 5%"));
+        //card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", "131,227", "increased by 5%"));
 
         //addRow
         spTable.setVerticalScrollBar(new ScrollBar());
@@ -81,12 +99,12 @@ public class Form_Coach extends javax.swing.JPanel {
 
         table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox<>(CoachType.values())));
         
-        table.addRow(new Object[]{"01", CoachType.SOFT_SEAT, "50", "HN-SG-123", "AC, Wi-Fi"});
-        table.addRow(new Object[]{"02", CoachType.DOUBLE_DECK_COACH, "50", "HN-SG-123", "AC, Wi-Fi"});
-        table.addRow(new Object[]{"01", CoachType.SOFT_SEAT, "50", "HN-SG-123", "AC, Wi-Fi"});
-        table.addRow(new Object[]{"01", CoachType.SOFT_SEAT, "50", "HN-SG-123", "AC, Wi-Fi"});
-        table.addRow(new Object[]{"01", CoachType.SOFT_SEAT, "50", "HN-SG-123", "AC, Wi-Fi"});
-        table.addRow(new Object[]{"01", CoachType.SOFT_SEAT, "50", "HN-SG-123", "AC, Wi-Fi"});
+        table.addRow(new Object[]{"01", CoachType.SOFT_SEAT, "50", "HN-SG-123"});
+        table.addRow(new Object[]{"02", CoachType.DOUBLE_DECK_COACH, "50", "HN-SG-123"});
+        table.addRow(new Object[]{"01", CoachType.SOFT_SEAT, "50", "HN-SG-123"});
+        table.addRow(new Object[]{"01", CoachType.SOFT_SEAT, "50", "HN-SG-123"});
+        table.addRow(new Object[]{"01", CoachType.SOFT_SEAT, "50", "HN-SG-123"});
+        table.addRow(new Object[]{"01", CoachType.SOFT_SEAT, "50", "HN-SG-123"});
 
     }
 
@@ -137,17 +155,24 @@ public class Form_Coach extends javax.swing.JPanel {
 
             },
             new String [] {
-                "CoachID", "Coach Type", "Capacity", "Train ID", "Feature", "Action"
+                "Coach ID", "Coach Type", "Capacity", "Train ID", "Action"
             }
         ) {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                if(columnIndex == 5){
+                if(columnIndex == 4){
                     return true;
                 }
                 return rowIndex == editableRow && editable;
             }
         });
         spTable.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setHeaderValue("Coach ID");
+            table.getColumnModel().getColumn(1).setHeaderValue("Coach Type");
+            table.getColumnModel().getColumn(2).setHeaderValue("Capacity");
+            table.getColumnModel().getColumn(3).setHeaderValue("Train ID");
+            table.getColumnModel().getColumn(4).setHeaderValue("Action");
+        }
 
         cmdAdding.setBackground(new java.awt.Color(255, 255, 255));
 
