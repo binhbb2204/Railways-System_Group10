@@ -5,9 +5,10 @@
         <group>
             <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_Coach.java</file>
             <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_Schedule.java</file>
-            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/swing/CellType.java</file>
-            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/swing/CellCoachType.java</file>
+            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_Station.java</file>
+            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/swing/StationTable.java</file>
             <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_Train.java</file>
+            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_Passenger.java</file>
         </group>
     </open-files>
 </project-private>
