@@ -39,7 +39,7 @@ public class Form_Coach extends javax.swing.JPanel {
             @Override
             public void onAdding(int row) {
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
-                model.addRow(new Object[]{"", "", "", "", "", StatusType.ON_TIME});
+                model.addRow(new Object[]{"", CoachType.SOFT_SEAT, "", ""});
                 model.fireTableDataChanged();
                 updateTotalPassengerCountDisplay();
             }

@@ -3,22 +3,17 @@ package form;
 import java.sql.*;
 
 public class ConnectData {
-    // public static void main(String[] args) {
+    public static final String url = "jdbc:mysql://192.168.1.111:3306/railway_system";
+    public static final String user = "Root";
+    public static final String pass = "12342204";
+    public static final String driver_class = "com.mysql.cj.jdbc.Driver";
 
-
-    //    /* ry {
-    //         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-    //         String url = "jdbc:sqlserver://HQUAN7/HONGQUAN:1433;databaseName=TrainDB";
-    //         String user = "sa";
-    //         String password = "itcsiu41";
-        
-    //         Connection conn = DriverManager.getConnection(url, user, password);
-    //         System.out.println("Connect success");
-
-    //     } catch (Exception e) {
-    //         System.out.println("Oops, there's an error!");
-    //         e.printStackTrace();
-        
-    //     }*/ 
-    // }
+    public Connection connect(){
+        try {
+            Class.forName(driver_class);
+            return DriverManager.getConnection(url, user, pass);
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException("Error connecting to the database", e);
+        }
+    }
 }

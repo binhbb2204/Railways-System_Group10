@@ -114,16 +114,16 @@ public class Form_Schedule extends javax.swing.JPanel{
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
         //table.getColumModel is used for the status column because it's a JComboBox
         table.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(new JComboBox<>(StatusType.values())));
-        table.addRow(new Object[]{"SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "07:20pm", "05:33am", "Monday - Sunday", StatusType.ON_TIME});
-        table.addRow(new Object[]{"SE3 34h22", "Biên Hòa Station", "Sài Gòn Station", "05:36pm", " 06:30am", "Monday - Sunday", StatusType.DELAYED });
-        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "03:30pm", " 08:26am", "Monday - Sunday", StatusType.CANCELLED});
-        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "03:30pm", " 08:26am", "Monday - Sunday", StatusType.CANCELLED});
-        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "03:30pm", " 08:26am", "Monday - Sunday", StatusType.CANCELLED});
-        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "03:30pm", " 08:26am", "Monday - Sunday", StatusType.CANCELLED});
-        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "03:30pm", " 08:26am", "Monday - Sunday", StatusType.CANCELLED});
-        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "03:30pm", " 08:26am", "Monday - Sunday", StatusType.CANCELLED});
-        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "03:30pm", " 08:26am", "Monday - Sunday", StatusType.CANCELLED});
-        table.addRow(new Object[]{"SE5 37h00", "Hà Nội Station", "Đà Nẵng Station", "03:30pm", " 08:26am", "Monday - Sunday", StatusType.CANCELLED});
+        table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
+        table.addRow(new Object[]{"S02", "SE3 34h22", "Biên Hòa Station", "Sài Gòn Station", "17:36:00", "06:30:00", StatusType.DELAYED });
+        table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
+        table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
+        table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
+        table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
+        table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
+        
+
+
         
     }
 
@@ -170,7 +170,7 @@ public class Form_Schedule extends javax.swing.JPanel{
 
             },
             new String [] {
-                "Train", "Origin", "Destination", "Departure Time", "Arrival Time", "Day Operation", "Status", "Action"
+                "Schedule ID", "Train Name", "Origin", "Destination", "Departure Time", "Arrival Time", "Status", "Action"
             }
         ) {
             public boolean isCellEditable(int rowIndex, int columnIndex) {

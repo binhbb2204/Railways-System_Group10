@@ -23,7 +23,7 @@ public class TableType extends JLabel{
 
     public void setType(TrainType type) {
         this.type = type;
-        setText(type.toString());
+        setText(type.getDescription());
         repaint();
     }
 

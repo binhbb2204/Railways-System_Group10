@@ -2,6 +2,7 @@
 package form;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
@@ -13,6 +14,7 @@ import swing.TableActionCellEditor;
 import swing.TableActionCellRender;
 import swing.TableActionEvent;
 import java.awt.*;
+import java.sql.*;
 
 public class Form_Station extends javax.swing.JPanel {
     private boolean editable = false;
@@ -30,7 +32,66 @@ public class Form_Station extends javax.swing.JPanel {
     public void onSwitchBackToSchedule() {
         updateTotalPassengerCountDisplay();
     }
+//SQL JDBC
+//-----------------------------------------------------------------------------------------------------
+    public void insertStationDataToDatabase(String stationID, String stationName){
+        String query = "INSERT INTO railway_system.station (stationID, stationName) VALUES (?, ?)";
+        try(Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query)){
+            pstmt.setString(1, stationID);
+            pstmt.setString(2, stationName);
+            pstmt.executeUpdate();
+        }
+        catch (SQLException e){
+            // e.printStackTrace();
+            // JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage());
+        }
+    }
 
+    public void populateStationTable(){
+        String query = "SELECT stationID, stationName FROM railway_system.station";
+        try(Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery()){
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.setRowCount(0);
+
+                while(rs.next()){
+                    String stationID = rs.getString("stationID");
+                    String stationName = rs.getString("stationName");
+                    model.addRow(new Object[]{stationID, stationName});
+                }
+        }
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(this, "Error retrieving data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    private void deleteStationDataFromDatabase(String stationID) {
+        String query = "DELETE FROM railway_system.station WHERE stationID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, stationID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error deleting data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void updateStationDataInDatabase(String StationID, String newStationName) {
+        String query = "UPDATE railway_system.station SET stationName = ? WHERE stationID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, newStationName);
+            pstmt.setString(2, StationID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            // JOptionPane.showMessageDialog(this, "Error updating data: " + e.getMessage());
+            // e.printStackTrace();
+        }
+    }
+//-----------------------------------------------------------------------------------------------------
     public Form_Station() {
         initComponents();
 
@@ -55,7 +116,9 @@ public class Form_Station extends javax.swing.JPanel {
             public void onEdit(int row) {
                 editableRow = row;
                 editable = true;
-                ((DefaultTableModel)table.getModel()).fireTableDataChanged();
+                ((DefaultTableModel) table.getModel()).fireTableDataChanged();
+                
+
 
                 table.repaint();
                 table.revalidate();
@@ -68,6 +131,10 @@ public class Form_Station extends javax.swing.JPanel {
                     table.getCellEditor().stopCellEditing();
                 }
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
+                String stationID = model.getValueAt(row, 0).toString();
+                
+                // Delete data from the database
+                deleteStationDataFromDatabase(stationID);
                 model.removeRow(row);
                 updateTotalPassengerCountDisplay();
             }
@@ -76,6 +143,11 @@ public class Form_Station extends javax.swing.JPanel {
                 editableRow = row;
                 editable = false;
                 ((DefaultTableModel)table.getModel()).fireTableDataChanged();
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                String id = model.getValueAt(row, 0).toString();
+                String name = model.getValueAt(row, 1).toString();
+                insertStationDataToDatabase(id, name);
+                updateStationDataInDatabase(id, name);
                 updateTotalPassengerCountDisplay();
                 table.repaint();
                 table.revalidate();
@@ -100,10 +172,13 @@ public class Form_Station extends javax.swing.JPanel {
         JPanel p = new JPanel();
         p.setBackground(Color.WHITE);
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
-        table.addRow(new Object[]{"01", "Ha Noi Station"});
-        table.addRow(new Object[]{"02", "Da Nang Station"});
-        table.addRow(new Object[]{"03", "Sai Gon Station"});
-        table.addRow(new Object[]{"04", "Bien Hoa Station"});
+        // table.addRow(new Object[]{"01", "Ha Noi Station"});
+        // table.addRow(new Object[]{"02", "Da Nang Station"});
+        // table.addRow(new Object[]{"03", "Sai Gon Station"});
+        // table.addRow(new Object[]{"04", "Bien Hoa Station"});
+
+        // Retrieve and populate data from the database
+        populateStationTable();
     }
 
     @SuppressWarnings("unchecked")
