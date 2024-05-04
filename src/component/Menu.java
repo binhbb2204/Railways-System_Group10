@@ -33,10 +33,12 @@ public class Menu extends javax.swing.JPanel {
         listMenu1.addItem(new Model_Menu("2", "Schedule Table", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("5", "Station Table", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("5", "Couch Table", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("2", "Find Track", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("2", "Track Table", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("2", "Journey Table", Model_Menu.MenuType.MENU));
         
         
         listMenu1.addItem(new Model_Menu("", "Human-Resource Data", Model_Menu.MenuType.TITLE));
+        listMenu1.addItem(new Model_Menu("3", "Seat Table", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("3", "Ticket Table", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("4", "Passenger Table", Model_Menu.MenuType.MENU));
  
@@ -76,7 +78,8 @@ public class Menu extends javax.swing.JPanel {
                 .addContainerGap(21, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(15, 15, 15)
-                .addComponent(listMenu1, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(listMenu1, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -89,7 +92,7 @@ public class Menu extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelMoving, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

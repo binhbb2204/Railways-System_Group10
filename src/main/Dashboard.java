@@ -52,10 +52,10 @@ public class Dashboard extends javax.swing.JFrame {
                 else if(index == 5){
                     setForm(form3);
                 }
-                else if(index == 8){
+                else if(index == 10){
                     setForm(passenger);
                 }
-                else if(index == 12){
+                else if(index == 14){
                     System.exit(0);
 
                 }
