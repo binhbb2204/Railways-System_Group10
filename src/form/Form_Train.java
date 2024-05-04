@@ -41,96 +41,98 @@ public class Form_Train extends javax.swing.JPanel {
 
 //SQL JDBC
 //-----------------------------------------------------------------------------------------------------
-    public void insertTrainDataToDatabase(String trainID, String trainName, int trainCapacity, String trainType){
-        String query = "INSERT INTO railway_system.train (trainID, trainName, trainCapacity, trainType) VALUES (?, ?, ?, ?)";
-        try(Connection conn = new ConnectData().connect();
-            PreparedStatement pstmt = conn.prepareStatement(query)){
-            pstmt.setString(1, trainID);
-            pstmt.setString(2, trainName);
-            pstmt.setInt(3, trainCapacity);
-            pstmt.setString(4, trainType);
-            pstmt.executeUpdate();
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage());
-        }
-    }
-    public void populateTrainTable(){
-        String query = "SELECT trainID, trainName, trainCapacity, trainType FROM railway_system.train";
-        try(Connection conn = new ConnectData().connect();
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            ResultSet rs = pstmt.executeQuery()){
-                DefaultTableModel model = (DefaultTableModel) table.getModel();
-                model.setRowCount(0);
+    // public void insertTrainDataToDatabase(String trainID, String trainName, int trainCapacity, String trainType){
+    //     String query = "INSERT INTO railway_system.train (trainID, trainName, trainCapacity, trainType) VALUES (?, ?, ?, ?)";
+    //     try(Connection conn = new ConnectData().connect();
+    //         PreparedStatement pstmt = conn.prepareStatement(query)){
+    //         pstmt.setString(1, trainID);
+    //         pstmt.setString(2, trainName);
+    //         pstmt.setInt(3, trainCapacity);
+    //         pstmt.setString(4, trainType);
+    //         pstmt.executeUpdate();
+    //     }
+    //     catch (SQLException e){
+    //         e.printStackTrace();
+    //         JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage());
+    //     }
+    // }
+    // public void populateTrainTable(){
+    //     String query = "SELECT trainID, trainName, trainCapacity, trainType FROM railway_system.train";
+    //     try(Connection conn = new ConnectData().connect();
+    //         PreparedStatement pstmt = conn.prepareStatement(query);
+    //         ResultSet rs = pstmt.executeQuery()){
+    //             DefaultTableModel model = (DefaultTableModel) table.getModel();
+    //             model.setRowCount(0);
 
-                while(rs.next()){
-                    String trainID = rs.getString("trainID");
-                    String trainName = rs.getString("trainName");
-                    int trainCapacity = rs.getInt("trainCapacity");
-                    String trainTypeString = rs.getString("trainType");
-                    //IF that column is a combo box, we need to convert it back to combo box by using the code below
-                    TrainType trainType = TrainType.valueOf(trainTypeString);
-                    model.addRow(new Object[]{trainID, trainName, trainCapacity, trainType});
-                }
-        }
-        catch(SQLException e){
-            JOptionPane.showMessageDialog(this, "Error retrieving data: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-    private void deleteTrainDataFromDatabase(String trainID) {
-        String query = "DELETE FROM railway_system.train WHERE trainID = ?";
-        try (Connection conn = new ConnectData().connect();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, trainID);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error deleting data: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-    private void updateTrainDataInDatabase(String trainID, String newTrainName, int newTrainCapacity, String newTrainType) {
-        String query = "UPDATE railway_system.train SET trainName = ?, trainCapacity = ?, trainType = ? WHERE trainID = ?";
-        try (Connection conn = new ConnectData().connect();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, newTrainName);
-            pstmt.setInt(2, newTrainCapacity);
-            pstmt.setString(3, newTrainType);
-            pstmt.setString(4, trainID);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            // JOptionPane.showMessageDialog(this, "Error updating data: " + e.getMessage());
-            // e.printStackTrace();
-        }
-    }
+    //             while(rs.next()){
+    //                 String trainID = rs.getString("trainID");
+    //                 String trainName = rs.getString("trainName");
+    //                 int trainCapacity = rs.getInt("trainCapacity");
+    //                 String trainTypeString = rs.getString("trainType");
+    //                 //IF that column is a combo box, we need to convert it back to combo box by using the code below
+    //                 TrainType trainType = TrainType.valueOf(trainTypeString);
+    //                 model.addRow(new Object[]{trainID, trainName, trainCapacity, trainType});
+    //             }
+    //     }
+    //     catch(SQLException e){
+    //         JOptionPane.showMessageDialog(this, "Error retrieving data: " + e.getMessage());
+    //         e.printStackTrace();
+    //     }
+    // }
+    // private void deleteTrainDataFromDatabase(String trainID) {
+    //     String query = "DELETE FROM railway_system.train WHERE trainID = ?";
+    //     try (Connection conn = new ConnectData().connect();
+    //          PreparedStatement pstmt = conn.prepareStatement(query)) {
+    //         pstmt.setString(1, trainID);
+    //         pstmt.executeUpdate();
+    //     } catch (SQLException e) {
+    //         JOptionPane.showMessageDialog(this, "Error deleting data: " + e.getMessage());
+    //         e.printStackTrace();
+    //     }
+    // }
+    // private void updateTrainDataInDatabase(String trainID, String newTrainName, int newTrainCapacity, String newTrainType) {
+    //     String query = "UPDATE railway_system.train SET trainName = ?, trainCapacity = ?, trainType = ? WHERE trainID = ?";
+    //     try (Connection conn = new ConnectData().connect();
+    //          PreparedStatement pstmt = conn.prepareStatement(query)) {
+    //         pstmt.setString(1, newTrainName);
+    //         pstmt.setInt(2, newTrainCapacity);
+    //         pstmt.setString(3, newTrainType);
+    //         pstmt.setString(4, trainID);
+    //         pstmt.executeUpdate();
+    //     } catch (SQLException e) {
+    //         // JOptionPane.showMessageDialog(this, "Error updating data: " + e.getMessage());
+    //         // e.printStackTrace();
+    //     }
+    // }
 
-    private boolean checkIfTrainIdExists(String trainID) {
-        // Implement the logic to check if the train ID exists in the database
-        // Return true if it exists, false otherwise
-        // This method needs to query the database and return the result
-        // Example implementation:
-        String query = "SELECT COUNT(*) FROM railway_system.train WHERE trainID = ?";
-        try (Connection conn = new ConnectData().connect();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, trainID);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    int count = rs.getInt(1);
-                    return count > 0;
-                }
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error checking if ID exists: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return false;
-    }
+    // private boolean checkIfTrainIdExists(String trainID) {
+    //     // Implement the logic to check if the train ID exists in the database
+    //     // Return true if it exists, false otherwise
+    //     // This method needs to query the database and return the result
+    //     // Example implementation:
+    //     String query = "SELECT COUNT(*) FROM railway_system.train WHERE trainID = ?";
+    //     try (Connection conn = new ConnectData().connect();
+    //          PreparedStatement pstmt = conn.prepareStatement(query)) {
+    //         pstmt.setString(1, trainID);
+    //         try (ResultSet rs = pstmt.executeQuery()) {
+    //             if (rs.next()) {
+    //                 int count = rs.getInt(1);
+    //                 return count > 0;
+    //             }
+    //         }
+    //     } catch (SQLException e) {
+    //         JOptionPane.showMessageDialog(null, "Error checking if ID exists: " + e.getMessage());
+    //         e.printStackTrace();
+    //     }
+    //     return false;
+    // }
 //-----------------------------------------------------------------------------------------------------    
     public Form_Train() {
 
         initComponents();
+        
         updateTotalPassengerCountDisplay();
+
         AddingActionEvent event1 = new AddingActionEvent() {
             @Override
             public void onAdding(int row) {
@@ -165,7 +167,7 @@ public class Form_Train extends javax.swing.JPanel {
                 String trainID = model.getValueAt(row, 0).toString();
                 
                 // Delete data from the database
-                deleteTrainDataFromDatabase(trainID);
+                //deleteTrainDataFromDatabase(trainID);
                 model.removeRow(row);
                 updateTotalPassengerCountDisplay();
             }
@@ -179,13 +181,13 @@ public class Form_Train extends javax.swing.JPanel {
                 String name = model.getValueAt(row, 1).toString();
                 int capacity = Integer.parseInt(model.getValueAt(row, 2).toString());
                 String type = model.getValueAt(row, 3).toString();
-                if (checkIfTrainIdExists(id)) {
-                    // Train ID exists, so update the record
-                    updateTrainDataInDatabase(id, name, capacity, type);
-                } else {
-                    // Train ID does not exist, so insert a new record
-                    insertTrainDataToDatabase(id, name, capacity, type);
-                }
+                // if (checkIfTrainIdExists(id)) {
+                //     // Train ID exists, so update the record
+                //     updateTrainDataInDatabase(id, name, capacity, type);
+                // } else {
+                //     // Train ID does not exist, so insert a new record
+                //     insertTrainDataToDatabase(id, name, capacity, type);
+                // }
                 table.repaint();
                 table.revalidate();
                 updateTotalPassengerCountDisplay();
@@ -214,12 +216,12 @@ public class Form_Train extends javax.swing.JPanel {
         //this one is used to make the status into combo box
         JComboBox<TrainType> comboBox = new JComboBox<>(TrainType.values());
         table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(comboBox));
-        // table.addRow(new Object[]{"HN-SG-123", "SE3 34h22", "400", TrainType.SE});
-        // table.addRow(new Object[]{"HN-HP-113", "SE5 37h00", "700", TrainType.TN});
-        // table.addRow(new Object[]{"HN-HP-113", "SE5 37h00", "500", TrainType.TN});
+        table.addRow(new Object[]{"HN-SG-123", "SE3 34h22", "400", TrainType.SE});
+        table.addRow(new Object[]{"HN-HP-113", "SE5 37h00", "700", TrainType.TN});
+        table.addRow(new Object[]{"HN-HP-113", "SE5 37h00", "500", TrainType.TN});
 
         // Retrieve and populate data from the database
-        populateTrainTable();
+        //populateTrainTable();
   
 
     }
