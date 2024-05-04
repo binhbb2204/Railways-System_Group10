@@ -99,9 +99,9 @@ public class Form_Coach extends javax.swing.JPanel {
 
         // table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox<>(CoachType.values())));
         
-        table.addRow(new Object[]{"01", "", "50", "HN-SG-123"});
-        table.addRow(new Object[]{"02", "", "50", "HN-SG-123"});
-        table.addRow(new Object[]{"01", "", "50", "HN-SG-123"});
+        table.addRow(new Object[]{"01", "HN-SG-123", "CT01", "50"});
+        table.addRow(new Object[]{"02", "HN-HP-113", "CT02", "30"});
+        table.addRow(new Object[]{"01", "HN-SG-123", "CT02", "30"});
 
     }
 
