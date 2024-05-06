@@ -11,6 +11,7 @@ import form.Form_3;
 import form.Form_Schedule;
 import form.Form_Seat;
 import form.Form_Station;
+import form.Form_Track;
 import form.Form_Train;
 import form.Form_Passenger;
 
@@ -25,6 +26,7 @@ public class Dashboard extends javax.swing.JFrame {
     private Form_Station station;
     private Form_CoachType coachType;
     private Form_Seat seat;
+    private Form_Track track;
 
     public Dashboard() {
         initComponents();
@@ -37,6 +39,7 @@ public class Dashboard extends javax.swing.JFrame {
         station = new Form_Station();
         coachType = new Form_CoachType();
         seat = new Form_Seat();
+        track = new Form_Track();
         menu.initMoving(Dashboard.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
@@ -57,7 +60,7 @@ public class Dashboard extends javax.swing.JFrame {
                     setForm(coachType);
                 }
                 else if(index == 6){
-                    setForm(form3);
+                    setForm(track);
                 }
                 else if(index == 9){
                     setForm(seat);

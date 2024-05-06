@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package form;
 
 import java.awt.Color;
@@ -9,31 +5,101 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.table.DefaultTableModel;
 
 import model.Model_Card;
 import swing.ScrollBar;
+import swing.TableActionCellEditor;
+import swing.TableActionCellRender;
+import swing.TableActionEvent;
 
-/**
- *
- * @author ASUS
- */
+
 public class Form_Track extends javax.swing.JPanel {
+    private boolean editable = false;
+    private int editableRow = -1;
 
-    /**
-     * Creates new form Form_Track
-     */
+
+
+    private void updateTotalPassengerCountDisplay() {
+        // Retrieve the total passenger count from the PassengerManager
+        int count = PassengerManager.getInstance().getTotalPassengers();
+        // Format the total count and update the card display
+        String formattedTotal = String.format("%,d", count);
+        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", formattedTotal, "increased by 5%"));
+    }
+    public void onSwitchBackToSchedule() {
+        updateTotalPassengerCountDisplay();
+    }
     public Form_Track() {
         initComponents();
-        card5.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
-        card6.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
-        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", "131,227", "increased by 5%"));
+
+
+            TableActionEvent event = new TableActionEvent() {
+            @Override
+            public void onEdit(int row) {
+                editableRow = row;
+                editable = true;
+                ((DefaultTableModel)table.getModel()).fireTableDataChanged();
+
+                table.repaint();
+                table.revalidate();
+                updateTotalPassengerCountDisplay();
+                
+                
+            }
+            @Override
+            public void onDelete(int row) {
+                if(table.isEditing()){
+                    table.getCellEditor().stopCellEditing();
+                }
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                String trainID = model.getValueAt(row, 0).toString();
+                
+                // Delete data from the database
+                //deleteTrainDataFromDatabase(trainID);
+                model.removeRow(row);
+                updateTotalPassengerCountDisplay();
+            }
+            @Override
+            public void onView(int row) {
+                editableRow = row;
+                editable = false;
+                ((DefaultTableModel)table.getModel()).fireTableDataChanged();
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                String id = model.getValueAt(row, 0).toString();
+                String name = model.getValueAt(row, 1).toString();
+                int capacity = Integer.parseInt(model.getValueAt(row, 2).toString());
+                String type = model.getValueAt(row, 3).toString();
+                // if (checkIfTrainIdExists(id)) {
+                //     // Train ID exists, so update the record
+                //     updateTrainDataInDatabase(id, name, capacity, type);
+                // } else {
+                //     // Train ID does not exist, so insert a new record
+                //     insertTrainDataToDatabase(id, name, capacity, type);
+                // }
+                table.repaint();
+                table.revalidate();
+                updateTotalPassengerCountDisplay();
+                
+            }
+            
+            
+            
+            
+        };
+        table.getColumnModel().getColumn(3).setCellRenderer(new TableActionCellRender());
+        table.getColumnModel().getColumn(3).setCellEditor(new TableActionCellEditor(event));
+        card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
+        card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
+        updateTotalPassengerCountDisplay();
+        //card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", "131,227", "increased by 5%"));
         //add row table
         //table.addRow(new Object[]{"1", "Hà Nội", "Sài Gòn", }
-        sPT.setVerticalScrollBar(new ScrollBar());
-        sPT.getVerticalScrollBar().setBackground(Color.WHITE);
+        sPTable.setVerticalScrollBar(new ScrollBar());
+        sPTable.getVerticalScrollBar().setBackground(Color.WHITE);
         JPanel p = new JPanel();
         p.setBackground(Color.WHITE);
-        sPT.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
+        sPTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
         //table.addRow(new Object[]{"2", "Hà Nội", "Sài Gòn", ""});
 
     }
@@ -47,60 +113,26 @@ public class Form_Track extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jFrame1 = new javax.swing.JFrame();
-        jFrame2 = new javax.swing.JFrame();
-        card1 = new component.Card();
         panel = new javax.swing.JLayeredPane();
-        card5 = new component.Card();
-        card6 = new component.Card();
+        card1 = new component.Card();
+        card2 = new component.Card();
         card3 = new component.Card();
         panelBorder1 = new swing.PanelBorder();
         jLabel4 = new javax.swing.JLabel();
         cmdAdding = new swing.AddingRowPanelAction();
         jLabel5 = new javax.swing.JLabel();
-        sPT = new javax.swing.JScrollPane();
-        trainTable1 = new swing.TrainTable();
-
-        jLabel1.setText("jLabel1");
-
-        jLabel2.setText("jLabel2");
-
-        jLabel3.setText("jLabel3");
-
-        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
-        jFrame1.getContentPane().setLayout(jFrame1Layout);
-        jFrame1Layout.setHorizontalGroup(
-            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        jFrame1Layout.setVerticalGroup(
-            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jFrame2Layout = new javax.swing.GroupLayout(jFrame2.getContentPane());
-        jFrame2.getContentPane().setLayout(jFrame2Layout);
-        jFrame2Layout.setHorizontalGroup(
-            jFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        jFrame2Layout.setVerticalGroup(
-            jFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        sPTable = new javax.swing.JScrollPane();
+        table = new swing.TrainTable();
 
         panel.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
 
-        card5.setColor1(new java.awt.Color(0, 102, 255));
-        card5.setColor2(new java.awt.Color(102, 153, 255));
-        panel.add(card5);
+        card1.setColor1(new java.awt.Color(0, 102, 255));
+        card1.setColor2(new java.awt.Color(102, 153, 255));
+        panel.add(card1);
 
-        card6.setColor1(new java.awt.Color(186, 123, 247));
-        card6.setColor2(new java.awt.Color(167, 94, 236));
-        panel.add(card6);
+        card2.setColor1(new java.awt.Color(186, 123, 247));
+        card2.setColor2(new java.awt.Color(167, 94, 236));
+        panel.add(card2);
 
         card3.setColor1(new java.awt.Color(51, 153, 0));
         card3.setColor2(new java.awt.Color(102, 204, 0));
@@ -118,27 +150,15 @@ public class Form_Track extends javax.swing.JPanel {
         jLabel5.setForeground(new java.awt.Color(127, 127, 127));
         jLabel5.setText("Add Row");
 
-        trainTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "Sài Gòn", "Hà Nội", null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Track ID", "Station 1", "Station 2", "Action"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                true, true, true, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        sPT.setViewportView(trainTable1);
+        ));
+        sPTable.setViewportView(table);
 
         javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
         panelBorder1.setLayout(panelBorder1Layout);
@@ -147,29 +167,30 @@ public class Form_Track extends javax.swing.JPanel {
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelBorder1Layout.createSequentialGroup()
-                        .addComponent(sPT, javax.swing.GroupLayout.PREFERRED_SIZE, 792, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(22, Short.MAX_VALUE))
+                    .addComponent(sPTable, javax.swing.GroupLayout.DEFAULT_SIZE, 806, Short.MAX_VALUE)
                     .addGroup(panelBorder1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(cmdAdding, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(jLabel5)
-                        .addGap(30, 30, 30))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel5)))
+                .addContainerGap())
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelBorder1Layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(cmdAdding, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelBorder1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)))
-                    .addComponent(cmdAdding, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addComponent(sPT, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sPTable, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 20, Short.MAX_VALUE))
         );
 
@@ -189,29 +210,23 @@ public class Form_Track extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
+                .addGap(18, 18, 18)
                 .addComponent(panelBorder1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(183, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private component.Card card1;
+    private component.Card card2;
     private component.Card card3;
-    private component.Card card5;
-    private component.Card card6;
     private swing.AddingRowPanelAction cmdAdding;
-    private javax.swing.JFrame jFrame1;
-    private javax.swing.JFrame jFrame2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLayeredPane panel;
     private swing.PanelBorder panelBorder1;
-    private javax.swing.JScrollPane sPT;
-    private swing.TrainTable trainTable1;
+    private javax.swing.JScrollPane sPTable;
+    private swing.TrainTable table;
     // End of variables declaration//GEN-END:variables
 }
