@@ -8,6 +8,8 @@ import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
 import model.Model_Card;
+import model.TrainType;
+import swing.AddingActionEvent;
 import swing.ScrollBar;
 import swing.TableActionCellEditor;
 import swing.TableActionCellRender;
@@ -32,6 +34,19 @@ public class Form_Track extends javax.swing.JPanel {
     }
     public Form_Track() {
         initComponents();
+
+        
+        AddingActionEvent event1 = new AddingActionEvent() {
+            @Override
+            public void onAdding(int row) {
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.addRow(new Object[]{"", "", "", TrainType.SE});
+                model.fireTableDataChanged();
+                updateTotalPassengerCountDisplay();
+            }
+            
+        };
+        cmdAdding.initEvent(event1, 0);
 
 
             TableActionEvent event = new TableActionEvent() {
@@ -94,13 +109,14 @@ public class Form_Track extends javax.swing.JPanel {
         updateTotalPassengerCountDisplay();
         //card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", "131,227", "increased by 5%"));
         //add row table
-        //table.addRow(new Object[]{"1", "Hà Nội", "Sài Gòn", }
+        
         sPTable.setVerticalScrollBar(new ScrollBar());
         sPTable.getVerticalScrollBar().setBackground(Color.WHITE);
         JPanel p = new JPanel();
         p.setBackground(Color.WHITE);
         sPTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
-        //table.addRow(new Object[]{"2", "Hà Nội", "Sài Gòn", ""});
+        table.addRow(new Object[]{"1", "Ha Noi", "Sai Gon"});
+        table.addRow(new Object[]{"2", "Sai Gon", "Phu Yen"});
 
     }
 
@@ -150,6 +166,8 @@ public class Form_Track extends javax.swing.JPanel {
         jLabel5.setForeground(new java.awt.Color(127, 127, 127));
         jLabel5.setText("Add Row");
 
+        sPTable.setBorder(null);
+
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -157,7 +175,14 @@ public class Form_Track extends javax.swing.JPanel {
             new String [] {
                 "Track ID", "Station 1", "Station 2", "Action"
             }
-        ));
+        ) {
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                if(columnIndex == 3){
+                    return true;
+                }
+                return rowIndex == editableRow && editable;
+            }
+        });
         sPTable.setViewportView(table);
 
         javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
