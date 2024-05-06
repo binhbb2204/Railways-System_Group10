@@ -40,7 +40,7 @@ public class Form_Track extends javax.swing.JPanel {
             @Override
             public void onAdding(int row) {
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
-                model.addRow(new Object[]{"", "", "", TrainType.SE});
+                model.addRow(new Object[]{"", "", ""});
                 model.fireTableDataChanged();
                 updateTotalPassengerCountDisplay();
             }
@@ -81,10 +81,10 @@ public class Form_Track extends javax.swing.JPanel {
                 editable = false;
                 ((DefaultTableModel)table.getModel()).fireTableDataChanged();
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
-                String id = model.getValueAt(row, 0).toString();
-                String name = model.getValueAt(row, 1).toString();
-                int capacity = Integer.parseInt(model.getValueAt(row, 2).toString());
-                String type = model.getValueAt(row, 3).toString();
+                // String id = model.getValueAt(row, 0).toString();
+                // String name = model.getValueAt(row, 1).toString();
+                // int capacity = Integer.parseInt(model.getValueAt(row, 2).toString());
+                // String type = model.getValueAt(row, 3).toString();
                 // if (checkIfTrainIdExists(id)) {
                 //     // Train ID exists, so update the record
                 //     updateTrainDataInDatabase(id, name, capacity, type);
