@@ -77,7 +77,7 @@ public class CustomerDashboard extends javax.swing.JFrame {
             }
         });
         //set the system is started/open, it starts at Schedule Form
-        setForm(new Form_Schedule());
+        
         
     }
     private void setForm(JComponent com){
@@ -130,8 +130,8 @@ public class CustomerDashboard extends javax.swing.JFrame {
                     .addGroup(panelBorder1Layout.createSequentialGroup()
                         .addComponent(header1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
