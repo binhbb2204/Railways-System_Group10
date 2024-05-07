@@ -1,5 +1,10 @@
 
 package main;
+
+import java.sql.SQLException;
+
+import connection.DatabaseConnection;
+
 /**
  *
  * @author binhb
@@ -28,11 +33,16 @@ public class Main {
             java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        try {
+            DatabaseConnection.getInstance().connectToDatabase();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Dashboard().setVisible(true);
+                // new Dashboard().setVisible(false);
+                new LoginSignup().setVisible(true);
                 // new Login().setVisible(true);
                 // new Signup().setVisible(false);
                 

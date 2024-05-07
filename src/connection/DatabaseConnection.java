@@ -16,7 +16,12 @@ public class DatabaseConnection {
     }
 
     private DatabaseConnection() {
-
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
     }
 
     public void connectToDatabase() throws SQLException {

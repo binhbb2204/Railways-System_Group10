@@ -5,24 +5,29 @@ import java.awt.*;
 import net.miginfocom.swing.MigLayout;
 import swing.MyPasswordField;
 import swing.MyTextField;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import swing.Button;
+import model.ModelLogin;
 import model.ModelUser;
 
 public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
     private ModelUser user;
+    private ModelLogin dataLogin;
 
+
+    public ModelLogin getDataLogin() {
+        return dataLogin;
+    }
     public ModelUser getUser() {
         return user;
     }
 
-    public PanelLoginAndRegister(ActionListener eventResgiter) {
+    public PanelLoginAndRegister(ActionListener eventResgiter, ActionListener eventLogin) {
         initComponents();
         initRegister(eventResgiter);
-        initLogin();
+        initLogin(eventLogin);
         login.setVisible(false);
         register.setVisible(true);
 
@@ -34,18 +39,22 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
         label.setFont(new Font("sansserif", 1, 30));
         label.setForeground(Color.decode("#3a7bd5"));
         register.add(label);
+
         MyTextField txtUser = new MyTextField();
         txtUser.setPrefixIcon(new ImageIcon(getClass().getResource("/icons/user.png")));
         txtUser.setHint("Name");
         register.add(txtUser, "w 60%");
+
         MyTextField txtEmail = new MyTextField();
         txtEmail.setPrefixIcon(new ImageIcon(getClass().getResource("/icons/mail.png")));
         txtEmail.setHint("Email");
         register.add(txtEmail, "w 60%");
+
         MyPasswordField txtPass = new MyPasswordField();
         txtPass.setPrefixIcon(new ImageIcon(getClass().getResource("/icons/pass.png")));
         txtPass.setHint("Password");
         register.add(txtPass, "w 60%");
+
         Button cmd = new Button();
         cmd.setBackground(Color.decode("#3a7bd5"));
         cmd.setForeground(new Color(250, 250, 250));
@@ -63,7 +72,7 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
         });
 
     }
-    private void initLogin(){
+    private void initLogin(ActionListener eventLogin){
         login.setLayout(new MigLayout("wrap", "push[center]push", "push[]25[]10[]10[]25[]push"));
         JLabel label = new JLabel("Sign In");
         label.setFont(new Font("sansserif", 1, 30));
@@ -86,8 +95,18 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
         Button cmd = new Button();
         cmd.setBackground(Color.decode("#3a7bd5"));
         cmd.setForeground(new Color(250, 250, 250));
+        cmd.addActionListener(eventLogin);
         cmd.setText("SIGN IN");
         login.add(cmd, "w 40%, h 40");
+
+        cmd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String email = txtEmail.getText().trim();
+                String password = String.valueOf(txtPass.getPassword());
+                dataLogin = new ModelLogin(email, password);
+            }
+        });
     }
 
     public void showRegister(boolean show) {
