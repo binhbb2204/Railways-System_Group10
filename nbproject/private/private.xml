@@ -3,18 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_Coach.java</file>
-            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_Schedule.java</file>
-            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/main/Dashboard.java</file>
-            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/swing/SeatTable.java</file>
-            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/swing/CoachTypeTable.java</file>
-            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/swing/PanelBorder.java</file>
-            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_CoachType.java</file>
-            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_Track.java</file>
-            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_Station.java</file>
-            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_Train.java</file>
-            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_Seat.java</file>
-            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_Passenger.java</file>
+            <file>file:/D:/DSA/Railways-System_Group10%20(2)/Railways-System_Group10/src/form/Form_Track.java</file>
+            <file>file:/D:/DSA/Railways-System_Group10%20(2)/Railways-System_Group10/src/form/Form_Train.java</file>
+            <file>file:/D:/DSA/Railways-System_Group10%20(2)/Railways-System_Group10/src/form/Form_Schedule.java</file>
+            <file>file:/D:/DSA/Railways-System_Group10%20(2)/Railways-System_Group10/src/form/Form_Station.java</file>
+            <file>file:/D:/DSA/Railways-System_Group10%20(2)/Railways-System_Group10/src/form/Form_Passenger.java</file>
+            <file>file:/D:/DSA/Railways-System_Group10%20(2)/Railways-System_Group10/src/main/Main.java</file>
+            <file>file:/D:/DSA/Railways-System_Group10%20(2)/Railways-System_Group10/src/main/Dashboard.java</file>
+            <file>file:/D:/DSA/Railways-System_Group10%20(2)/Railways-System_Group10/src/form/Form_CoachType.java</file>
         </group>
     </open-files>
 </project-private>

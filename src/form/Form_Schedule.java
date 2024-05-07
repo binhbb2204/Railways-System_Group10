@@ -1,11 +1,18 @@
 
 package form;
 
+import connection.ConnectData;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
@@ -15,14 +22,17 @@ import swing.ScrollBar;
 import swing.TableActionCellEditor;
 import swing.TableActionCellRender;
 import swing.TableActionEvent;
+import swing.TableStatus;
 import model.Model_Card;
 import model.StatusType;
+import model.TrainType;
 
 
 public class Form_Schedule extends javax.swing.JPanel{
     private boolean editable = false;
     private int editableRow = -1;
 
+  
     
 
     private void updateTotalPassengerCountDisplay() {
@@ -35,6 +45,104 @@ public class Form_Schedule extends javax.swing.JPanel{
     public void onSwitchBackToSchedule() {
         updateTotalPassengerCountDisplay();
     }
+
+    //SQL JDBC
+//-----------------------------------------------------------------------------------------------------
+    public void insertScheduleDataToDatabase(String scheduleID, String trainID, String Origin, String Destination, String departureTime, String arrivalTime, String scheduleStatus){
+        String query = "INSERT INTO railway_system.schedule (scheduleID, trainID, start_stationID, end_stationID, departureTime, arrivalTime, scheduleStatus) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try(Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query)){
+            pstmt.setString(1, scheduleID);
+            pstmt.setString(2, trainID);
+            pstmt.setString(3, Origin);
+            pstmt.setString(4, Destination);
+            pstmt.setString(5, departureTime);
+            pstmt.setString(6, arrivalTime);
+            pstmt.setString(7, scheduleStatus);
+            pstmt.executeUpdate();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage());
+        }
+    }
+    public void populateScheduleTable(){
+        String query = "SELECT scheduleID, trainID, start_stationID, end_stationID, departureTime, arrivalTime, scheduleStatus FROM railway_system.schedule";
+        try(Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery()){
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.setRowCount(0);
+
+                while(rs.next()){
+                    String scheduleID = rs.getString("scheduleID");
+                    String trainID = rs.getString("trainID");
+                    String Origin = rs.getString("start_stationID");
+                    String Destination = rs.getString("end_stationID");
+                    String departureTime = rs.getString("departureTime");
+                    String arrivalTime = rs.getString("arrivalTime");
+                    String scheduleStatus = rs.getString("scheduleStatus");
+                    //IF that column is a combo box, we need to convert it back to combo box by using the code below
+                    StatusType status = StatusType.valueOf(scheduleStatus);
+                    model.addRow(new Object[]{scheduleID ,trainID, Origin, Destination, departureTime, arrivalTime, status});
+                }
+        }
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(this, "Error retrieving data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    private void deleteScheduleDataFromDatabase(String scheduleID) {
+        String query = "DELETE FROM railway_system.train WHERE scheduleID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, scheduleID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error deleting data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    private void updateScheduleDataInDatabase(String scheduleID, String trainID, String Origin, String Destination, String departureTime, String arrivalTime, String scheduleStatus) {
+        String query = "UPDATE railway_system.train SET trainID = ?, start_stationID = ?, end_stationID = ?, departureTime = ?, arrivalTime = ?, scheduleStatus = ? WHERE scheduleID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, trainID);
+            pstmt.setString(2, Origin);
+            pstmt.setString(3, Destination);
+            pstmt.setString(4, departureTime);
+            pstmt.setString(5, arrivalTime);
+            pstmt.setString(6, scheduleStatus);
+            pstmt.setString(4, scheduleID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            // JOptionPane.showMessageDialog(this, "Error updating data: " + e.getMessage());
+            // e.printStackTrace();
+        }
+    }
+
+    private boolean checkIfTrainIdExists(String scheduleID) {
+        // Implement the logic to check if the train ID exists in the database
+        // Return true if it exists, false otherwise
+        // This method needs to query the database and return the result
+        // Example implementation:
+        String query = "SELECT COUNT(*) FROM railway_system.train WHERE scheduleID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, scheduleID);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error checking if ID exists: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+//----------------------------------------------------------------------------------------------------- 
 
     public Form_Schedule() {
         initComponents();
@@ -75,6 +183,10 @@ public class Form_Schedule extends javax.swing.JPanel{
                     table.getCellEditor().stopCellEditing();
                 }
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
+                String scheduleID = model.getValueAt(row, 0).toString();
+
+                // Delete data from the database
+                deleteScheduleDataFromDatabase(scheduleID);
                 model.removeRow(row);
                 updateTotalPassengerCountDisplay();
             }
@@ -83,6 +195,21 @@ public class Form_Schedule extends javax.swing.JPanel{
                 editableRow = row;
                 editable = false;
                 ((DefaultTableModel)table.getModel()).fireTableDataChanged();
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                String scheduleID = model.getValueAt(row, 0).toString();
+                String trainID = model.getValueAt(row, 1).toString();
+                String Origin = model.getValueAt(row, 2).toString();
+                String Destination = model.getValueAt(row, 3).toString();
+                String departureTime = model.getValueAt(row, 4).toString();
+                String arrivalTime = model.getValueAt(row, 5).toString();
+                String scheduleStatus = model.getValueAt(row, 6).toString();
+                if (checkIfTrainIdExists(scheduleID)) {
+                    // Train ID exists, so update the record
+                    updateScheduleDataInDatabase(scheduleID, trainID, Origin, Destination, departureTime, arrivalTime, scheduleStatus);
+                } else {
+                    // Train ID does not exist, so insert a new record
+                    insertScheduleDataToDatabase(scheduleID, trainID, Origin, Destination, departureTime, arrivalTime, scheduleStatus);
+                }
                 updateTotalPassengerCountDisplay();
                 table.repaint();
                 table.revalidate();
@@ -114,13 +241,15 @@ public class Form_Schedule extends javax.swing.JPanel{
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
         //table.getColumModel is used for the status column because it's a JComboBox
         table.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(new JComboBox<>(StatusType.values())));
-        table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
-        table.addRow(new Object[]{"S02", "SE3 34h22", "Biên Hòa Station", "Sài Gòn Station", "17:36:00", "06:30:00", StatusType.DELAYED });
-        table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
-        table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
-        table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
-        table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
-        table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
+        // table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
+        // table.addRow(new Object[]{"S02", "SE3 34h22", "Biên Hòa Station", "Sài Gòn Station", "17:36:00", "06:30:00", StatusType.DELAYED });
+        // table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
+        // table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
+        // table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
+        // table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
+        // table.addRow(new Object[]{"S01", "SE3 34h22", "Hà Nội Station", "Biên Hòa Station", "19:20:00", "05:33:00", StatusType.ON_TIME});
+
+        populateScheduleTable();
         
 
 
@@ -170,7 +299,7 @@ public class Form_Schedule extends javax.swing.JPanel{
 
             },
             new String [] {
-                "Schedule ID", "Train Name", "Origin", "Destination", "Departure Time", "Arrival Time", "Status", "Action"
+                "Schedule ID", "Train ID", "Origin", "Destination", "Departure Time", "Arrival Time", "Status", "Action"
             }
         ) {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
