@@ -11,14 +11,14 @@ import javax.swing.JFrame;
 import event.EventMenuSelected;
 import model.Model_Menu;
 
-public class Menu extends javax.swing.JPanel {
+public class CustomerMenu extends javax.swing.JPanel {
     private EventMenuSelected event;
 
     public void addEventMenuSelected(EventMenuSelected event){
         this.event = event;
         listMenu1.addEventMenuSelected(event);
     }
-    public Menu() {
+    public CustomerMenu() {
         initComponents();
         setOpaque(false);
         listMenu1.setOpaque(false);
@@ -28,24 +28,20 @@ public class Menu extends javax.swing.JPanel {
     }
     private void init(){
         
-        listMenu1.addItem(new Model_Menu("", "Railway Data", Model_Menu.MenuType.TITLE));
-        listMenu1.addItem(new Model_Menu("1", "Train Table", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("2", "Schedule Table", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("5", "Station Table", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("5", "Couch Table", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("5", "Couch Type Table", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("2", "Track Table", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("2", "Journey Table", Model_Menu.MenuType.MENU));
         
-        
-        listMenu1.addItem(new Model_Menu("", "Human-Resource Data", Model_Menu.MenuType.TITLE));
-        listMenu1.addItem(new Model_Menu("3", "Seat Table", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("3", "Ticket Table", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("4", "Passenger Table", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
+        listMenu1.addItem(new Model_Menu("1", "Search", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("2", "Booking Information", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("5", "Return Ticket", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("5", "Timetable-Prices", Model_Menu.MenuType.MENU));
  
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-        listMenu1.addItem(new Model_Menu("7", "Log out", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
+        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
+        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
+        
+        listMenu1.addItem(new Model_Menu("7", "Log in", Model_Menu.MenuType.MENU));
     }
 
 

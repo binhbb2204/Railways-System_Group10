@@ -45,31 +45,33 @@ public class CustomerDashboard extends javax.swing.JFrame {
             @Override
             public void selected(int index) {
                 if(index == 1){
-                    setForm(train);
+                    
                 }
                 else if(index == 2){
-                    setForm(schedule);
+                    
                 }
                 else if(index == 3){
-                    setForm(station);
+                    
                 }
                 else if(index == 4){
-                    setForm(coach);
+                    
                 }
                 else if(index == 5){
-                    setForm(coachType);
+                   
                 }
                 else if(index == 6){
-                    setForm(track);
+                    
                 }
                 else if(index == 9){
-                    setForm(seat);
+                    
                 }
                 else if(index == 11){
-                    setForm(passenger);
+                    
                 }
-                else if(index == 14){
-                    System.exit(0);
+                else if(index == 10){
+                    CustomerDashboard.this.dispose();
+                    LoginSignup loginSignup = new LoginSignup();
+                    loginSignup.setVisible(true);
 
                 }
             }
@@ -95,9 +97,9 @@ public class CustomerDashboard extends javax.swing.JFrame {
     private void initComponents() {
 
         panelBorder1 = new swing.PanelBorder();
-        menu = new component.Menu();
         header1 = new component.Header();
         mainPanel = new javax.swing.JPanel();
+        menu = new component.CustomerMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -110,11 +112,12 @@ public class CustomerDashboard extends javax.swing.JFrame {
         panelBorder1Layout.setHorizontalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
                 .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(1, 1, 1)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(header1, javax.swing.GroupLayout.DEFAULT_SIZE, 923, Short.MAX_VALUE)
+                    .addComponent(header1, javax.swing.GroupLayout.DEFAULT_SIZE, 910, Short.MAX_VALUE)
                     .addGroup(panelBorder1Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
                         .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())))
         );
@@ -123,12 +126,12 @@ public class CustomerDashboard extends javax.swing.JFrame {
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
+                    .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelBorder1Layout.createSequentialGroup()
                         .addComponent(header1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -154,7 +157,7 @@ public class CustomerDashboard extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private component.Header header1;
     private javax.swing.JPanel mainPanel;
-    private component.Menu menu;
+    private component.CustomerMenu menu;
     private swing.PanelBorder panelBorder1;
     // End of variables declaration//GEN-END:variables
 }

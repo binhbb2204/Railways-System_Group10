@@ -69,7 +69,10 @@ public class Dashboard extends javax.swing.JFrame {
                     setForm(passenger);
                 }
                 else if(index == 14){
-                    System.exit(0);
+                    //System.exit(0);
+                    Dashboard.this.dispose();
+                    LoginSignup loginSignup = new LoginSignup();
+                    loginSignup.setVisible(true);
 
                 }
             }

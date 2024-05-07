@@ -3,6 +3,8 @@ package main;
 
 import java.sql.SQLException;
 
+import javax.swing.JFrame;
+
 import connection.DatabaseConnection;
 
 /**
@@ -42,7 +44,9 @@ public class Main {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 // new Dashboard().setVisible(false);
-                new LoginSignup().setVisible(true);
+                //new LoginSignup().setVisible(true);
+                new CustomerDashboard().setVisible(true);
+                
                 // new Login().setVisible(true);
                 // new Signup().setVisible(false);
                 
