@@ -37,7 +37,7 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
         register.setLayout(new MigLayout("wrap", "push[center]push", "push[]25[]10[]10[]25[]push"));
         JLabel label = new JLabel("Create Account");
         label.setFont(new Font("sansserif", 1, 30));
-        label.setForeground(Color.decode("#3a7bd5"));
+        label.setForeground(Color.decode("#0072ff"));
         register.add(label);
 
         MyTextField txtUser = new MyTextField();
@@ -56,7 +56,7 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
         register.add(txtPass, "w 60%");
 
         Button cmd = new Button();
-        cmd.setBackground(Color.decode("#3a7bd5"));
+        cmd.setBackground(Color.decode("#0072ff"));
         cmd.setForeground(new Color(250, 250, 250));
         cmd.addActionListener(eventResgiter);
         cmd.setText("SIGN UP");
@@ -76,7 +76,7 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
         login.setLayout(new MigLayout("wrap", "push[center]push", "push[]25[]10[]10[]25[]push"));
         JLabel label = new JLabel("Sign In");
         label.setFont(new Font("sansserif", 1, 30));
-        label.setForeground(Color.decode("#3a7bd5"));
+        label.setForeground(Color.decode("#0072ff"));
         login.add(label);
         MyTextField txtEmail = new MyTextField();
         txtEmail.setPrefixIcon(new ImageIcon(getClass().getResource("/icons/user.png")));
@@ -93,7 +93,7 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
         cmdForget.setCursor(new Cursor(Cursor.HAND_CURSOR));
         login.add(cmdForget);
         Button cmd = new Button();
-        cmd.setBackground(Color.decode("#3a7bd5"));
+        cmd.setBackground(Color.decode("#0072ff"));
         cmd.setForeground(new Color(250, 250, 250));
         cmd.addActionListener(eventLogin);
         cmd.setText("SIGN IN");

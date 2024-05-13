@@ -192,6 +192,7 @@ public class Form_Train extends javax.swing.JPanel {
                 table.repaint();
                 table.revalidate();
                 updateTotalPassengerCountDisplay();
+                populateTrainTable();
                 
             }
             

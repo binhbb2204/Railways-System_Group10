@@ -152,6 +152,7 @@ public class Form_Station extends javax.swing.JPanel {
                 updateTotalPassengerCountDisplay();
                 table.repaint();
                 table.revalidate();
+                populateStationTable();
                 
             }
             
