@@ -6,6 +6,7 @@ import javax.swing.JComponent;
 import javax.swing.*;
 import event.EventMenuSelected;
 import form.Form_Timetable;
+import glasspanepopup.GlassPanePopup;
 
 
 
@@ -13,6 +14,7 @@ public class CustomerDashboard extends javax.swing.JFrame {
     private Form_Timetable timetable;
 
     public CustomerDashboard() {
+        GlassPanePopup.install(this);
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
         timetable = new Form_Timetable();
@@ -31,6 +33,7 @@ public class CustomerDashboard extends javax.swing.JFrame {
                 }
                 else if(index == 4){
                     setForm(timetable);
+                    
                 }
                 else if(index == 5){
                    

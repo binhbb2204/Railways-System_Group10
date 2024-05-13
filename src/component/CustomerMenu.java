@@ -30,10 +30,10 @@ public class CustomerMenu extends javax.swing.JPanel {
         
         
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-        listMenu1.addItem(new Model_Menu("1", "Search", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("2", "Booking Information", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("5", "Return Ticket", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("5", "Timetable", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("searching", "Search", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("booking", "Booking Information", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("ticket", "Return Ticket", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("schedule", "Timetable", Model_Menu.MenuType.MENU));
 
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));

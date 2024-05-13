@@ -8,30 +8,34 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.Random;
+
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
+
 import javax.swing.table.DefaultTableModel;
 
 import combo_suggestion.ComboSuggestionUI;
-import component.PanelLoading;
+import component.Message;
+import component.PanelError;
 import connection.ConnectData;
 import datechooser.SelectedDate;
+import glasspanepopup.GlassPanePopup;
+import model.Model_Error;
 import swing.ScrollBar;
 import java.awt.*;
 
 
 public class Form_Timetable extends javax.swing.JPanel {
-    private PanelLoading loading;
+
 
 //SQL JDBC
 //-----------------------------------------------------------------------------------------------------
-    public void populateTimetableTable(String trainName, String arrivalStationName, String departureStationName, SelectedDate d){
+    public void populateTimetableTable(String trainName, String departureStationName, String arrivalStationName, SelectedDate d){
          // Convert the selected date to LocalDate
         LocalDate selectedDate = LocalDate.of(d.getYear(), d.getMonth(), d.getDay());
+        LocalDate currentDate = LocalDate.now();
 
         // HashMap to keep track of the last departure time for each schedule
         HashMap<String, LocalTime> lastDepartureTimePerSchedule = new HashMap<>();
@@ -39,46 +43,58 @@ public class Form_Timetable extends javax.swing.JPanel {
         HashMap<String, LocalDate> currentDatePerSchedule = new HashMap<>();
 
         String query = "SELECT " +
-                "j.scheduleID, " +
-                "s.stationName AS 'Departure Station', " +
-                "j.arrivalTime AS 'Arrival Time', " +
-                "j.departureTime AS 'Departure Time' " +
-            "FROM " +
-                "journey j " +
-                "JOIN schedule sch ON j.scheduleID = sch.scheduleID " +
-                "JOIN station s ON j.stationID = s.stationID " +
-                "JOIN train t ON sch.trainID = t.trainID " +
-            "WHERE " +
-                "t.trainName = ? AND " +
-                "j.stationID BETWEEN (SELECT stationID FROM station WHERE stationName = ?) AND " +
-                "(SELECT stationID FROM station WHERE stationName = ?)" +
-            "UNION " +
-            "SELECT " +
-                "j.scheduleID, " +
-                "s.stationName AS 'Departure Station', " +
-                "j.arrivalTime AS 'Arrival Time', " +
-                "j.departureTime AS 'Departure Time' " +
-            "FROM " +
-                "journey j " +
-                "JOIN schedule sch ON j.scheduleID = sch.scheduleID " +
-                "JOIN station s ON j.stationID = s.stationID " +
-                "JOIN train t ON sch.trainID = t.trainID " +
-            "WHERE " +
-                "t.trainName = ? AND " +
-                "j.stationID BETWEEN (SELECT stationID FROM station WHERE stationName = ?) AND " +
-                "(SELECT stationID FROM station WHERE stationName = ?)";
+                            "j.scheduleID, " +
+                            "s.stationName AS 'Departure Station', " +
+                            "j.arrivalTime AS 'Arrival Time', " +
+                            "j.departureTime AS 'Departure Time' " +
+                          "FROM " +
+                            "journey j " +
+                            "JOIN schedule sch ON j.scheduleID = sch.scheduleID " +
+                            "JOIN station s ON j.stationID = s.stationID " +
+                            "JOIN train t ON sch.trainID = t.trainID " +
+                          "WHERE " +
+                            "t.trainName = ? AND " +
+                            "( " +
+                                "( " +
+                                    "sch.start_stationID = (SELECT stationID FROM station WHERE stationName = 'Ha Noi') AND " +
+                                    "sch.end_stationID = (SELECT stationID FROM station WHERE stationName = 'Sai Gon') AND " +
+                                    "j.stationID >= (SELECT stationID FROM station WHERE stationName = ?) AND " +
+                                    "j.stationID <= (SELECT stationID FROM station WHERE stationName = ?) " +
+                                ") " +
+                                "OR " +
+                                "( " +
+                                    "sch.start_stationID = (SELECT stationID FROM station WHERE stationName = 'Sai Gon') AND " +
+                                    "sch.end_stationID = (SELECT stationID FROM station WHERE stationName = 'Ha Noi') AND " +
+                                    "j.stationID <= (SELECT stationID FROM station WHERE stationName = ?) AND " +
+                                    "j.stationID >= (SELECT stationID FROM station WHERE stationName = ?) " +
+                                ") " +
+                            ") " +
+                            "AND EXISTS (SELECT 1 FROM journey WHERE stationID = (SELECT stationID FROM station WHERE stationName = ?)) " +
+                            "AND EXISTS (SELECT 1 FROM journey WHERE stationID = (SELECT stationID FROM station WHERE stationName = ?));";
         try (Connection conn = new ConnectData().connect();
             PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, trainName);
             pstmt.setString(2, departureStationName);
             pstmt.setString(3, arrivalStationName);   
-            pstmt.setString(4, trainName);
+            pstmt.setString(4, departureStationName);
             pstmt.setString(5, arrivalStationName);
-            pstmt.setString(6, departureStationName); 
+            pstmt.setString(6, departureStationName);
+            pstmt.setString(7, arrivalStationName); 
             try(ResultSet rs = pstmt.executeQuery()){
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
                 model.setRowCount(0);
+                if (!rs.isBeforeFirst()) { // Check if the ResultSet is empty
+                    GlassPanePopup.showPopup(Error);
+                    Error.setData(new Model_Error("Error: There is no train going from " + departureStationName + " to " + arrivalStationName + " on " + selectedDate));
 
+                    return;
+                }
+                if(selectedDate.isBefore(currentDate)){
+                    GlassPanePopup.showPopup(Error);
+                    Error.setData(new Model_Error("Error: The selected time of " + selectedDate + " has already elapsed. Please select a future date."));
+                    
+                    return;
+                }
                 while (rs.next()) {
                     String scheduleID = rs.getString("scheduleID"); 
                     String departureStation = rs.getString("Departure Station");
@@ -126,14 +142,16 @@ public class Form_Timetable extends javax.swing.JPanel {
         spTable1.getViewport().setBackground(Color.WHITE);
         p.setBackground(Color.WHITE);
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
+        
     }
 
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         date = new datechooser.DateChooser();
+        Error = new component.PanelError();
         panelRound1 = new swing.PanelRound();
         txtDate = new swing.MyTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -354,27 +372,14 @@ public class Form_Timetable extends javax.swing.JPanel {
         String trainName = ((ComboSuggestionUI)txtTrain.getUI()).getSelectedText();; 
         String departureStationName = ((ComboSuggestionUI)txtDeparture.getUI()).getSelectedText(); 
         String arrivalStationName = ((ComboSuggestionUI)txtArrival.getUI()).getSelectedText();
-        loading = new PanelLoading();
-        loading.setVisible(true);
-        new Thread(() -> {
-            try {
-                // Wait for 3 to 5 seconds
-                Thread.sleep(3000 + new Random().nextInt(2000));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                // Hide loading and show success message on the Swing event dispatch thread
-                SwingUtilities.invokeLater(() -> {
-                    loading.setVisible(false);
-                });
-        }).start();
-        
 
         populateTimetableTable(trainName, departureStationName, arrivalStationName, d);
+        
     }//GEN-LAST:event_SearchButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private component.PanelError Error;
     private swing.Button SearchButton;
     private datechooser.DateChooser date;
     private javax.swing.JLabel jLabel1;
