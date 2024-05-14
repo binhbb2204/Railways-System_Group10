@@ -68,10 +68,12 @@ public class Form_CoachType extends javax.swing.JPanel {
 
                 while(rs.next()){
                     String coach_typeID = rs.getString("coach_typeID");
-                    String typeString = rs.getString("type");
+                    String coach_type = rs.getString("type");
                     double price = rs.getDouble("price");
-                    CoachType coachtype = CoachType.valueOf(typeString);
+                    //convert it back to combo bõ
+                    CoachType coachtype = CoachType.valueOf(coach_type);
                     model.addRow(new Object[]{coach_typeID, coachtype, price });
+                    
                 }
         }
         catch(SQLException e){
@@ -110,7 +112,7 @@ public class Form_CoachType extends javax.swing.JPanel {
             // Return true if it exists, false otherwise
             // This method needs to query the database and return the result
             // Example implementation:
-            String query = "SELECT COUNT(*) FROM railway_system.coachtype WHERE coach_typeID = ?";
+            String query = "SELECT COUNT(*) FROM railway_system.coach_type WHERE coach_typeID = ?";
             try (Connection conn = new ConnectData().connect();
                  PreparedStatement pstmt = conn.prepareStatement(query)) {
                 pstmt.setString(1, trainID);
@@ -163,7 +165,10 @@ public class Form_CoachType extends javax.swing.JPanel {
                     table.getCellEditor().stopCellEditing();
                 }
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
+                String coach_typeID = (String) model.getValueAt(row, 0);
+                deleteCoachTypeDataFromDatabase(coach_typeID);
                 model.removeRow(row);
+                updateTotalPassengerCountDisplay();
                 
             }
             @Override
@@ -172,8 +177,21 @@ public class Form_CoachType extends javax.swing.JPanel {
                 editable = false;
                 ((DefaultTableModel)table.getModel()).fireTableDataChanged();
                 updateTotalPassengerCountDisplay();
+                DefaultTableModel model = (DefaultTableModel) table.getModel(); 
+                String coach_typeID = model.getValueAt(row, 0).toString();
+                String type = model.getValueAt(row, 1).toString();
+                double price = Double.parseDouble(model.getValueAt(row, 2).toString());
+                if (checkIfCoachTypeIdExists(type)) {
+                    //update the record
+                    updateCoachTypeDataInDatabase(coach_typeID, type, price);
+                } else {
+                    //insert new record
+                    insertCoachTypeDataToDatabase(coach_typeID, type, price);
+                }
+                updateTotalPassengerCountDisplay();
                 table.repaint();
                 table.revalidate();
+                populateCoachTypeTable();
                 
             }
             
@@ -192,8 +210,10 @@ public class Form_CoachType extends javax.swing.JPanel {
         p.setBackground(Color.WHITE);
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
         table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox<>(CoachType.values())));
-        table.addRow(new Object[]{"CT01", CoachType.HARD_SEAT, "250000"});
-        table.addRow(new Object[]{"CT02", CoachType.SOFT_SLEEPER, "250000"});
+        //table.addRow(new Object[]{"CT01", CoachType.HARD_SEAT, "250000"});
+        //table.addRow(new Object[]{"CT02", CoachType.SOFT_SLEEPER, "250000"});
+        
+        populateCoachTypeTable();
     }
 
 
