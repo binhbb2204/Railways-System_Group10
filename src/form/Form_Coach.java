@@ -60,16 +60,17 @@ public class Form_Coach extends javax.swing.JPanel {
         try(Connection conn = new ConnectData().connect();
             PreparedStatement pstmt = conn.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery()){
-                DefaultTableModel model = (DefaultTableModel) table.getModel();
-                model.setRowCount(0);
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            model.setRowCount(0);
 
-                while(rs.next()){
-                    String coachID = rs.getString("coachID");
-                    String trainID = rs.getString("trainID");
-                    String coach_typeID = rs.getString("coach_typeID");
-                    int coachCapacity = rs.getInt("coachCapacity");
-                    model.addRow(new Object[]{coachID, trainID, coach_typeID, coachCapacity});
-                }
+            while(rs.next()){
+                String coachID = rs.getString("coachID");
+                String trainID = rs.getString("trainID");
+                String coach_typeID = rs.getString("coach_typeID");
+                int coachCapacity = rs.getInt("coachCapacity");
+                model.addRow(new Object[]{coachID, trainID, coach_typeID, coachCapacity});
+            }
+
         }
         catch(SQLException e){
             JOptionPane.showMessageDialog(this, "Error retrieving data: " + e.getMessage());
@@ -155,6 +156,7 @@ public class Form_Coach extends javax.swing.JPanel {
                 table.repaint();
                 table.revalidate();
                 updateTotalPassengerCountDisplay();
+                populateCoachTable();
                 
             }
             @Override
@@ -169,6 +171,7 @@ public class Form_Coach extends javax.swing.JPanel {
                 deleteCoachDataFromDatabase(coachID);
                 model.removeRow(row);
                 updateTotalPassengerCountDisplay();
+                populateCoachTable();
             }
             @Override
             public void onView(int row) {
@@ -191,6 +194,7 @@ public class Form_Coach extends javax.swing.JPanel {
                 table.repaint();
                 table.revalidate();
                 updateTotalPassengerCountDisplay();
+                populateCoachTable();
                 
             }
             
