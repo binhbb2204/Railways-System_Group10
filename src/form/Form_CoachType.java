@@ -4,10 +4,18 @@ package form;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+
+import connection.ConnectData;
+
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import model.CoachType;
 import model.Model_Card;
@@ -32,6 +40,93 @@ public class Form_CoachType extends javax.swing.JPanel {
     public void onSwitchBackToSchedule() {
         updateTotalPassengerCountDisplay();
     }
+
+//SQL JDBC
+//-----------------------------------------------------------------------------------------------------
+    public void insertCoachTypeDataToDatabase(String coach_typeID, String type, double price){
+        String query = "INSERT INTO railway_system.coach_type (coach_typeID, type, price) VALUES (?, ?, ?)";
+        try(Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query)){
+            pstmt.setString(1, coach_typeID);
+            pstmt.setString(2, type);
+            pstmt.setDouble(3, price);
+            pstmt.executeUpdate();
+        }
+        catch (SQLException e){
+            // e.printStackTrace();
+            // JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage());
+        }
+    }
+
+    public void populateCoachTypeTable(){
+        String query = "SELECT coach_typeID, type, price FROM railway_system.coach_type";
+        try(Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery()){
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.setRowCount(0);
+
+                while(rs.next()){
+                    String coach_typeID = rs.getString("coach_typeID");
+                    String typeString = rs.getString("type");
+                    double price = rs.getDouble("price");
+                    CoachType coachtype = CoachType.valueOf(typeString);
+                    model.addRow(new Object[]{coach_typeID, coachtype, price });
+                }
+        }
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(this, "Error retrieving data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteCoachTypeDataFromDatabase(String coach_typeID) {
+        String query = "DELETE FROM railway_system.coach_type WHERE coach_typeID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, coach_typeID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error deleting data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void updateCoachTypeDataInDatabase(String coach_typeID, String newType, double newPrice) {
+        String query = "UPDATE railway_system.coach_type SET type = ?, price = ? WHERE coach_typeID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, newType);
+            pstmt.setDouble(2, newPrice);
+            pstmt.setString(3, coach_typeID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error updating data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+        private boolean checkIfCoachTypeIdExists(String trainID) {
+            // Implement the logic to check if the train ID exists in the database
+            // Return true if it exists, false otherwise
+            // This method needs to query the database and return the result
+            // Example implementation:
+            String query = "SELECT COUNT(*) FROM railway_system.coachtype WHERE coach_typeID = ?";
+            try (Connection conn = new ConnectData().connect();
+                 PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setString(1, trainID);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        int count = rs.getInt(1);
+                        return count > 0;
+                    }
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Error checking if ID exists: " + e.getMessage());
+                e.printStackTrace();
+            }
+            return false;
+    }
+//-----------------------------------------------------------------------------------------------------          
 
     public Form_CoachType() {
         initComponents();
