@@ -68,10 +68,10 @@ public class Form_CoachType extends javax.swing.JPanel {
 
                 while(rs.next()){
                     String coach_typeID = rs.getString("coach_typeID");
-                    String typeString = rs.getString("type");
+                    String type = rs.getString("type");
                     double price = rs.getDouble("price");
-                    CoachType coachtype = CoachType.valueOf(typeString);
-                    model.addRow(new Object[]{coach_typeID, coachtype, price });
+                    CoachType coachtypeID = CoachType.valueOf(coach_typeID);
+                    model.addRow(new Object[]{coachtypeID, type, price });
                 }
         }
         catch(SQLException e){
@@ -192,8 +192,8 @@ public class Form_CoachType extends javax.swing.JPanel {
         p.setBackground(Color.WHITE);
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
         table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox<>(CoachType.values())));
-        table.addRow(new Object[]{"CT01", CoachType.HARD_SEAT, "250000"});
-        table.addRow(new Object[]{"CT02", CoachType.SOFT_SLEEPER, "250000"});
+        //table.addRow(new Object[]{"CT01", CoachType.HARD_SEAT, "250000"});
+        //table.addRow(new Object[]{"CT02", CoachType.SOFT_SLEEPER, "250000"});
     }
 
 
