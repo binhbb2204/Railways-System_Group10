@@ -3,9 +3,6 @@ package swing;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
-import model.TrainType;
-
 import java.awt.*;
 
 

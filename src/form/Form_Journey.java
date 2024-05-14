@@ -50,15 +50,15 @@ public class Form_Journey extends javax.swing.JPanel {
 //SQL JDBC
 //-----------------------------------------------------------------------------------------------------
     public void insertJourneyDataToDatabase(String journeyID, String scheduleID, String stationID, String departureDate, String arrivalTime, String departureTime){
-        String query = "INSERT INTO railway_system.journey (journeyID, scheduleID, stationID, departureDate, arrivalTime, departureTime) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO railway_system.journey (journeyID, scheduleID, stationID, arrivalTime, departureTime) VALUES (?, ?, ?, ?, ?)";
         try(Connection conn = new ConnectData().connect();
             PreparedStatement pstmt = conn.prepareStatement(query)){
             pstmt.setString(1, journeyID);
             pstmt.setString(2, scheduleID);
             pstmt.setString(3, stationID);
-            pstmt.setString(4, departureDate);
-            pstmt.setString(5, arrivalTime);
-            pstmt.setString(6, departureTime);
+            //pstmt.setString(4, departureDate);
+            pstmt.setString(4, arrivalTime);
+            pstmt.setString(5, departureTime);
             pstmt.executeUpdate();
         }
         catch (SQLException e){
@@ -68,7 +68,7 @@ public class Form_Journey extends javax.swing.JPanel {
     }
 
     public void populateJourneyTable(){
-        String query = "SELECT journeyID, scheduleID, stationID, departureDate, arrivalTime, departureTime FROM railway_system.journey";
+        String query = "SELECT journeyID, scheduleID, stationID, arrivalTime, departureTime FROM railway_system.journey";
         try(Connection conn = new ConnectData().connect();
             PreparedStatement pstmt = conn.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery()){
@@ -80,10 +80,10 @@ public class Form_Journey extends javax.swing.JPanel {
                     String journeyID = rs.getString("journeyID");
                     String scheduleID = rs.getString("scheduleID");
                     String stationID = rs.getString("stationID");
-                    String departureDate = rs.getString("departureDate");
+
                     String arrivalTime = rs.getString("arrivalTime");
                     String departureTime = rs.getString("departureTime");
-                    rows.add(new Object[]{journeyID, scheduleID, stationID, departureDate, arrivalTime, departureTime});
+                    rows.add(new Object[]{journeyID, scheduleID, stationID, " ", arrivalTime, departureTime});
                 }
                 
                 // Sort the list of rows based on scheduleID
@@ -125,15 +125,15 @@ public class Form_Journey extends javax.swing.JPanel {
     }
 
     private void updateJourneyDataInDatabase(String journeyID, String scheduleID, String stationID, String departureDate, String arrivalTime, String departureTime) {
-        String query = "UPDATE railway_system.journey SET scheduleID = ?, stationID = ?, departureDate = ?, arrivalTime = ?, departureTime = ? WHERE journeyID = ?";
+        String query = "UPDATE railway_system.journey SET scheduleID = ?, stationID = ?, arrivalTime = ?, departureTime = ? WHERE journeyID = ?";
         try (Connection conn = new ConnectData().connect();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, scheduleID);
             pstmt.setString(2, stationID);
-            pstmt.setString(3, departureDate);
-            pstmt.setString(4, arrivalTime);
-            pstmt.setString(5, departureTime);
-            pstmt.setString(6, journeyID);
+
+            pstmt.setString(3, arrivalTime);
+            pstmt.setString(4, departureTime);
+            pstmt.setString(5, journeyID);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Error updating data: " + e.getMessage());

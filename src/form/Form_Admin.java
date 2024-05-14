@@ -2,18 +2,27 @@ package form;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
-import combo_suggestion.ComboBoxSuggestion;
+import connection.ConnectData;
+import model.AdminStatus;
 import model.Model_Card;
+import model.StatusType;
 import swing.ScrollBar;
 import swing.TableActionCellEditor;
 import swing.TableActionCellRender;
 import swing.TableActionEvent;
+import swing.TableAdminStatus;
 
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Form_Admin extends javax.swing.JPanel {
     private boolean editable = false;
@@ -31,6 +40,66 @@ public class Form_Admin extends javax.swing.JPanel {
         updateTotalPassengerCountDisplay();
     }
 
+//SQL JDBC
+//-----------------------------------------------------------------------------------------------------
+    public void insertScheduleDataToDatabase(String Status){
+        String query = "INSERT INTO railway_system.user (Status) VALUES (?)";
+        try(Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query)){
+            pstmt.setString(1, Status);
+            pstmt.executeQuery();
+        }
+        catch(SQLException e){
+
+        }
+    }
+    public void populateAdminTable(){
+        String query = "SELECT UserID, UserName, Email, Password, Status FROM railway_system.user";
+        try(Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery()){
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.setRowCount(0);
+
+                while(rs.next()){
+                    int UserID = rs.getInt("UserID");
+                    String UserName = rs.getString("UserName");
+                    String Email = rs.getString("Email");
+                    String Password = rs.getString("Password");
+                    String Status = rs.getString("Status");
+                    //AdminStatus status = AdminStatus.valueOf(Status);
+                    model.addRow(new Object[]{UserID, UserName, Email, Password, Status});
+                }
+        }
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(this, "Error retrieving data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    private void deleteAdminDataFromDatabase(String UserID) {
+        String query = "DELETE FROM railway_system.user WHERE UserID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, UserID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error deleting data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    private void updateAdminDataInDatabase(int UserID, String Status){
+        String query = "UPDATE railway_system.user SET Status = ? WHERE UserID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, Status);
+            pstmt.setInt(2, UserID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            // JOptionPane.showMessageDialog(this, "Error updating data: " + e.getMessage());
+            // e.printStackTrace();
+        }
+    }
+//-----------------------------------------------------------------------------------------------------
     public Form_Admin() {
         initComponents();
         
@@ -54,6 +123,8 @@ public class Form_Admin extends javax.swing.JPanel {
                     table.getCellEditor().stopCellEditing();
                 }
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
+                String UserID = model.getValueAt(row, 0).toString();
+                deleteAdminDataFromDatabase(UserID);
                 model.removeRow(row);
                 updateTotalPassengerCountDisplay();
             }
@@ -62,7 +133,10 @@ public class Form_Admin extends javax.swing.JPanel {
                 editableRow = row;
                 editable = false;
                 ((DefaultTableModel)table.getModel()).fireTableDataChanged();
-                
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                int UserID = Integer.parseInt(model.getValueAt(row, 0).toString());
+                AdminStatus Status = (AdminStatus) model.getValueAt(row, 4);
+                updateAdminDataInDatabase(UserID, Status.name());
                 table.repaint();
                 table.revalidate();
                 updateTotalPassengerCountDisplay();
@@ -83,16 +157,9 @@ public class Form_Admin extends javax.swing.JPanel {
         JPanel p = new JPanel();
         p.setBackground(Color.WHITE);
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
-        DefaultTableModel model = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                if(columnIndex == 5){
-                    return true;
-                }
-                return rowIndex == editableRow && editable;
-            }
-        };
-        table.setModel(model);
+        table.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new TableAdminStatus()));
+        populateAdminTable();
+
 
     }
 
@@ -140,12 +207,11 @@ public class Form_Admin extends javax.swing.JPanel {
                 "User ID", "Username", "Email", "Password", "Status", "Action"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true
-            };
-
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(columnIndex == 5){
+                    return true;
+                }
+                return rowIndex == editableRow && editable;
             }
         });
         spTable.setViewportView(table);

@@ -3,7 +3,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import model.CoachType;
+import model.AdminStatus;
+
 
 import java.awt.*;
 
@@ -37,8 +38,6 @@ public class AdminTable extends JTable{
                                 row, column);
                         component.setBackground(Color.WHITE);
                         setBorder(noFocusBorder);
-                        Font boldFont = component.getFont().deriveFont(Font.BOLD);
-                        component.setFont(boldFont);
                         if (isSelected) {
                             component.setForeground(new Color(15, 89, 140));
                         } else {
@@ -47,8 +46,8 @@ public class AdminTable extends JTable{
                         setHorizontalAlignment(JLabel.CENTER);
                         return component;
                     } else {
-                        CoachType type = (CoachType) value;
-                        CellCoachType cell = new CellCoachType(type);
+                        AdminStatus type = (AdminStatus) value;
+                        CellAdminType cell = new CellAdminType(type);
                         setHorizontalAlignment(JLabel.CENTER);
                         return cell;
                     }

@@ -21,10 +21,9 @@ import swing.ScrollBar;
 import swing.TableActionCellEditor;
 import swing.TableActionCellRender;
 import swing.TableActionEvent;
-import swing.TableStatus;
 import model.Model_Card;
 import model.StatusType;
-import model.TrainType;
+
 
 
 public class Form_Schedule extends javax.swing.JPanel{
@@ -103,7 +102,7 @@ public class Form_Schedule extends javax.swing.JPanel{
         }
     }
     private void updateScheduleDataInDatabase(String scheduleID, String trainID, String Origin, String Destination, String departureTime, String arrivalTime, String scheduleStatus) {
-        String query = "UPDATE railway_system.train SET trainID = ?, start_stationID = ?, end_stationID = ?, departureTime = ?, arrivalTime = ?, scheduleStatus = ? WHERE scheduleID = ?";
+        String query = "UPDATE railway_system.schedule SET trainID = ?, start_stationID = ?, end_stationID = ?, departureTime = ?, arrivalTime = ?, scheduleStatus = ? WHERE scheduleID = ?";
         try (Connection conn = new ConnectData().connect();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, trainID);
