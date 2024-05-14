@@ -30,9 +30,7 @@ public class Dashboard extends javax.swing.JFrame {
     private Form_CoachType coachType;
     private Form_Seat seat;
     private Form_Track track;
-<<<<<<< HEAD
     private Form_Ticket ticket;
-=======
     private Form_Journey journey;
 
     public Dashboard() {
@@ -47,10 +45,10 @@ public class Dashboard extends javax.swing.JFrame {
         coachType = new Form_CoachType();
         seat = new Form_Seat();
         track = new Form_Track();
-<<<<<<< HEAD
+
         ticket = new Form_Ticket();
         
-=======
+
         journey = new Form_Journey();
         menu.initMoving(Dashboard.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
