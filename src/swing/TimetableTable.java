@@ -34,6 +34,7 @@ public class TimetableTable extends JTable{
                                 row, column);
                     component.setBackground(Color.WHITE);
                     setBorder(noFocusBorder);
+                    
                     if (isSelected) {
                         component.setForeground(new Color(15, 89, 140));
                     } 

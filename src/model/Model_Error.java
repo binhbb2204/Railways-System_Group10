@@ -13,7 +13,7 @@ public class Model_Error {
         return title;
     }
     public void setTitle(String title){
-        this.title = title;
+        this.title = title; 
     }
 
 }

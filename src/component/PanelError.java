@@ -15,6 +15,8 @@ public class PanelError extends javax.swing.JPanel {
         setOpaque(false);
         txt.setOpaque(false);
         txt.setSelectionColor(new Color(173, 216, 230, 200));
+        txt1.setOpaque(false);
+        txt1.setSelectionColor(new Color(173, 216, 230, 200));
     }
 
     public void setData(Model_Error data){
@@ -40,6 +42,8 @@ public class PanelError extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         lbTitle = new javax.swing.JLabel();
         txt = new javax.swing.JTextPane();
+        txt1 = new javax.swing.JTextPane();
+        jLabel2 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(53, 126, 199));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(25, 25, 25, 25));
@@ -57,6 +61,12 @@ public class PanelError extends javax.swing.JPanel {
         txt.setForeground(new java.awt.Color(255, 255, 255));
         txt.setText("Your PC ran into a problem and needs to restart as soon as we're finished collecting some error info.");
 
+        txt1.setBackground(new java.awt.Color(53, 126, 199));
+        txt1.setForeground(new java.awt.Color(255, 255, 255));
+        txt1.setText("For more information about this issue and possible fixes, please double-check the input data for any inaccuracies.");
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/qrcode.png"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -64,10 +74,17 @@ public class PanelError extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(68, 68, 68)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbTitle)
-                    .addComponent(txt, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txt1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lbTitle)))
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(164, Short.MAX_VALUE))
+                .addContainerGap(235, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -76,16 +93,25 @@ public class PanelError extends javax.swing.JPanel {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txt, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(lbTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(149, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(txt1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(36, 36, 36))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel lbTitle;
     private javax.swing.JTextPane txt;
+    private javax.swing.JTextPane txt1;
     // End of variables declaration//GEN-END:variables
 }

@@ -22,7 +22,9 @@ import component.PanelError;
 import connection.ConnectData;
 import datechooser.SelectedDate;
 import glasspanepopup.GlassPanePopup;
+import model.CoachType;
 import model.Model_Error;
+import model.TrainType;
 import swing.ScrollBar;
 import java.awt.*;
 
@@ -122,10 +124,91 @@ public class Form_Timetable extends javax.swing.JPanel {
             } 
         }
         catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error retrieving data: " + e.getMessage());
+            GlassPanePopup.showPopup(Error);
+            Error.setData(new Model_Error("Error retrieving data " + e.getMessage()));
             e.printStackTrace();
         }
     }
+
+    public void populatePriceTable(String trainName, String departureStationName, String arrivalStationName, SelectedDate d) {
+
+        LocalDate selectedDate = LocalDate.of(d.getYear(), d.getMonth(), d.getDay());
+        LocalDate currentDate = LocalDate.now();
+        String query = 
+                        "SELECT DISTINCT " +
+                        "    ct.type AS 'Type', " +
+                        "    (ct.price * 1.5 * ( " +
+                        "        SELECT COUNT(*) " +
+                        "        FROM journey j " +
+                        "        JOIN schedule sch ON j.scheduleID = sch.scheduleID " +
+                        "        WHERE sch.trainID = t.trainID AND " +
+                        "              j.stationID BETWEEN (SELECT stationID FROM station WHERE stationName = ?) AND " +
+                        "                                  (SELECT stationID FROM station WHERE stationName = ?) " +
+                        "    )) AS 'Price' " +
+                        "FROM " +
+                        "    coach c " +
+                        "JOIN " +
+                        "    train t ON c.trainID = t.trainID " +
+                        "JOIN " +
+                        "    coach_type ct ON c.coach_typeID = ct.coach_typeID " +
+                        "JOIN " +
+                        "    schedule sch ON t.trainID = sch.trainID " +
+                        "JOIN " +
+                        "    journey j ON sch.scheduleID = j.scheduleID " +
+                        "WHERE " +
+                        "    t.trainName = ? AND " +
+                        "    ct.price > 0 AND " +
+                        "    ( " +
+                        "        (sch.start_stationID = (SELECT stationID FROM station WHERE stationName = 'Ha Noi') AND " +
+                        "         sch.end_stationID = (SELECT stationID FROM station WHERE stationName = 'Sai Gon') AND " +
+                        "         j.stationID >= (SELECT stationID FROM station WHERE stationName = ?) AND " +
+                        "         j.stationID <= (SELECT stationID FROM station WHERE stationName = ?)) " +
+                        "    OR " +
+                        "        (sch.start_stationID = (SELECT stationID FROM station WHERE stationName = 'Sai Gon') AND " +
+                        "         sch.end_stationID = (SELECT stationID FROM station WHERE stationName = 'Ha Noi') AND " +
+                        "         j.stationID <= (SELECT stationID FROM station WHERE stationName = ?) AND " +
+                        "         j.stationID >= (SELECT stationID FROM station WHERE stationName = ?)) " +
+                        "    ) AND " +
+                        "    EXISTS (SELECT 1 FROM journey WHERE stationID = (SELECT stationID FROM station WHERE stationName = ?)) AND " +
+                        "    EXISTS (SELECT 1 FROM journey WHERE stationID = (SELECT stationID FROM station WHERE stationName = ?));";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, departureStationName);
+            pstmt.setString(2, arrivalStationName);
+            pstmt.setString(3, trainName);
+            pstmt.setString(4, departureStationName);
+            pstmt.setString(5, arrivalStationName);
+            pstmt.setString(6, departureStationName);
+            pstmt.setString(7, arrivalStationName);
+            pstmt.setString(8, departureStationName);
+            pstmt.setString(9, arrivalStationName);
+    
+            try (ResultSet rs = pstmt.executeQuery()) {
+                DefaultTableModel model = (DefaultTableModel) table1.getModel();
+                model.setRowCount(0);
+                if (!rs.isBeforeFirst()) { // Check if the ResultSet is empty
+                    
+                    return;
+                }
+                if(selectedDate.isBefore(currentDate)){
+                    
+                    return;
+                }
+    
+                while (rs.next()) {
+                    String coachType = rs.getString("Type");
+                    int price = rs.getInt("Price");
+                    CoachType type = CoachType.valueOf(coachType);
+                    model.addRow(new Object[]{type, price});
+                }
+            }
+        } catch (SQLException e) {
+            GlassPanePopup.showPopup(Error);
+            Error.setData(new Model_Error("Error retrieving data " + e.getMessage()));
+            e.printStackTrace();
+        }
+    }
+    
 
 //-----------------------------------------------------------------------------------------------------
     public Form_Timetable() {
@@ -167,7 +250,7 @@ public class Form_Timetable extends javax.swing.JPanel {
         table = new swing.TimetableTable();
         panelBorder2 = new swing.PanelBorder();
         spTable1 = new javax.swing.JScrollPane();
-        table1 = new swing.TimetableTable();
+        table1 = new swing.PriceTable();
 
         date.setTextRefernce(txtDate);
 
@@ -232,7 +315,7 @@ public class Form_Timetable extends javax.swing.JPanel {
                 .addGroup(panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtArrival, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
         panelRound1Layout.setVerticalGroup(
             panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -286,14 +369,14 @@ public class Form_Timetable extends javax.swing.JPanel {
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
+                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
                 .addContainerGap())
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(spTable)
+                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
                 .addGap(20, 20, 20))
         );
 
@@ -323,17 +406,17 @@ public class Form_Timetable extends javax.swing.JPanel {
         panelBorder2.setLayout(panelBorder2Layout);
         panelBorder2Layout.setHorizontalGroup(
             panelBorder2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelBorder2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(spTable1, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(spTable1, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(109, 109, 109))
         );
         panelBorder2Layout.setVerticalGroup(
             panelBorder2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(spTable1)
-                .addGap(20, 20, 20))
+                .addComponent(spTable1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -343,12 +426,12 @@ public class Form_Timetable extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelRound1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelRound1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panelBorder1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(panelBorder2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                        .addGap(10, 10, 10)
+                        .addComponent(panelBorder2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -359,7 +442,7 @@ public class Form_Timetable extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelBorder2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -374,6 +457,7 @@ public class Form_Timetable extends javax.swing.JPanel {
         String arrivalStationName = ((ComboSuggestionUI)txtArrival.getUI()).getSelectedText();
 
         populateTimetableTable(trainName, departureStationName, arrivalStationName, d);
+        populatePriceTable(trainName, departureStationName, arrivalStationName, d);
         
     }//GEN-LAST:event_SearchButtonActionPerformed
 
@@ -392,7 +476,7 @@ public class Form_Timetable extends javax.swing.JPanel {
     private javax.swing.JScrollPane spTable;
     private javax.swing.JScrollPane spTable1;
     private swing.TimetableTable table;
-    private swing.TimetableTable table1;
+    private swing.PriceTable table1;
     private combo_suggestion.ComboBoxSuggestion txtArrival;
     private swing.MyTextField txtDate;
     private combo_suggestion.ComboBoxSuggestion txtDeparture;
