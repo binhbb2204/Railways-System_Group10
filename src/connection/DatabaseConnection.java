@@ -25,7 +25,7 @@ public class DatabaseConnection {
     }
 
     public void connectToDatabase() throws SQLException {
-        String server = "127.224.24.1";
+        String server = "localhost";
         String port = "3306";
         String database = "railway_system";
         String userName = "root";
