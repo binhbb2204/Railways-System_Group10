@@ -12,7 +12,14 @@ import swing.TableActionCellRender;
 import swing.TableActionEvent;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import connection.ConnectData;
+
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 public class Form_Coach extends javax.swing.JPanel {
     private boolean editable = false;
     private int editableRow = -1;
@@ -29,6 +36,97 @@ public class Form_Coach extends javax.swing.JPanel {
     public void onSwitchBackToSchedule() {
         updateTotalPassengerCountDisplay();
     }
+
+      //SQL JDBC
+//-----------------------------------------------------------------------------------------------------
+    public void insertCoachDataToDatabase(String coachID, String trainID,  String coach_typeID, int coachCapacity){
+        String query = "INSERT INTO railway_system.coach (coachID, trainID, coach_TypeID, coachCapacity) VALUES (?, ?, ?, ?)";
+        try(Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query)){
+            pstmt.setString(1, coachID);
+            pstmt.setString(2, trainID);
+            pstmt.setString(3, coach_typeID);
+            pstmt.setInt(4, coachCapacity);
+            pstmt.executeUpdate();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage());
+        }
+    }
+
+    public void populateCoachTable(){
+        String query = "SELECT coachID, trainID, coach_typeID, coachCapacity FROM railway_system.coach";
+        try(Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery()){
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.setRowCount(0);
+
+                while(rs.next()){
+                    String coachID = rs.getString("coachID");
+                    String trainID = rs.getString("trainID");
+                    String coach_typeID = rs.getString("coach_typeID");
+                    int coachCapacity = rs.getInt("coachCapacity");
+                    model.addRow(new Object[]{coachID, trainID, coach_typeID, coachCapacity});
+                }
+        }
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(this, "Error retrieving data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    private void deleteCoachDataFromDatabase(String coachID) {    
+        String query = "DELETE FROM railway_system.coach WHERE coachID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, coachID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error deleting data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void updateCoachDataInDatabase(String coachID, String newTrainID, String newCoach_typeID, int newCoachCapacity) {
+        String query = "UPDATE railway_system.coach SET trainID = ?, coach_typeID = ?, coachCapacity = ? WHERE coachID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, newTrainID);
+            pstmt.setString(2, newCoach_typeID);
+            pstmt.setInt(3, newCoachCapacity);
+            pstmt.setString(4, coachID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            // JOptionPane.showMessageDialog(this, "Error updating data: " + e.getMessage());
+            // e.printStackTrace();
+        }
+    }
+
+    private boolean checkIfCoachIdExists(String coachID) {
+        // Implement the logic to check if the train ID exists in the database
+        // Return true if it exists, false otherwise
+        // This method needs to query the database and return the result
+        // Example implementation:
+        String query = "SELECT COUNT(*) FROM railway_system.coach WHERE coachID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, coachID);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error checking if ID exists: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+//-----------------------------------------------------------------------------------------------------
+
+
 
     public Form_Coach() {
         initComponents();
@@ -65,6 +163,10 @@ public class Form_Coach extends javax.swing.JPanel {
                     table.getCellEditor().stopCellEditing();
                 }
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
+                String coachID = model.getValueAt(row, 0).toString();
+
+                // Delete data from the database
+                deleteCoachDataFromDatabase(coachID);
                 model.removeRow(row);
                 updateTotalPassengerCountDisplay();
             }
@@ -73,6 +175,18 @@ public class Form_Coach extends javax.swing.JPanel {
                 editableRow = row;
                 editable = false;
                 ((DefaultTableModel)table.getModel()).fireTableDataChanged();
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                String coachID = model.getValueAt(row, 0).toString();
+                String trainID = model.getValueAt(row, 1).toString();
+                String coach_typeID = model.getValueAt(row, 2).toString();
+                int coachCapacity = Integer.parseInt(model.getValueAt(row, 3).toString());
+                if (checkIfCoachIdExists(coachID)) {
+                    // Coach ID exists, so update the record
+                    updateCoachDataInDatabase(coachID, trainID, coach_typeID, coachCapacity);
+                } else {
+                    // Coach ID does not exist, so insert a new record
+                    insertCoachDataToDatabase(coachID, trainID, coach_typeID, coachCapacity);
+                }
                 
                 table.repaint();
                 table.revalidate();
@@ -99,9 +213,10 @@ public class Form_Coach extends javax.swing.JPanel {
 
         // table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox<>(CoachType.values())));
         
-        table.addRow(new Object[]{"01", "HN-SG-123", "CT01", "50"});
-        table.addRow(new Object[]{"02", "HN-HP-113", "CT02", "30"});
-        table.addRow(new Object[]{"01", "HN-SG-123", "CT02", "30"});
+        // table.addRow(new Object[]{"01", "HN-SG-123", "CT01", "50"});
+        // table.addRow(new Object[]{"02", "HN-HP-113", "CT02", "30"});
+        // table.addRow(new Object[]{"01", "HN-SG-123", "CT02", "30"});
+        populateCoachTable();
 
     }
 
