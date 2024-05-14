@@ -3,14 +3,9 @@ package main;
 
 import java.sql.SQLException;
 
-import javax.swing.JFrame;
-
 import connection.DatabaseConnection;
 
-/**
- *
- * @author binhb
- */
+
 public class Main {
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -40,6 +35,7 @@ public class Main {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

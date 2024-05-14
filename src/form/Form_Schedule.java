@@ -4,7 +4,6 @@ package form;
 import connection.ConnectData;
 import java.awt.Color;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,7 +45,7 @@ public class Form_Schedule extends javax.swing.JPanel{
         updateTotalPassengerCountDisplay();
     }
 
-    //SQL JDBC
+//SQL JDBC
 //-----------------------------------------------------------------------------------------------------
     public void insertScheduleDataToDatabase(String scheduleID, String trainID, String Origin, String Destination, String departureTime, String arrivalTime, String scheduleStatus){
         String query = "INSERT INTO railway_system.schedule (scheduleID, trainID, start_stationID, end_stationID, departureTime, arrivalTime, scheduleStatus) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -93,7 +92,7 @@ public class Form_Schedule extends javax.swing.JPanel{
         }
     }
     private void deleteScheduleDataFromDatabase(String scheduleID) {
-        String query = "DELETE FROM railway_system.train WHERE scheduleID = ?";
+        String query = "DELETE FROM railway_system.schedule WHERE scheduleID = ?";
         try (Connection conn = new ConnectData().connect();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, scheduleID);
@@ -113,7 +112,7 @@ public class Form_Schedule extends javax.swing.JPanel{
             pstmt.setString(4, departureTime);
             pstmt.setString(5, arrivalTime);
             pstmt.setString(6, scheduleStatus);
-            pstmt.setString(4, scheduleID);
+            pstmt.setString(7, scheduleID);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             // JOptionPane.showMessageDialog(this, "Error updating data: " + e.getMessage());
@@ -126,7 +125,7 @@ public class Form_Schedule extends javax.swing.JPanel{
         // Return true if it exists, false otherwise
         // This method needs to query the database and return the result
         // Example implementation:
-        String query = "SELECT COUNT(*) FROM railway_system.train WHERE scheduleID = ?";
+        String query = "SELECT COUNT(*) FROM railway_system.schedule WHERE scheduleID = ?";
         try (Connection conn = new ConnectData().connect();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, scheduleID);
@@ -213,6 +212,7 @@ public class Form_Schedule extends javax.swing.JPanel{
                 updateTotalPassengerCountDisplay();
                 table.repaint();
                 table.revalidate();
+                populateScheduleTable();
                 
             }
             

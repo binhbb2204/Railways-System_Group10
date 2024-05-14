@@ -1,12 +1,18 @@
 package form;
 
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
+import connection.ConnectData;
 import model.Model_Card;
 import model.TrainType;
 import swing.AddingActionEvent;
@@ -32,6 +38,92 @@ public class Form_Track extends javax.swing.JPanel {
     public void onSwitchBackToSchedule() {
         updateTotalPassengerCountDisplay();
     }
+//SQL JDBC
+//-----------------------------------------------------------------------------------------------------
+    public void insertTrackDataToDatabase(String trackID, String station1ID, String station2ID, int distance){
+        String query = "INSERT INTO railway_system.track (trackID, station1ID, station2ID, distance) VALUES (?, ?, ?, ?)";
+        try(Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query)){
+            pstmt.setString(1, trackID);
+            pstmt.setString(2, station1ID);
+            pstmt.setString(2, station2ID);
+            pstmt.setInt(4, distance);
+            pstmt.executeUpdate();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage());
+        }
+    }
+    public void populateTrackTable(){
+        String query = "SELECT trackID, station1ID, station2ID, distance FROM railway_system.track";
+        try(Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery()){
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.setRowCount(0);
+
+                while(rs.next()){
+                    String trackID = rs.getString("trackID");
+                    String station1ID = rs.getString("station1ID");
+                    String station2ID = rs.getString("station2ID");
+                    int distance = rs.getInt("distance");
+                    //IF that column is a combo box, we need to convert it back to combo box by using the code below
+    
+                    model.addRow(new Object[]{trackID, station1ID, station2ID, distance});
+                }
+        }
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(this, "Error retrieving data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    private void deleteTrackDataFromDatabase(String trackID) {
+        String query = "DELETE FROM railway_system.track WHERE trackID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, trackID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error deleting data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    private void updateTrackDataInDatabase(String trackID, String station1ID, String station2ID, int distance) {
+        String query = "UPDATE railway_system.track SET station1ID = ?, station2ID = ?, distance = ? WHERE stationID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, station1ID);
+            pstmt.setString(2, station2ID);
+            pstmt.setInt(3, distance);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error updating data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    private boolean checkIfTrackIdExists(String trackID) {
+        // Implement the logic to check if the train ID exists in the database
+        // Return true if it exists, false otherwise
+        // This method needs to query the database and return the result
+        // Example implementation:
+        String query = "SELECT COUNT(*) FROM railway_system.track WHERE trackID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, trackID);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error checking if ID exists: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+//----------------------------------------------------------------------------------------------------- 
     public Form_Track() {
         initComponents();
 
@@ -40,7 +132,7 @@ public class Form_Track extends javax.swing.JPanel {
             @Override
             public void onAdding(int row) {
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
-                model.addRow(new Object[]{"", "", ""});
+                model.addRow(new Object[]{"", "", "", ""});
                 model.fireTableDataChanged();
                 updateTotalPassengerCountDisplay();
             }
@@ -68,9 +160,10 @@ public class Form_Track extends javax.swing.JPanel {
                     table.getCellEditor().stopCellEditing();
                 }
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
-                String trainID = model.getValueAt(row, 0).toString();
+                String trackID = model.getValueAt(row, 0).toString();
                 
                 // Delete data from the database
+                deleteTrackDataFromDatabase(trackID);
                 //deleteTrainDataFromDatabase(trainID);
                 model.removeRow(row);
                 updateTotalPassengerCountDisplay();
@@ -81,29 +174,28 @@ public class Form_Track extends javax.swing.JPanel {
                 editable = false;
                 ((DefaultTableModel)table.getModel()).fireTableDataChanged();
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
-                // String id = model.getValueAt(row, 0).toString();
-                // String name = model.getValueAt(row, 1).toString();
-                // int capacity = Integer.parseInt(model.getValueAt(row, 2).toString());
-                // String type = model.getValueAt(row, 3).toString();
-                // if (checkIfTrainIdExists(id)) {
-                //     // Train ID exists, so update the record
-                //     updateTrainDataInDatabase(id, name, capacity, type);
-                // } else {
-                //     // Train ID does not exist, so insert a new record
-                //     insertTrainDataToDatabase(id, name, capacity, type);
-                // }
+                String trackID = model.getValueAt(row, 0).toString();
+                String station1ID = model.getValueAt(row, 1).toString();
+                String station2ID = model.getValueAt(row, 2).toString();
+                int distance = Integer.parseInt(model.getValueAt(row, 3).toString());
+                if(checkIfTrackIdExists(trackID)){
+                    updateTrackDataInDatabase(trackID, station1ID, station2ID, distance);
+                }
+                else{
+                    insertTrackDataToDatabase(trackID, station1ID, station2ID, distance);
+                }
                 table.repaint();
                 table.revalidate();
                 updateTotalPassengerCountDisplay();
-                
+                populateTrackTable();
             }
             
             
             
             
         };
-        table.getColumnModel().getColumn(3).setCellRenderer(new TableActionCellRender());
-        table.getColumnModel().getColumn(3).setCellEditor(new TableActionCellEditor(event));
+        table.getColumnModel().getColumn(4).setCellRenderer(new TableActionCellRender());
+        table.getColumnModel().getColumn(4).setCellEditor(new TableActionCellEditor(event));
         card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
         updateTotalPassengerCountDisplay();
@@ -115,8 +207,9 @@ public class Form_Track extends javax.swing.JPanel {
         JPanel p = new JPanel();
         p.setBackground(Color.WHITE);
         sPTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
-        table.addRow(new Object[]{"1", "Ha Noi", "Sai Gon"});
-        table.addRow(new Object[]{"2", "Sai Gon", "Phu Yen"});
+        // table.addRow(new Object[]{"1", "Ha Noi", "Sai Gon"});
+        // table.addRow(new Object[]{"2", "Sai Gon", "Phu Yen"});
+        populateTrackTable();
 
     }
 
@@ -173,11 +266,11 @@ public class Form_Track extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Track ID", "Station 1", "Station 2", "Action"
+                "Track ID", "Station 1", "Station 2", "Distance (km)","Action"
             }
         ) {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                if(columnIndex == 3){
+                if(columnIndex == 4){
                     return true;
                 }
                 return rowIndex == editableRow && editable;
@@ -196,7 +289,7 @@ public class Form_Track extends javax.swing.JPanel {
                     .addGroup(panelBorder1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cmdAdding, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmdAdding, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel5)))
                 .addContainerGap())
@@ -204,19 +297,15 @@ public class Form_Track extends javax.swing.JPanel {
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelBorder1Layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(cmdAdding, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelBorder1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(cmdAdding, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sPTable, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 20, Short.MAX_VALUE))
+                .addComponent(sPTable, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                .addGap(20, 20, 20))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -235,9 +324,9 @@ public class Form_Track extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(panelBorder1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addGap(20, 20, 20)
+                .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(20, 20, 20))
         );
     }// </editor-fold>//GEN-END:initComponents
 

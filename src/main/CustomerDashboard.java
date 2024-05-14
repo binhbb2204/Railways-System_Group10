@@ -5,41 +5,19 @@ import java.awt.*;
 import javax.swing.JComponent;
 import javax.swing.*;
 import event.EventMenuSelected;
-import form.Form_Coach;
-import form.Form_CoachType;
-import form.Form_3;
-import form.Form_Schedule;
-import form.Form_Seat;
-import form.Form_Station;
-import form.Form_Track;
-import form.Form_Train;
-import form.Form_Passenger;
+import form.Form_Timetable;
+import glasspanepopup.GlassPanePopup;
+
 
 
 public class CustomerDashboard extends javax.swing.JFrame {
-
-    private Form_Schedule schedule;
-    private Form_Coach coach;
-    private Form_Train train;
-    private Form_3 form3;
-    private Form_Passenger passenger;
-    private Form_Station station;
-    private Form_CoachType coachType;
-    private Form_Seat seat;
-    private Form_Track track;
+    private Form_Timetable timetable;
 
     public CustomerDashboard() {
+        GlassPanePopup.install(this);
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
-        schedule = new Form_Schedule();
-        coach = new Form_Coach();
-        train = new Form_Train();
-        form3 = new Form_3();
-        passenger = new Form_Passenger();
-        station = new Form_Station();
-        coachType = new Form_CoachType();
-        seat = new Form_Seat();
-        track = new Form_Track();
+        timetable = new Form_Timetable();
         menu.initMoving(CustomerDashboard.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
@@ -54,6 +32,7 @@ public class CustomerDashboard extends javax.swing.JFrame {
                     
                 }
                 else if(index == 4){
+                    setForm(timetable);
                     
                 }
                 else if(index == 5){
@@ -73,6 +52,9 @@ public class CustomerDashboard extends javax.swing.JFrame {
                     LoginSignup loginSignup = new LoginSignup();
                     loginSignup.setVisible(true);
 
+                }
+                else if(index == 14){
+                    System.exit(0);
                 }
             }
         });

@@ -179,7 +179,7 @@ public class LoginSignup extends javax.swing.JFrame {
                         Thread.sleep(3000 + new Random().nextInt(2000));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-            }
+                    }
                 // Hide loading and show success message on the Swing event dispatch thread
             SwingUtilities.invokeLater(() -> {
                 loading.setVisible(false);

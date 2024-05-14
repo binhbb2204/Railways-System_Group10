@@ -2,14 +2,22 @@
 package form;
 
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
+import connection.ConnectData;
 import swing.AddingActionEvent;
 import swing.ScrollBar;
 import swing.TableActionCellEditor;
@@ -66,13 +74,129 @@ public class Form_Passenger extends javax.swing.JPanel {
     public static int getTotalPassengers(){
         return totalPassengers;
     }
+//SQL JDBC
+//-----------------------------------------------------------------------------------------------------
+    private int insertPassengerDataToDatabase(String firstName, String lastName, String phoneNumber, String email, String status) {
+        int generatedPassengerID = -1;
+        String query = "INSERT INTO railway_system.passenger (first_name, last_name, phone_number, email, status) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, firstName);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, phoneNumber);
+            if (email != null && !email.isEmpty()) {
+                pstmt.setString(4, email);
+            } 
+            else {
+                pstmt.setNull(4, Types.VARCHAR);
+            }
+            pstmt.setString(5, status);
+            pstmt.executeUpdate();
+            try (ResultSet r = pstmt.getGeneratedKeys()) {
+                if (r.next()) {
+                    generatedPassengerID = r.getInt(1); // This is the auto-generated passengerID
+                }
+            }
+            } 
+            catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error saving data: " + e.getMessage());
+            }
+        return generatedPassengerID;
+    }
+
+
+    public void populatePassengerTable() {
+        String query = "SELECT passengerID, first_name, last_name, phone_number, email, status FROM railway_system.passenger ORDER BY passengerID ASC";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+             ResultSet rs = pstmt.executeQuery()) {
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            model.setRowCount(0);
+    
+            while (rs.next()) {
+                int passengerID = rs.getInt("passengerID");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                String phoneNumber = rs.getString("phone_number");
+                String email = rs.getString("email");
+                String status = rs.getString("status");
+                PassengerStatus passengerStatus = PassengerStatus.valueOf(status);
+                if (email != null && !email.isEmpty()) {
+                    
+                } else {
+                    email = "";
+                }
+                model.addRow(new Object[]{passengerID, firstName, lastName, phoneNumber, email, passengerStatus});
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error retrieving data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    private void deletePassengerDataFromDatabase(int passengerID) {
+        String query = "DELETE FROM railway_system.passenger WHERE passengerID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, passengerID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error deleting data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void updatePassengerDataInDatabase(int passengerID, String firstName, String lastName, String phoneNumber, String email, String status) {
+        String query = "UPDATE railway_system.passenger SET first_name = ?, last_name = ?, phone_number = ?, email = ?, status = ? WHERE passengerID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, firstName);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, phoneNumber);
+            pstmt.setString(4, email);
+            pstmt.setString(5, status);
+            pstmt.setInt(6, passengerID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error updating data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    private boolean checkIfPassengerIdExists(int passengerID) {
+        String query = "SELECT COUNT(*) FROM railway_system.passenger WHERE passengerID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, passengerID);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error checking if ID exists: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    
+
+
+//-----------------------------------------------------------------------------------------------------
+
     public Form_Passenger() {
         initComponents();
         AddingActionEvent event1 = new AddingActionEvent() {
             @Override
             public void onAdding(int row) {
+                int generatedPassengerID = insertPassengerDataToDatabase("", "", "", "", PassengerStatus.TICKETED.toString());
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
-                model.addRow(new Object[]{"", "", "", "", "", "", PassengerStatus.TICKETED});
+                model.addRow(new Object[]{generatedPassengerID, "", "", "", "", PassengerStatus.TICKETED});
                 model.fireTableDataChanged();
                 updateTotalPassengerCount();
                 
@@ -99,6 +223,8 @@ public class Form_Passenger extends javax.swing.JPanel {
                     table.getCellEditor().stopCellEditing();
                 }
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
+                int passengerID = Integer.parseInt(model.getValueAt(row, 0).toString());
+                deletePassengerDataFromDatabase(passengerID);
                 model.removeRow(row);
                 updateTotalPassengerCount();
             }
@@ -107,9 +233,25 @@ public class Form_Passenger extends javax.swing.JPanel {
                 editableRow = row;
                 editable = false;
                 ((DefaultTableModel)table.getModel()).fireTableDataChanged();
-                
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                int passengerID = Integer.parseInt(model.getValueAt(row, 0).toString());
+                String firstName = model.getValueAt(row, 1).toString();
+                String lastName = model.getValueAt(row, 2).toString();
+                String phoneNumber = model.getValueAt(row, 3).toString();
+                String email = model.getValueAt(row, 4).toString();
+                String status = model.getValueAt(row, 5).toString();
+                if (checkIfPassengerIdExists(passengerID)) {
+                // Passenger ID exists, so update the record
+                    updatePassengerDataInDatabase(passengerID, firstName, lastName, phoneNumber, email, status);
+                } 
+                else {
+                // Passenger ID does not exist, so insert a new record
+                    insertPassengerDataToDatabase(firstName, lastName, phoneNumber, email, status);
+                }
+
                 table.repaint();
                 table.revalidate();
+                populatePassengerTable();
                 
             }
             
@@ -139,16 +281,17 @@ public class Form_Passenger extends javax.swing.JPanel {
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
         //table.getColumModel is used for the status column because it's a JComboBox
         table.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JComboBox<>(PassengerStatus.values())));
-        table.addRow(new Object[]{"01","Tran", "Thanh An", "0983127301", "thanhan@gmail.com",PassengerStatus.TICKETED});
-        table.addRow(new Object[]{"02","Nguyen", "Le Binh", "0957483948", "lebinh@gmail.com",PassengerStatus.TICKETED});
-        table.addRow(new Object[]{"03","Pham", "Van Cuong", "0956473849", "vancuong@gmail.com",PassengerStatus.CANCELLED});
-        table.addRow(new Object[]{"04","Le", "Trang Dao", "0984930293", "trangdao@gmail.com",PassengerStatus.TICKETED});
-        table.addRow(new Object[]{"05","Ly", "Minh Thong", "0949303938", "minhthong@gmail.com",PassengerStatus.ARRIVED});
-        table.addRow(new Object[]{"06","Nguyen", "Tien Dat", "0955584939", "tiendat@gmail.com",PassengerStatus.TICKETED});
-        table.addRow(new Object[]{"07","Mike", "Tyson", "0984877449", "mike@gmail.com",PassengerStatus.ARRIVED});
-        table.addRow(new Object[]{"08","Mc", "John", "0911122345", "john@gmail.com",PassengerStatus.CANCELLED});
-        table.addRow(new Object[]{"09","Tran", "Van Cao", "0940459345", "tom@gmail.com",PassengerStatus.TICKETED});
-        table.addRow(new Object[]{"10","Michael", "Jackson", "0983857491", "michael@gmail.com",PassengerStatus.TICKETED});
+        // table.addRow(new Object[]{"01","Tran", "Thanh An", "0983127301", "thanhan@gmail.com",PassengerStatus.TICKETED});
+        // table.addRow(new Object[]{"02","Nguyen", "Le Binh", "0957483948", "lebinh@gmail.com",PassengerStatus.TICKETED});
+        // table.addRow(new Object[]{"03","Pham", "Van Cuong", "0956473849", "vancuong@gmail.com",PassengerStatus.CANCELLED});
+        // table.addRow(new Object[]{"04","Le", "Trang Dao", "0984930293", "trangdao@gmail.com",PassengerStatus.TICKETED});
+        // table.addRow(new Object[]{"05","Ly", "Minh Thong", "0949303938", "minhthong@gmail.com",PassengerStatus.ARRIVED});
+        // table.addRow(new Object[]{"06","Nguyen", "Tien Dat", "0955584939", "tiendat@gmail.com",PassengerStatus.TICKETED});
+        // table.addRow(new Object[]{"07","Mike", "Tyson", "0984877449", "mike@gmail.com",PassengerStatus.ARRIVED});
+        // table.addRow(new Object[]{"08","Mc", "John", "0911122345", "john@gmail.com",PassengerStatus.CANCELLED});
+        // table.addRow(new Object[]{"09","Tran", "Van Cao", "0940459345", "tom@gmail.com",PassengerStatus.TICKETED});
+        // table.addRow(new Object[]{"10","Michael", "Jackson", "0983857491", "michael@gmail.com",PassengerStatus.TICKETED});
+        populatePassengerTable();
 
         //this calls is used to count the total passenger, which is from that method, placing it beneath the table.addRow 
         updateTotalPassengerCount();
