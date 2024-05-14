@@ -1,10 +1,8 @@
 
 package form;
 
-import model.CoachType;
+
 import model.Model_Card;
-import model.StatusType;
-import model.TrainType;
 import swing.AddingActionEvent;
 import swing.ScrollBar;
 import swing.TableActionCellEditor;
@@ -20,6 +18,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+
+
 public class Form_Coach extends javax.swing.JPanel {
     private boolean editable = false;
     private int editableRow = -1;
@@ -37,7 +42,7 @@ public class Form_Coach extends javax.swing.JPanel {
         updateTotalPassengerCountDisplay();
     }
 
-      //SQL JDBC
+//SQL JDBC
 //-----------------------------------------------------------------------------------------------------
     public void insertCoachDataToDatabase(String coachID, String trainID,  String coach_typeID, int coachCapacity){
         String query = "INSERT INTO railway_system.coach (coachID, trainID, coach_TypeID, coachCapacity) VALUES (?, ?, ?, ?)";
@@ -62,15 +67,30 @@ public class Form_Coach extends javax.swing.JPanel {
             ResultSet rs = pstmt.executeQuery()){
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             model.setRowCount(0);
-
+            
+            List<Object[]> rows = new ArrayList<>();
             while(rs.next()){
                 String coachID = rs.getString("coachID");
                 String trainID = rs.getString("trainID");
                 String coach_typeID = rs.getString("coach_typeID");
                 int coachCapacity = rs.getInt("coachCapacity");
-                model.addRow(new Object[]{coachID, trainID, coach_typeID, coachCapacity});
+                rows.add(new Object[]{coachID, trainID, coach_typeID, coachCapacity});
             }
+            Collections.sort(rows, new Comparator<Object[]>() {
+                public int compare(Object[] row1, Object[] row2) {
+                    String trainID1 = (String) row1[1];
+                    String trainID2 = (String) row2[1];
+                    return extractNumber(trainID1) - extractNumber(trainID2);
+                }
 
+                private int extractNumber(String trainID){
+                    String numberStr = trainID.replaceAll("\\D+", "");
+                    return Integer.parseInt(numberStr);
+                }
+            });
+            for(Object[] row : rows){
+                model.addRow(row);
+            }
         }
         catch(SQLException e){
             JOptionPane.showMessageDialog(this, "Error retrieving data: " + e.getMessage());
@@ -156,7 +176,7 @@ public class Form_Coach extends javax.swing.JPanel {
                 table.repaint();
                 table.revalidate();
                 updateTotalPassengerCountDisplay();
-                populateCoachTable();
+
                 
             }
             @Override
