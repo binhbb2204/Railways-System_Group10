@@ -44,14 +44,13 @@ public class Form_Coach extends javax.swing.JPanel {
 
 //SQL JDBC
 //-----------------------------------------------------------------------------------------------------
-    public void insertCoachDataToDatabase(String coachID, String trainID,  String coach_typeID, int coachCapacity){
-        String query = "INSERT INTO railway_system.coach (coachID, trainID, coach_TypeID, coachCapacity) VALUES (?, ?, ?, ?)";
+    public void insertCoachDataToDatabase(String coachID, String trainID,  String coach_typeID){
+        String query = "INSERT INTO railway_system.coach (coachID, trainID, coach_TypeID) VALUES (?, ?, ?)";
         try(Connection conn = new ConnectData().connect();
             PreparedStatement pstmt = conn.prepareStatement(query)){
             pstmt.setString(1, coachID);
             pstmt.setString(2, trainID);
             pstmt.setString(3, coach_typeID);
-            pstmt.setInt(4, coachCapacity);
             pstmt.executeUpdate();
         }
         catch (SQLException e){
@@ -61,7 +60,7 @@ public class Form_Coach extends javax.swing.JPanel {
     }
 
     public void populateCoachTable(){
-        String query = "SELECT coachID, trainID, coach_typeID, coachCapacity FROM railway_system.coach";
+        String query = "SELECT coachID, trainID, coach_typeID FROM railway_system.coach";
         try(Connection conn = new ConnectData().connect();
             PreparedStatement pstmt = conn.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery()){
@@ -73,8 +72,8 @@ public class Form_Coach extends javax.swing.JPanel {
                 String coachID = rs.getString("coachID");
                 String trainID = rs.getString("trainID");
                 String coach_typeID = rs.getString("coach_typeID");
-                int coachCapacity = rs.getInt("coachCapacity");
-                rows.add(new Object[]{coachID, trainID, coach_typeID, coachCapacity});
+
+                rows.add(new Object[]{coachID, trainID, coach_typeID});
             }
             Collections.sort(rows, new Comparator<Object[]>() {
                 public int compare(Object[] row1, Object[] row2) {
@@ -109,14 +108,13 @@ public class Form_Coach extends javax.swing.JPanel {
         }
     }
 
-    private void updateCoachDataInDatabase(String coachID, String newTrainID, String newCoach_typeID, int newCoachCapacity) {
-        String query = "UPDATE railway_system.coach SET trainID = ?, coach_typeID = ?, coachCapacity = ? WHERE coachID = ?";
+    private void updateCoachDataInDatabase(String coachID, String newTrainID, String newCoach_typeID) {
+        String query = "UPDATE railway_system.coach SET trainID = ?, coach_typeID = ? WHERE coachID = ?";
         try (Connection conn = new ConnectData().connect();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, newTrainID);
             pstmt.setString(2, newCoach_typeID);
-            pstmt.setInt(3, newCoachCapacity);
-            pstmt.setString(4, coachID);
+            pstmt.setString(3, coachID);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             // JOptionPane.showMessageDialog(this, "Error updating data: " + e.getMessage());
@@ -158,7 +156,7 @@ public class Form_Coach extends javax.swing.JPanel {
             @Override
             public void onAdding(int row) {
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
-                model.addRow(new Object[]{"", "", "", ""});
+                model.addRow(new Object[]{"", "", ""});
                 model.fireTableDataChanged();
                 updateTotalPassengerCountDisplay();
             }
@@ -202,13 +200,12 @@ public class Form_Coach extends javax.swing.JPanel {
                 String coachID = model.getValueAt(row, 0).toString();
                 String trainID = model.getValueAt(row, 1).toString();
                 String coach_typeID = model.getValueAt(row, 2).toString();
-                int coachCapacity = Integer.parseInt(model.getValueAt(row, 3).toString());
                 if (checkIfCoachIdExists(coachID)) {
                     // Coach ID exists, so update the record
-                    updateCoachDataInDatabase(coachID, trainID, coach_typeID, coachCapacity);
+                    updateCoachDataInDatabase(coachID, trainID, coach_typeID);
                 } else {
                     // Coach ID does not exist, so insert a new record
-                    insertCoachDataToDatabase(coachID, trainID, coach_typeID, coachCapacity);
+                    insertCoachDataToDatabase(coachID, trainID, coach_typeID);
                 }
                 
                 table.repaint();
@@ -220,8 +217,8 @@ public class Form_Coach extends javax.swing.JPanel {
             
             
         };
-        table.getColumnModel().getColumn(4).setCellRenderer(new TableActionCellRender());
-        table.getColumnModel().getColumn(4).setCellEditor(new TableActionCellEditor(event));
+        table.getColumnModel().getColumn(3).setCellRenderer(new TableActionCellRender());
+        table.getColumnModel().getColumn(3).setCellEditor(new TableActionCellEditor(event));
 
         card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
@@ -291,11 +288,11 @@ public class Form_Coach extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Coach ID", "Train ID", "Coach Type ID", "Capacity", "Action"
+                "Coach ID", "Train ID", "Coach Type ID", "Action"
             }
         ) {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                if(columnIndex == 4){
+                if(columnIndex == 3){
                     return true;
                 }
                 return rowIndex == editableRow && editable;

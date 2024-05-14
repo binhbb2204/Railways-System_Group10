@@ -43,7 +43,7 @@ public class Form_Train extends javax.swing.JPanel {
 //SQL JDBC
 //-----------------------------------------------------------------------------------------------------
     public void insertTrainDataToDatabase(String trainID, String trainName, int couchTotal, String trainType){
-        String query = "INSERT INTO railway_system.train (trainID, trainName, couchTotal, trainType) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO railway_system.train (trainID, trainName, coachTotal, trainType) VALUES (?, ?, ?, ?)";
         try(Connection conn = new ConnectData().connect();
             PreparedStatement pstmt = conn.prepareStatement(query)){
             pstmt.setString(1, trainID);
@@ -58,7 +58,7 @@ public class Form_Train extends javax.swing.JPanel {
         }
     }
     public void populateTrainTable(){
-        String query = "SELECT trainID, trainName, couchTotal, trainType FROM railway_system.train";
+        String query = "SELECT trainID, trainName, coachTotal, trainType FROM railway_system.train";
         try(Connection conn = new ConnectData().connect();
             PreparedStatement pstmt = conn.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery()){
@@ -68,7 +68,7 @@ public class Form_Train extends javax.swing.JPanel {
                 while(rs.next()){
                     String trainID = rs.getString("trainID");
                     String trainName = rs.getString("trainName");
-                    int couchTotal = rs.getInt("couchTotal");
+                    int couchTotal = rs.getInt("coachTotal");
                     String trainTypeString = rs.getString("trainType");
                     //IF that column is a combo box, we need to convert it back to combo box by using the code below
                     TrainType trainType = TrainType.valueOf(trainTypeString);
@@ -92,7 +92,7 @@ public class Form_Train extends javax.swing.JPanel {
         }
     }
     private void updateTrainDataInDatabase(String trainID, String newTrainName, int newcouchTotal, String newTrainType) {
-        String query = "UPDATE railway_system.train SET trainName = ?, couchTotal = ?, trainType = ? WHERE trainID = ?";
+        String query = "UPDATE railway_system.train SET trainName = ?, coachTotal = ?, trainType = ? WHERE trainID = ?";
         try (Connection conn = new ConnectData().connect();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, newTrainName);
