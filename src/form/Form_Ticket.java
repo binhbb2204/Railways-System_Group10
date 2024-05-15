@@ -92,9 +92,10 @@ public class Form_Ticket extends javax.swing.JPanel {
             // ...
             //    Passenger ID dne, insert a new record
             //...
-            updateTotalPassengerCountDisplay();
+            
             table.repaint();
             table.revalidate();
+            updateTotalPassengerCountDisplay();
             //populateTicketTable();
         
         }
@@ -106,6 +107,7 @@ public class Form_Ticket extends javax.swing.JPanel {
         table.getColumnModel().getColumn(4).setCellEditor(new TableActionCellEditor(event));
         card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
+        updateTotalPassengerCountDisplay();
         //card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", "₫ 9,112,001,000", "increased by 5%"));
         
         //add row table
