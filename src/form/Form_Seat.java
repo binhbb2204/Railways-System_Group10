@@ -161,6 +161,7 @@ public void populateSeatTable() {
                 updateTotalPassengerCountDisplay();
                 table.repaint();
                 table.revalidate();
+                populateSeatTable();
                 
             }
             

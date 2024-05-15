@@ -43,13 +43,14 @@ public class Form_CoachType extends javax.swing.JPanel {
 
 //SQL JDBC
 //-----------------------------------------------------------------------------------------------------
-    public void insertCoachTypeDataToDatabase(String coach_typeID, String type, int price){
-        String query = "INSERT INTO railway_system.coach_type (coach_typeID, type, price) VALUES (?, ?, ?)";
+    public void insertCoachTypeDataToDatabase(String coach_typeID, String type, int price, int capacity){
+        String query = "INSERT INTO railway_system.coach_type (coach_typeID, type, price, capacity) VALUES (?, ?, ?, ?)";
         try(Connection conn = new ConnectData().connect();
             PreparedStatement pstmt = conn.prepareStatement(query)){
             pstmt.setString(1, coach_typeID);
             pstmt.setString(2, type);
             pstmt.setInt(3, price);
+            pstmt.setInt(4, capacity);
             pstmt.executeUpdate();
         }
         catch (SQLException e){
@@ -59,7 +60,7 @@ public class Form_CoachType extends javax.swing.JPanel {
     }
 
     public void populateCoachTypeTable(){
-        String query = "SELECT coach_typeID, type, price FROM railway_system.coach_type";
+        String query = "SELECT coach_typeID, type, price, capacity FROM railway_system.coach_type";
         try(Connection conn = new ConnectData().connect();
             PreparedStatement pstmt = conn.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery()){
@@ -70,9 +71,10 @@ public class Form_CoachType extends javax.swing.JPanel {
                     String coach_typeID = rs.getString("coach_typeID");
                     String coach_type = rs.getString("type");
                     int price = rs.getInt("price");
+                    int capacity = rs.getInt("capacity");
                     //convert it back to combo bõ
                     CoachType coachtype = CoachType.valueOf(coach_type);
-                    model.addRow(new Object[]{coach_typeID, coachtype, price });
+                    model.addRow(new Object[]{coach_typeID, coachtype, price, capacity});
                     
                 }
         }
@@ -94,13 +96,14 @@ public class Form_CoachType extends javax.swing.JPanel {
         }
     }
 
-    private void updateCoachTypeDataInDatabase(String coach_typeID, String newType, double newPrice) {
-        String query = "UPDATE railway_system.coach_type SET type = ?, price = ? WHERE coach_typeID = ?";
+    private void updateCoachTypeDataInDatabase(String coach_typeID, String newType, int newPrice, int capacity) {
+        String query = "UPDATE railway_system.coach_type SET type = ?, price = ?, capacity = ? WHERE coach_typeID = ?";
         try (Connection conn = new ConnectData().connect();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, newType);
-            pstmt.setDouble(2, newPrice);
-            pstmt.setString(3, coach_typeID);
+            pstmt.setInt(2, newPrice);
+            pstmt.setInt(3, capacity);
+            pstmt.setString(4, coach_typeID);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Error updating data: " + e.getMessage());
@@ -139,7 +142,7 @@ public class Form_CoachType extends javax.swing.JPanel {
             @Override
             public void onAdding(int row) {
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
-                model.addRow(new Object[]{"", CoachType.HARD_SEAT, ""});
+                model.addRow(new Object[]{"", CoachType.HARD_SEAT, "", ""});
                 model.fireTableDataChanged();
                 updateTotalPassengerCountDisplay();
             }
@@ -181,12 +184,13 @@ public class Form_CoachType extends javax.swing.JPanel {
                 String coach_typeID = model.getValueAt(row, 0).toString();
                 String type = model.getValueAt(row, 1).toString();
                 int price = Integer.parseInt(model.getValueAt(row, 2).toString());
+                int capacity = Integer.parseInt(model.getValueAt(row, 3).toString());
                 if (checkIfCoachTypeIdExists(type)) {
                     //update the record
-                    updateCoachTypeDataInDatabase(coach_typeID, type, price);
+                    updateCoachTypeDataInDatabase(coach_typeID, type, price, capacity);
                 } else {
                     //insert new record
-                    insertCoachTypeDataToDatabase(coach_typeID, type, price);
+                    insertCoachTypeDataToDatabase(coach_typeID, type, price, capacity);
                 }
                 updateTotalPassengerCountDisplay();
                 table.repaint();
@@ -197,8 +201,8 @@ public class Form_CoachType extends javax.swing.JPanel {
             
             
         };
-        table.getColumnModel().getColumn(3).setCellRenderer(new TableActionCellRender());
-        table.getColumnModel().getColumn(3).setCellEditor(new TableActionCellEditor(event));
+        table.getColumnModel().getColumn(4).setCellRenderer(new TableActionCellRender());
+        table.getColumnModel().getColumn(4).setCellEditor(new TableActionCellEditor(event));
 
         card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
@@ -259,11 +263,11 @@ public class Form_CoachType extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Coach Type ID", "Type", "Price", "Action"
+                "Coach Type ID", "Type", "Price", "Capacity", "Action"
             }
         ) {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                if(columnIndex == 3){
+                if(columnIndex == 4){
                     return true;
                 }
                 return rowIndex == editableRow && editable;
