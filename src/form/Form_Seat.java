@@ -130,17 +130,7 @@ public void populateSeatTable() {
     public Form_Seat() {
         initComponents();
 
-        AddingActionEvent event1 = new AddingActionEvent() {
-            @Override
-            public void onAdding(int row) {
-                DefaultTableModel model = (DefaultTableModel) table.getModel();
-                model.addRow(new Object[]{"", "", ""});
-                model.fireTableDataChanged();
-                updateTotalPassengerCountDisplay();
-            }
-            
-        };
-        cmdAdding.initEvent(event1, 0);
+
 
         TableActionEvent event = new TableActionEvent() {
             @Override

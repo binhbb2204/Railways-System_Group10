@@ -43,13 +43,13 @@ public class Form_CoachType extends javax.swing.JPanel {
 
 //SQL JDBC
 //-----------------------------------------------------------------------------------------------------
-    public void insertCoachTypeDataToDatabase(String coach_typeID, String type, double price){
+    public void insertCoachTypeDataToDatabase(String coach_typeID, String type, int price){
         String query = "INSERT INTO railway_system.coach_type (coach_typeID, type, price) VALUES (?, ?, ?)";
         try(Connection conn = new ConnectData().connect();
             PreparedStatement pstmt = conn.prepareStatement(query)){
             pstmt.setString(1, coach_typeID);
             pstmt.setString(2, type);
-            pstmt.setDouble(3, price);
+            pstmt.setInt(3, price);
             pstmt.executeUpdate();
         }
         catch (SQLException e){
@@ -69,7 +69,7 @@ public class Form_CoachType extends javax.swing.JPanel {
                 while(rs.next()){
                     String coach_typeID = rs.getString("coach_typeID");
                     String coach_type = rs.getString("type");
-                    double price = rs.getDouble("price");
+                    int price = rs.getInt("price");
                     //convert it back to combo bõ
                     CoachType coachtype = CoachType.valueOf(coach_type);
                     model.addRow(new Object[]{coach_typeID, coachtype, price });
@@ -180,7 +180,7 @@ public class Form_CoachType extends javax.swing.JPanel {
                 DefaultTableModel model = (DefaultTableModel) table.getModel(); 
                 String coach_typeID = model.getValueAt(row, 0).toString();
                 String type = model.getValueAt(row, 1).toString();
-                double price = Double.parseDouble(model.getValueAt(row, 2).toString());
+                int price = Integer.parseInt(model.getValueAt(row, 2).toString());
                 if (checkIfCoachTypeIdExists(type)) {
                     //update the record
                     updateCoachTypeDataInDatabase(coach_typeID, type, price);
