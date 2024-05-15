@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <NonVisualComponents>
+    <Component class="component.PanelError" name="Error">
+    </Component>
+    <Component class="datechooser.DateChooser" name="dateDeparture">
+      <Properties>
+        <Property name="textRefernce" type="javax.swing.JTextField" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="txtDeparture"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="datechooser.DateChooser" name="dateReturn">
+      <Properties>
+        <Property name="textRefernce" type="javax.swing.JTextField" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="txtReturn"/>
+        </Property>
+      </Properties>
+    </Component>
+  </NonVisualComponents>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -16,13 +34,263 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <EmptySpace min="0" pref="400" max="32767" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <Component id="panelRound1" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <EmptySpace min="0" pref="300" max="32767" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <Component id="panelRound1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="302" max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
   </Layout>
+  <SubComponents>
+    <Container class="swing.PanelRound" name="panelRound1">
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jLabel2" max="32767" attributes="0"/>
+                      <Component id="jLabel1" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="txtFrom" pref="158" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                          <Component id="txtTo" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace pref="244" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel3" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="txtDeparture" max="32767" attributes="0"/>
+                              <Component id="txtReturn" pref="140" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="radioButton1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                          <Component id="radioButton2" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel1" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                      <Component id="txtFrom" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel3" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                      <Component id="txtDeparture" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel2" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                          <Component id="txtTo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="txtReturn" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jLabel4" alignment="0" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="radioButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="radioButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="13" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="14" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="7f" green="7f" red="7f" type="rgb"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="From:"/>
+          </Properties>
+        </Component>
+        <Component class="combo_suggestion.ComboBoxSuggestion" name="txtTo">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="39">
+                <StringItem index="0" value="Ha Noi"/>
+                <StringItem index="1" value="Phu Ly"/>
+                <StringItem index="2" value="Nam Dinh"/>
+                <StringItem index="3" value="Ninh Binh"/>
+                <StringItem index="4" value="Bim Son"/>
+                <StringItem index="5" value="Thanh Hoa"/>
+                <StringItem index="6" value="Minh Khoi"/>
+                <StringItem index="7" value="Cho Sy"/>
+                <StringItem index="8" value="Vinh"/>
+                <StringItem index="9" value="Yen Trung"/>
+                <StringItem index="10" value="Huong Pho"/>
+                <StringItem index="11" value="Dong Le"/>
+                <StringItem index="12" value="Dong Hoi"/>
+                <StringItem index="13" value="Dong Ha"/>
+                <StringItem index="14" value="Hue"/>
+                <StringItem index="15" value="Lang Co"/>
+                <StringItem index="16" value="Da Nang"/>
+                <StringItem index="17" value="Tra Kieu"/>
+                <StringItem index="18" value="Phu Cang"/>
+                <StringItem index="19" value="Tam Ky"/>
+                <StringItem index="20" value="Nui Thanh"/>
+                <StringItem index="21" value="Quang Ngai"/>
+                <StringItem index="22" value="Duc Pho"/>
+                <StringItem index="23" value="Bong Son"/>
+                <StringItem index="24" value="Dieu Tri"/>
+                <StringItem index="25" value="Tuy Hoa"/>
+                <StringItem index="26" value="Gia"/>
+                <StringItem index="27" value="Ninh Hoa"/>
+                <StringItem index="28" value="Gia"/>
+                <StringItem index="29" value="Ninh Hoa"/>
+                <StringItem index="30" value="Nha Trang"/>
+                <StringItem index="31" value="Nga Ba"/>
+                <StringItem index="32" value="Thap Cham"/>
+                <StringItem index="33" value="Song Mao"/>
+                <StringItem index="34" value="Ma Lam"/>
+                <StringItem index="35" value="Binh Thuan"/>
+                <StringItem index="36" value="Long Khanh"/>
+                <StringItem index="37" value="Bien Hoa"/>
+                <StringItem index="38" value="Sai Gon"/>
+              </StringArray>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel2">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="14" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="7f" green="7f" red="7f" type="rgb"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="To:"/>
+          </Properties>
+        </Component>
+        <Component class="combo_suggestion.ComboBoxSuggestion" name="txtFrom">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="39">
+                <StringItem index="0" value="Ha Noi"/>
+                <StringItem index="1" value="Phu Ly"/>
+                <StringItem index="2" value="Nam Dinh"/>
+                <StringItem index="3" value="Ninh Binh"/>
+                <StringItem index="4" value="Bim Son"/>
+                <StringItem index="5" value="Thanh Hoa"/>
+                <StringItem index="6" value="Minh Khoi"/>
+                <StringItem index="7" value="Cho Sy"/>
+                <StringItem index="8" value="Vinh"/>
+                <StringItem index="9" value="Yen Trung"/>
+                <StringItem index="10" value="Huong Pho"/>
+                <StringItem index="11" value="Dong Le"/>
+                <StringItem index="12" value="Dong Hoi"/>
+                <StringItem index="13" value="Dong Ha"/>
+                <StringItem index="14" value="Hue"/>
+                <StringItem index="15" value="Lang Co"/>
+                <StringItem index="16" value="Da Nang"/>
+                <StringItem index="17" value="Tra Kieu"/>
+                <StringItem index="18" value="Phu Cang"/>
+                <StringItem index="19" value="Tam Ky"/>
+                <StringItem index="20" value="Nui Thanh"/>
+                <StringItem index="21" value="Quang Ngai"/>
+                <StringItem index="22" value="Duc Pho"/>
+                <StringItem index="23" value="Bong Son"/>
+                <StringItem index="24" value="Dieu Tri"/>
+                <StringItem index="25" value="Tuy Hoa"/>
+                <StringItem index="26" value="Gia"/>
+                <StringItem index="27" value="Ninh Hoa"/>
+                <StringItem index="28" value="Gia"/>
+                <StringItem index="29" value="Ninh Hoa"/>
+                <StringItem index="30" value="Nha Trang"/>
+                <StringItem index="31" value="Nga Ba"/>
+                <StringItem index="32" value="Thap Cham"/>
+                <StringItem index="33" value="Song Mao"/>
+                <StringItem index="34" value="Ma Lam"/>
+                <StringItem index="35" value="Binh Thuan"/>
+                <StringItem index="36" value="Long Khanh"/>
+                <StringItem index="37" value="Bien Hoa"/>
+                <StringItem index="38" value="Sai Gon"/>
+              </StringArray>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtFromActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel3">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="14" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="7f" green="7f" red="7f" type="rgb"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="Departure:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtDeparture">
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel4">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="14" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="7f" green="7f" red="7f" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Return:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtReturn">
+        </Component>
+        <Component class="component.RadioButton" name="radioButton1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="One Way"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioButton1ActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="component.RadioButton" name="radioButton2">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Round Trip"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+  </SubComponents>
 </Form>

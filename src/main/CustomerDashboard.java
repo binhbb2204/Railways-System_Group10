@@ -5,6 +5,7 @@ import java.awt.*;
 import javax.swing.JComponent;
 import javax.swing.*;
 import event.EventMenuSelected;
+import form.Form_Search;
 import form.Form_Timetable;
 import glasspanepopup.GlassPanePopup;
 
@@ -12,18 +13,20 @@ import glasspanepopup.GlassPanePopup;
 
 public class CustomerDashboard extends javax.swing.JFrame {
     private Form_Timetable timetable;
+    private Form_Search search;
 
     public CustomerDashboard() {
         GlassPanePopup.install(this);
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
         timetable = new Form_Timetable();
+        search = new Form_Search();
         menu.initMoving(CustomerDashboard.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void selected(int index) {
                 if(index == 1){
-                    
+                    setForm(search);
                 }
                 else if(index == 2){
                     
@@ -58,7 +61,8 @@ public class CustomerDashboard extends javax.swing.JFrame {
                 }
             }
         });
-        //set the system is started/open, it starts at Schedule Form
+        //set the system is started/open, it starts at Search Form
+        setForm(search);
         
         
     }
