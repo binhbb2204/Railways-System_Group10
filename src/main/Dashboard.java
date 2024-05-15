@@ -77,6 +77,9 @@ public class Dashboard extends javax.swing.JFrame {
                 else if(index == 9){
                     setForm(seat);
                 }
+                else if(index == 10) {
+                    setForm(ticket);
+                }
                 else if(index == 11){
                     setForm(passenger);
                 }
