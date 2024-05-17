@@ -91,41 +91,43 @@ public class Form_Timetable extends javax.swing.JPanel {
 
                     return;
                 }
-                if(selectedDate.isBefore(currentDate)){
+                else if(selectedDate.isBefore(currentDate)){
                     GlassPanePopup.showPopup(Error);
                     Error.setData(new Model_Error("Error: The selected time of " + selectedDate + " has already elapsed. Please select a future date."));
                     
                     return;
                 }
-                while (rs.next()) {
-                    String scheduleID = rs.getString("scheduleID"); 
-                    String departureStation = rs.getString("Departure Station");
-                    String arrivalTime = rs.getString("Arrival Time");
-                    String departureTimeStr = rs.getString("Departure Time");
-                    LocalTime departureTime = LocalTime.parse(departureTimeStr);
-
-                
-                    // Initialize the date for the schedule if not already present
-                    currentDatePerSchedule.putIfAbsent(scheduleID, selectedDate);
+                else{
+                    while (rs.next()) {
+                        String scheduleID = rs.getString("scheduleID"); 
+                        String departureStation = rs.getString("Departure Station");
+                        String arrivalTime = rs.getString("Arrival Time");
+                        String departureTimeStr = rs.getString("Departure Time");
+                        LocalTime departureTime = LocalTime.parse(departureTimeStr);
+    
                     
-                
-                    // If this is not the first row and the departure time is earlier than the last departure time,
-                    // it indicates a new day has started for this schedule
-                    boolean isNewDay = lastDepartureTimePerSchedule.containsKey(scheduleID) && 
-                                       departureTime.isBefore(lastDepartureTimePerSchedule.get(scheduleID));
-                    // Update the last departure time for this schedule
-                    lastDepartureTimePerSchedule.put(scheduleID, departureTime);
-                    if (isNewDay) {
-                        // Increment the date for this schedule
-                        LocalDate newDate = currentDatePerSchedule.get(scheduleID).plusDays(1);
-                        currentDatePerSchedule.put(scheduleID, newDate);
-                    }
-                
-                    String formattedDepartureTime = departureTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-                    // Add the row to the table model with the new departure date
-                    model.addRow(new Object[]{departureStation, arrivalTime, formattedDepartureTime, currentDatePerSchedule.get(scheduleID).toString()});
-                }  
-            } 
+                        // Initialize the date for the schedule if not already present
+                        currentDatePerSchedule.putIfAbsent(scheduleID, selectedDate);
+                        
+                    
+                        // If this is not the first row and the departure time is earlier than the last departure time,
+                        // it indicates a new day has started for this schedule
+                        boolean isNewDay = lastDepartureTimePerSchedule.containsKey(scheduleID) && 
+                                           departureTime.isBefore(lastDepartureTimePerSchedule.get(scheduleID));
+                        // Update the last departure time for this schedule
+                        lastDepartureTimePerSchedule.put(scheduleID, departureTime);
+                        if (isNewDay) {
+                            // Increment the date for this schedule
+                            LocalDate newDate = currentDatePerSchedule.get(scheduleID).plusDays(1);
+                            currentDatePerSchedule.put(scheduleID, newDate);
+                        }
+                    
+                        String formattedDepartureTime = departureTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+                        // Add the row to the table model with the new departure date
+                        model.addRow(new Object[]{departureStation, arrivalTime, formattedDepartureTime, currentDatePerSchedule.get(scheduleID).toString()});
+                    }  
+                } 
+            }  
         }
         catch (SQLException e) {
             GlassPanePopup.showPopup(Error);

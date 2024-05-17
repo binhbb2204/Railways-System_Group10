@@ -1,6 +1,8 @@
-package model;
+package panelSearchList;
 
-public enum CoachType {
+import model.*;
+
+public enum SearchCoachType {
     SOFT_SLEEPER("Soft Sleeper"),
     HARD_SLEEPER("Hard Sleeper"),
     SOFT_SEAT("Soft Seat"),
@@ -13,11 +15,15 @@ public enum CoachType {
 
     private final String description;
 
-    CoachType(String description) {
+    SearchCoachType(String description) {
         this.description = description;
     }
 
     public String getDescription() {
         return description;
+    }
+    @Override
+    public String toString() {
+        return description; 
     }
 }

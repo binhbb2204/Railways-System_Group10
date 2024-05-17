@@ -110,26 +110,27 @@ public class Form_CoachType extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
-        private boolean checkIfCoachTypeIdExists(String trainID) {
-            // Implement the logic to check if the train ID exists in the database
-            // Return true if it exists, false otherwise
-            // This method needs to query the database and return the result
-            // Example implementation:
-            String query = "SELECT COUNT(*) FROM railway_system.coach_type WHERE coach_typeID = ?";
-            try (Connection conn = new ConnectData().connect();
-                 PreparedStatement pstmt = conn.prepareStatement(query)) {
-                pstmt.setString(1, trainID);
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    if (rs.next()) {
-                        int count = rs.getInt(1);
-                        return count > 0;
-                    }
+    
+    private boolean checkIfCoachTypeIdExists(String trainID) {
+        // Implement the logic to check if the train ID exists in the database
+        // Return true if it exists, false otherwise
+        // This method needs to query the database and return the result
+        String query = "SELECT COUNT(*) FROM railway_system.coach_type WHERE coach_typeID = ?";
+        try (Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, trainID);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    return count > 0;
                 }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Error checking if ID exists: " + e.getMessage());
-                e.printStackTrace();
             }
-            return false;
+        } 
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error checking if ID exists: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
     }
 //-----------------------------------------------------------------------------------------------------          
 
