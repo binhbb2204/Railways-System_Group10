@@ -67,7 +67,7 @@ public class Form_Journey extends javax.swing.JPanel {
         }
     }
 
-    public void populateJourneyTable(){
+    private void populateJourneyTable(){
         String query = "SELECT journeyID, scheduleID, stationID, arrivalTime, departureTime FROM railway_system.journey";
         try(Connection conn = new ConnectData().connect();
             PreparedStatement pstmt = conn.prepareStatement(query);

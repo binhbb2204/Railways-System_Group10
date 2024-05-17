@@ -34,11 +34,11 @@ public class Form_Timetable extends javax.swing.JPanel {
 
 //SQL JDBC
 //-----------------------------------------------------------------------------------------------------
-    public void populateTimetableTable(String trainName, String departureStationName, String arrivalStationName, SelectedDate d){
+    private void populateTimetableTable(String trainName, String departureStationName, String arrivalStationName, SelectedDate d){
          // Convert the selected date to LocalDate
         LocalDate selectedDate = LocalDate.of(d.getYear(), d.getMonth(), d.getDay());
         LocalDate currentDate = LocalDate.now();
-
+        
         // HashMap to keep track of the last departure time for each schedule
         HashMap<String, LocalTime> lastDepartureTimePerSchedule = new HashMap<>();
         // HashMap to keep track of the current date for each schedule
@@ -104,23 +104,27 @@ public class Form_Timetable extends javax.swing.JPanel {
                     String departureTimeStr = rs.getString("Departure Time");
                     LocalTime departureTime = LocalTime.parse(departureTimeStr);
 
+                
                     // Initialize the date for the schedule if not already present
                     currentDatePerSchedule.putIfAbsent(scheduleID, selectedDate);
-
+                    
+                
                     // If this is not the first row and the departure time is earlier than the last departure time,
                     // it indicates a new day has started for this schedule
-                    if (lastDepartureTimePerSchedule.containsKey(scheduleID) && departureTime.isBefore(lastDepartureTimePerSchedule.get(scheduleID))) {
-                        LocalDate newDate = currentDatePerSchedule.get(scheduleID).plusDays(1);
-                    currentDatePerSchedule.put(scheduleID, newDate);
-                    }
-
+                    boolean isNewDay = lastDepartureTimePerSchedule.containsKey(scheduleID) && 
+                                       departureTime.isBefore(lastDepartureTimePerSchedule.get(scheduleID));
                     // Update the last departure time for this schedule
                     lastDepartureTimePerSchedule.put(scheduleID, departureTime);
-                    //Fix format of
+                    if (isNewDay) {
+                        // Increment the date for this schedule
+                        LocalDate newDate = currentDatePerSchedule.get(scheduleID).plusDays(1);
+                        currentDatePerSchedule.put(scheduleID, newDate);
+                    }
+                
                     String formattedDepartureTime = departureTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
                     // Add the row to the table model with the new departure date
                     model.addRow(new Object[]{departureStation, arrivalTime, formattedDepartureTime, currentDatePerSchedule.get(scheduleID).toString()});
-                }   
+                }  
             } 
         }
         catch (SQLException e) {
@@ -134,64 +138,77 @@ public class Form_Timetable extends javax.swing.JPanel {
 
         LocalDate selectedDate = LocalDate.of(d.getYear(), d.getMonth(), d.getDay());
         LocalDate currentDate = LocalDate.now();
-        String query = 
-                        "SELECT DISTINCT " +
-                        "    ct.type AS 'Type', " +
-                        "    (ct.price * 1.5 * ( " +
-                        "        SELECT COUNT(*) " +
-                        "        FROM journey j " +
-                        "        JOIN schedule sch ON j.scheduleID = sch.scheduleID " +
-                        "        WHERE sch.trainID = t.trainID AND " +
-                        "              j.stationID BETWEEN (SELECT stationID FROM station WHERE stationName = ?) AND " +
-                        "                                  (SELECT stationID FROM station WHERE stationName = ?) " +
-                        "    )) AS 'Price' " +
-                        "FROM " +
-                        "    coach c " +
-                        "JOIN " +
-                        "    train t ON c.trainID = t.trainID " +
-                        "JOIN " +
-                        "    coach_type ct ON c.coach_typeID = ct.coach_typeID " +
-                        "JOIN " +
-                        "    schedule sch ON t.trainID = sch.trainID " +
-                        "JOIN " +
-                        "    journey j ON sch.scheduleID = j.scheduleID " +
-                        "WHERE " +
-                        "    t.trainName = ? AND " +
-                        "    ct.price > 0 AND " +
-                        "    ( " +
-                        "        (sch.start_stationID = (SELECT stationID FROM station WHERE stationName = 'Ha Noi') AND " +
-                        "         sch.end_stationID = (SELECT stationID FROM station WHERE stationName = 'Sai Gon') AND " +
-                        "         j.stationID >= (SELECT stationID FROM station WHERE stationName = ?) AND " +
-                        "         j.stationID <= (SELECT stationID FROM station WHERE stationName = ?)) " +
-                        "    OR " +
-                        "        (sch.start_stationID = (SELECT stationID FROM station WHERE stationName = 'Sai Gon') AND " +
-                        "         sch.end_stationID = (SELECT stationID FROM station WHERE stationName = 'Ha Noi') AND " +
-                        "         j.stationID <= (SELECT stationID FROM station WHERE stationName = ?) AND " +
-                        "         j.stationID >= (SELECT stationID FROM station WHERE stationName = ?)) " +
-                        "    ) AND " +
-                        "    EXISTS (SELECT 1 FROM journey WHERE stationID = (SELECT stationID FROM station WHERE stationName = ?)) AND " +
-                        "    EXISTS (SELECT 1 FROM journey WHERE stationID = (SELECT stationID FROM station WHERE stationName = ?));";
+        String query =
+                "SELECT DISTINCT " +
+                "    ct.type AS 'Type', " +
+                "    (ct.price * 1.5 * ( " +
+                "        SELECT COUNT(*) " +
+                "        FROM journey j " +
+                "        JOIN schedule sch ON j.scheduleID = sch.scheduleID " +
+                "        WHERE sch.trainID = t.trainID AND " +
+                "              j.stationID BETWEEN LEAST((SELECT stationID FROM station WHERE stationName = ?), " +
+                "                                        (SELECT stationID FROM station WHERE stationName = ?)) AND " +
+                "                                  GREATEST((SELECT stationID FROM station WHERE stationName = ?), " +
+                "                                            (SELECT stationID FROM station WHERE stationName = ?)) " +
+                "    )) AS 'Price' " +
+                "FROM " +
+                "    coach c " +
+                "JOIN " +
+                "    train t ON c.trainID = t.trainID " +
+                "JOIN " +
+                "    coach_type ct ON c.coach_typeID = ct.coach_typeID " +
+                "JOIN " +
+                "    schedule sch ON t.trainID = sch.trainID " +
+                "JOIN " +
+                "    journey j ON sch.scheduleID = j.scheduleID " +
+                "WHERE " +
+                "    t.trainName = ? AND " +
+                "    ct.price > 0 AND " +
+                "    ( " +
+                "        (sch.start_stationID = (SELECT stationID FROM station WHERE stationName = 'Ha Noi') AND " +
+                "         sch.end_stationID = (SELECT stationID FROM station WHERE stationName = 'Sai Gon') AND " +
+                "         j.stationID >= LEAST((SELECT stationID FROM station WHERE stationName = ?), " +
+                "                               (SELECT stationID FROM station WHERE stationName = ?)) AND " +
+                "         j.stationID <= GREATEST((SELECT stationID FROM station WHERE stationName = ?), " +
+                "                                  (SELECT stationID FROM station WHERE stationName = ?))) " +
+                "    OR " +
+                "        (sch.start_stationID = (SELECT stationID FROM station WHERE stationName = 'Sai Gon') AND " +
+                "         sch.end_stationID = (SELECT stationID FROM station WHERE stationName = 'Ha Noi') AND " +
+                "         j.stationID <= GREATEST((SELECT stationID FROM station WHERE stationName = ?), " +
+                "                                  (SELECT stationID FROM station WHERE stationName = ?)) AND " +
+                "         j.stationID >= LEAST((SELECT stationID FROM station WHERE stationName = ?), " +
+                "                               (SELECT stationID FROM station WHERE stationName = ?))) " +
+                "    ) AND " +
+                "    EXISTS (SELECT 1 FROM journey WHERE stationID = (SELECT stationID FROM station WHERE stationName = ?)) AND " +
+                "    EXISTS (SELECT 1 FROM journey WHERE stationID = (SELECT stationID FROM station WHERE stationName = ?));";
         try (Connection conn = new ConnectData().connect();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, departureStationName);
             pstmt.setString(2, arrivalStationName);
-            pstmt.setString(3, trainName);
-            pstmt.setString(4, departureStationName);
-            pstmt.setString(5, arrivalStationName);
+            pstmt.setString(3, departureStationName);
+            pstmt.setString(4, arrivalStationName);
+            pstmt.setString(5, trainName);
             pstmt.setString(6, departureStationName);
             pstmt.setString(7, arrivalStationName);
             pstmt.setString(8, departureStationName);
             pstmt.setString(9, arrivalStationName);
+            pstmt.setString(10, departureStationName);
+            pstmt.setString(11, arrivalStationName);
+            pstmt.setString(12, departureStationName);
+            pstmt.setString(13, arrivalStationName);
+            pstmt.setString(14, departureStationName);
+            pstmt.setString(15, arrivalStationName);
+    
     
             try (ResultSet rs = pstmt.executeQuery()) {
                 DefaultTableModel model = (DefaultTableModel) table1.getModel();
                 model.setRowCount(0);
                 if (!rs.isBeforeFirst()) { // Check if the ResultSet is empty
-                    
+                    model.setRowCount(0);
                     return;
                 }
                 if(selectedDate.isBefore(currentDate)){
-                    
+                    model.setRowCount(0);
                     return;
                 }
     
@@ -208,6 +225,7 @@ public class Form_Timetable extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
+    
     
 
 //-----------------------------------------------------------------------------------------------------

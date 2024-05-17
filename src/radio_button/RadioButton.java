@@ -1,56 +1,49 @@
-package component;
+package radio_button;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class RadioButton extends JRadioButton {
 
     public RadioButton() {
-        setContentAreaFilled(false);
-        setBorder(new EmptyBorder(5, 5, 5, 5));
-        setBackground(new Color(150, 150, 150));
-        setFocusPainted(false);
-        setIcon(null);
+        setOpaque(false);
+        setCursor(new Cursor(Cursor.HAND_CURSOR));
+        setBackground(new Color(69, 124, 235));
     }
 
     @Override
-    protected void paintComponent(Graphics grphcs) {
-        super.paintComponent(grphcs);
-        Graphics2D g2 = (Graphics2D) grphcs.create();
+    public void paint(Graphics grphcs) {
+        super.paint(grphcs);
+        Graphics2D g2 = (Graphics2D) grphcs;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        int width = getWidth();
-        int height = getHeight();
-        double size = Math.min(width, height) - 10;
-        double x = (height - size) / 2.0;
-        double y = (height - size) / 2.0;
-
-        // Draw the outer circle
-        g2.setColor(getBackground());
-        g2.fillOval((int) x, (int) y, (int) size, (int) size);
-
-        // Draw the inner circle if selected
+        int ly = (getHeight() - 16) / 2;
         if (isSelected()) {
-            g2.setColor(getForeground());
-            double innerSize = size / 2.0;
-            double innerX = x + (size - innerSize) / 2.0;
-            double innerY = y + (size - innerSize) / 2.0;
-            g2.fillOval((int) innerX, (int) innerY, (int) innerSize, (int) innerSize);
+            if (isEnabled()) {
+                g2.setColor(getBackground());
+            } else {
+                g2.setColor(Color.GRAY);
+            }
+            g2.fillOval(1, ly, 16, 16);
+            g2.setColor(Color.WHITE);
+            g2.fillOval(2, ly + 1, 14, 14);
+            if (isEnabled()) {
+                g2.setColor(getBackground());
+            } else {
+                g2.setColor(Color.GRAY);
+            }
+            g2.fillOval(5, ly + 4, 8, 8);
+        } else {
+            if (isFocusOwner()) {
+                g2.setColor(getBackground());
+            } else {
+                g2.setColor(Color.GRAY);
+            }
+            g2.fillOval(1, ly, 16, 16);
+            g2.setColor(Color.WHITE);
+            g2.fillOval(2, ly + 1, 14, 14);
         }
-
-        // // Draw the text
-        // FontMetrics fm = g2.getFontMetrics();
-        // int textX = (int) (x + size + 10);
-        // int textY = (height - fm.getHeight()) / 2 + fm.getAscent();
-        // g2.setColor(getForeground());
-        // g2.drawString(getText(), textX, textY);
-
-        // g2.dispose();
+        g2.dispose();
     }
 
-    @Override
-    protected void paintBorder(Graphics g) {
-        // Optionally, draw a custom border
-    }
+
 }

@@ -1,15 +1,16 @@
 
-package swing;
+package panelSearchList;
 
+import swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PanelAction extends javax.swing.JPanel {
+public class PanelSearchAction extends javax.swing.JPanel {
 
     /**
      * Creates new form PanelAction
      */
-    public PanelAction() {
+    public PanelSearchAction() {
         initComponents();
     }
 
