@@ -8,9 +8,9 @@ import java.awt.geom.*;
 
 import model.Model_Error;
 
-public class PanelError extends javax.swing.JPanel {
+public class PanelSuccess extends javax.swing.JPanel {
 
-    public PanelError() {
+    public PanelSuccess() {
         initComponents();
         setOpaque(false);
         txt.setOpaque(false);
@@ -23,7 +23,7 @@ public class PanelError extends javax.swing.JPanel {
         lbTitle.setText(data.getTitle());
     }
 
-    public PanelError(JLabel lbTitle){
+    public PanelSuccess(JLabel lbTitle){
         this.lbTitle = lbTitle;
     }
     @Override
@@ -50,7 +50,7 @@ public class PanelError extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 80)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText(":(");
+        jLabel1.setText(":D");
 
         lbTitle.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lbTitle.setForeground(new java.awt.Color(255, 255, 255));
@@ -59,7 +59,7 @@ public class PanelError extends javax.swing.JPanel {
         txt.setBackground(new java.awt.Color(53, 126, 199));
         txt.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txt.setForeground(new java.awt.Color(255, 255, 255));
-        txt.setText("Your PC ran into a problem and needs to restart as soon as we're finished collecting some error info.");
+        txt.setText("Your PC did not run into a problem and does not need to restart as soon as we're finished collecting some error info.");
 
         txt1.setBackground(new java.awt.Color(53, 126, 199));
         txt1.setForeground(new java.awt.Color(255, 255, 255));

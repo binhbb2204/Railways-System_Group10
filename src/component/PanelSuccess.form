@@ -80,7 +80,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value=":("/>
+        <Property name="text" type="java.lang.String" value=":D"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lbTitle">
@@ -105,7 +105,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Your PC ran into a problem and needs to restart as soon as we&apos;re finished collecting some error info."/>
+        <Property name="text" type="java.lang.String" value="Your PC did not run into a problem and does not need to restart as soon as we&apos;re finished collecting some error info."/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextPane" name="txt1">

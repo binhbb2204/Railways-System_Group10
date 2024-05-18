@@ -169,14 +169,14 @@ public class Form_Timetable extends javax.swing.JPanel {
                 "    ( " +
                 "        (sch.start_stationID = (SELECT stationID FROM station WHERE stationName = 'Ha Noi') AND " +
                 "         sch.end_stationID = (SELECT stationID FROM station WHERE stationName = 'Sai Gon') AND " +
-                "         j.stationID >= LEAST((SELECT stationID FROM station WHERE stationName = ?), " +
+                "         j.stationID > LEAST((SELECT stationID FROM station WHERE stationName = ?), " +
                 "                               (SELECT stationID FROM station WHERE stationName = ?)) AND " +
                 "         j.stationID <= GREATEST((SELECT stationID FROM station WHERE stationName = ?), " +
                 "                                  (SELECT stationID FROM station WHERE stationName = ?))) " +
                 "    OR " +
                 "        (sch.start_stationID = (SELECT stationID FROM station WHERE stationName = 'Sai Gon') AND " +
                 "         sch.end_stationID = (SELECT stationID FROM station WHERE stationName = 'Ha Noi') AND " +
-                "         j.stationID <= GREATEST((SELECT stationID FROM station WHERE stationName = ?), " +
+                "         j.stationID < GREATEST((SELECT stationID FROM station WHERE stationName = ?), " +
                 "                                  (SELECT stationID FROM station WHERE stationName = ?)) AND " +
                 "         j.stationID >= LEAST((SELECT stationID FROM station WHERE stationName = ?), " +
                 "                               (SELECT stationID FROM station WHERE stationName = ?))) " +
@@ -255,6 +255,7 @@ public class Form_Timetable extends javax.swing.JPanel {
 
         date = new datechooser.DateChooser();
         Error = new component.PanelError();
+        Loading = new component.PanelLoading();
         panelRound1 = new swing.PanelRound();
         txtDate = new swing.MyTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -472,7 +473,7 @@ public class Form_Timetable extends javax.swing.JPanel {
 
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
         SelectedDate d = date.getSelectedDate();
-        String trainName = ((ComboSuggestionUI)txtTrain.getUI()).getSelectedText();; 
+        String trainName = ((ComboSuggestionUI)txtTrain.getUI()).getSelectedText();
         String departureStationName = ((ComboSuggestionUI)txtDeparture.getUI()).getSelectedText(); 
         String arrivalStationName = ((ComboSuggestionUI)txtArrival.getUI()).getSelectedText();
 
@@ -484,6 +485,7 @@ public class Form_Timetable extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private component.PanelError Error;
+    private component.PanelLoading Loading;
     private swing.Button SearchButton;
     private datechooser.DateChooser date;
     private javax.swing.JLabel jLabel1;

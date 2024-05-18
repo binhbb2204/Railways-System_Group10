@@ -11,6 +11,8 @@
     </Component>
     <Component class="component.PanelError" name="Error">
     </Component>
+    <Component class="component.PanelLoading" name="Loading">
+    </Component>
   </NonVisualComponents>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>

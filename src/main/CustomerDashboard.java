@@ -3,6 +3,9 @@ package main;
 import java.awt.*;
 
 import javax.swing.JComponent;
+
+import component.PanelLoading;
+
 import javax.swing.*;
 import event.EventMenuSelected;
 import form.Form_Search;
@@ -19,6 +22,7 @@ public class CustomerDashboard extends javax.swing.JFrame {
 
     public CustomerDashboard() {
         GlassPanePopup.install(this);
+        
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
         timetable = new Form_Timetable();
