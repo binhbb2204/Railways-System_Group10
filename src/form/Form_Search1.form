@@ -22,6 +22,8 @@
     </Component>
     <Component class="component.PanelLoading" name="Loading">
     </Component>
+    <Component class="component.PanelSuccess" name="Success">
+    </Component>
   </NonVisualComponents>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -41,7 +43,7 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="spPane" pref="837" max="32767" attributes="0"/>
+                  <Component id="spPane" max="32767" attributes="0"/>
                   <Component id="panelRound1" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="20" pref="20" max="-2" attributes="0"/>
@@ -54,7 +56,7 @@
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="panelRound1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-              <Component id="spPane" pref="827" max="32767" attributes="0"/>
+              <Component id="spPane" pref="1054" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -84,7 +86,7 @@
                                   <Component id="txtTo" max="32767" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="67" pref="265" max="32767" attributes="0"/>
+                          <EmptySpace min="67" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel4" alignment="1" min="-2" pref="71" max="-2" attributes="0"/>
@@ -353,65 +355,68 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="lbTicket" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
+                                      <Component id="lbTicket" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="txtDDirection" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtRDirection" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                                              <Group type="103" groupAlignment="1" attributes="0">
-                                                  <Component id="lbFirstName" alignment="1" min="-2" pref="110" max="-2" attributes="0"/>
-                                                  <Component id="lbLastName" alignment="1" min="-2" pref="110" max="-2" attributes="0"/>
-                                                  <Component id="lbPhoneNumber" alignment="1" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="lbEmail" min="-2" pref="110" max="-2" attributes="0"/>
-                                              </Group>
-                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Group type="102" attributes="0">
                                               <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="txtLastName" min="-2" pref="216" max="-2" attributes="0"/>
-                                                  <Component id="txtFirstName" min="-2" pref="216" max="-2" attributes="0"/>
-                                                  <Component id="txtPhoneNumber" alignment="0" min="-2" pref="216" max="-2" attributes="0"/>
-                                                  <Component id="txtEmail" min="-2" pref="216" max="-2" attributes="0"/>
+                                                  <Component id="txtDDirection" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="txtRDirection" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Group type="102" alignment="0" attributes="0">
+                                                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                                      <Group type="103" groupAlignment="1" attributes="0">
+                                                          <Component id="lbFirstName" alignment="1" min="-2" pref="110" max="-2" attributes="0"/>
+                                                          <Component id="lbLastName" alignment="1" min="-2" pref="110" max="-2" attributes="0"/>
+                                                          <Component id="lbPhoneNumber" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                          <Component id="lbEmail" min="-2" pref="110" max="-2" attributes="0"/>
+                                                      </Group>
+                                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                      <Group type="103" groupAlignment="0" attributes="0">
+                                                          <Component id="txtLastName" min="-2" pref="216" max="-2" attributes="0"/>
+                                                          <Component id="txtFirstName" min="-2" pref="216" max="-2" attributes="0"/>
+                                                          <Component id="txtPhoneNumber" alignment="0" min="-2" pref="216" max="-2" attributes="0"/>
+                                                          <Component id="txtEmail" min="-2" pref="216" max="-2" attributes="0"/>
+                                                      </Group>
+                                                  </Group>
                                               </Group>
+                                              <EmptySpace pref="83" max="32767" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Group type="103" groupAlignment="1" attributes="0">
+                                                  <Component id="onewayPanel" alignment="0" max="32767" attributes="0"/>
+                                                  <Component id="returnPanel" alignment="0" max="32767" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
-                                      <EmptySpace pref="78" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="onewayPanel" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="returnPanel" alignment="0" max="32767" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="spTable3" pref="0" max="32767" attributes="0"/>
-                                  <Component id="spTable2" pref="0" max="32767" attributes="0"/>
-                                  <Group type="102" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="spTable4" min="-2" pref="391" max="-2" attributes="0"/>
-                                          <Component id="txtCoachType1" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtCoachType" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="spTable3" pref="0" max="32767" attributes="0"/>
+                                          <Component id="spTable2" pref="0" max="32767" attributes="0"/>
+                                          <Group type="102" attributes="0">
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="spTable4" min="-2" pref="391" max="-2" attributes="0"/>
+                                                  <Component id="txtCoachType1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="txtCoachType" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace min="0" pref="7" max="32767" attributes="0"/>
+                                          </Group>
                                       </Group>
-                                      <EmptySpace min="0" pref="2" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="353" max="-2" attributes="0"/>
+                              <Component id="buttonBook" min="-2" pref="118" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="353" max="-2" attributes="0"/>
-                      <Component id="buttonBook" min="-2" pref="118" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -471,7 +476,7 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="buttonBook" min="-2" pref="37" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="229" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="456" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -489,7 +494,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" max="-2" attributes="0"/>
-                          <Component id="spTable" pref="398" max="32767" attributes="0"/>
+                          <Component id="spTable" pref="403" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>

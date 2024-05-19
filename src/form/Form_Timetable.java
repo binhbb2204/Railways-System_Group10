@@ -31,7 +31,6 @@ import java.awt.*;
 
 public class Form_Timetable extends javax.swing.JPanel {
 
-
 //SQL JDBC
 //-----------------------------------------------------------------------------------------------------
     private void populateTimetableTable(String trainName, String departureStationName, String arrivalStationName, SelectedDate d){
