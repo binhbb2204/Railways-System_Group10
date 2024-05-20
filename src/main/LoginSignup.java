@@ -180,11 +180,11 @@ public class LoginSignup extends javax.swing.JFrame {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                // Hide loading and show success message on the Swing event dispatch thread
-            SwingUtilities.invokeLater(() -> {
-                loading.setVisible(false);
-                showMessage(Message.MessageType.SUCCESS, "Congratulations! Your account has been created successfully.");
-                });
+                    // Hide loading and show success message on the Swing event dispatch thread
+                    SwingUtilities.invokeLater(() -> {
+                    loading.setVisible(false);
+                    showMessage(Message.MessageType.SUCCESS, "Congratulations! Your account has been created successfully.");
+                    });
                 }).start();
             }
         } 
@@ -199,9 +199,25 @@ public class LoginSignup extends javax.swing.JFrame {
         try{
             ModelUser user = service.login(data);
             if(user != null){
-                this.dispose();
+               
                 Dashboard dashboard = new Dashboard();
-                dashboard.setVisible(true);
+                loading.setVisible(true);
+                new Thread(() -> {
+                    try {
+                        // Wait for 3 to 5 seconds
+                        Thread.sleep(3000 + new Random().nextInt(2000));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    // Hide loading and show success message on the Swing event dispatch thread
+                    SwingUtilities.invokeLater(() -> {
+                    loading.setVisible(false);
+                    this.dispose();
+                    dashboard.setVisible(true);
+                    });
+                }).start();
+                
+                
             }
             else{
                 showMessage(Message.MessageType.ERROR, "Access denied. Ensure your login information is correct.");
