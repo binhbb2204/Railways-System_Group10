@@ -256,6 +256,11 @@ public class Form_Search1 extends javax.swing.JPanel {
     
                     return;
                 }
+                if (!rdOneWay.isSelected() && !rdRoundTrip.isSelected()) {
+                    GlassPanePopup.showPopup(Error);
+                    Error.setData(new Model_Error("Error: Please select either One Way or Round Trip."));
+                    return;
+                }
                 if(date.isBefore(currentDate)){
                     GlassPanePopup.showPopup(Error);
                     Error.setData(new Model_Error("Error: The selected time of " + date + " has already elapsed. Please select a future date."));
@@ -707,6 +712,7 @@ public class Form_Search1 extends javax.swing.JPanel {
             pstmt.setString(8, formattedDate); 
             pstmt.setInt(9, ticketPrice);
             pstmt.executeUpdate();
+            
         }
         catch(SQLException e){
 
@@ -768,8 +774,27 @@ public class Form_Search1 extends javax.swing.JPanel {
         model.setRowCount(0); // Clear existing data
         for (Object[] row : data) {
             model.addRow(row); // Add new data
+        }
     }
-}
+    private void removeTicketFromDatabase(String coachID) {
+        String sql = "DELETE FROM railway_system.ticket WHERE coachID = ? AND passengerID = ?"; // Adjust the query as needed
+    
+        try (Connection conn = new ConnectData().connect();
+            PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setString(1, coachID);
+            pst.setInt(2, IDpassenger); // Assuming passengerID is available and correct
+    
+            int affectedRows = pst.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Ticket successfully removed from the database.");
+            } else {
+                System.out.println("No ticket found with the given coachID and passengerID.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception
+        }
+    }
 //-----------------------------------------------------------------------------------------------------     
     public Form_Search1() {
         
@@ -872,7 +897,19 @@ public class Form_Search1 extends javax.swing.JPanel {
                     table4.getCellEditor().stopCellEditing();
                 }
                 DefaultTableModel model = (DefaultTableModel) table4.getModel();
-                model.removeRow(row);
+                String coachID = model.getValueAt(row, 2).toString();
+                    if (oneWayCoachID.equals(coachID)) {
+                        String temp = coachID;
+                        model.removeRow(row);
+                        removeTicketFromDatabase(temp);
+                    } 
+                    if (roundTripCoachID.equals(coachID)) {
+                        String temp = coachID;
+                        model.removeRow(row);
+                        removeTicketFromDatabase(temp);
+                    }
+
+                
             }
         };
         table2.getColumnModel().getColumn(3).setCellRenderer(new SearchActionCellRender());
@@ -1415,44 +1452,60 @@ public class Form_Search1 extends javax.swing.JPanel {
         String lastName = txtLastName.getText();
         String phoneNumber = txtPhoneNumber.getText();
         String email = txtEmail.getText();
-        
         if (firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty()) {
             GlassPanePopup.showPopup(Error);
             Error.setData(new Model_Error("Error: Please fill in all required fields (First Name, Last Name, Phone Number)."));
             return;
         }
-        else{
-            GlassPanePopup.showPopup(Success);
-            Success.setData(new Model_Error("Success: Ticket booked successfully."));
+        if (!rdOneWay.isSelected() && !rdRoundTrip.isSelected()) {
+            GlassPanePopup.showPopup(Error);
+            Error.setData(new Model_Error("Error: Please select a ticket type (One Way or Round Trip)."));
+            return;
         }
+        
+        GlassPanePopup.showPopup(Success);
+        Success.setData(new Model_Error("Success: Ticket booked successfully."));
+        
+        DefaultTableModel model = (DefaultTableModel) table4.getModel();
+        int rowCount = table4.getRowCount();
+        insertPassengerDatabase(firstName, lastName, phoneNumber, email);
+        
+        
         String departureStationName = ((ComboSuggestionUI)txtFrom.getUI()).getSelectedText();
         String arrivalStationName = ((ComboSuggestionUI)txtTo.getUI()).getSelectedText();
-        
-        insertPassengerDatabase(firstName, lastName, phoneNumber, email);
+        departureStationID = findingStationID(departureStationName);
+        arrivalStationID = findingStationID1(arrivalStationName);
         if(rdOneWay.isSelected()){
-            departureStationID = findingStationID(departureStationName);
-            arrivalStationID = findingStationID1(arrivalStationName);
+
             if (isSeatAvailable(departureStationID, arrivalStationID)) {
+                    
                 insertTicketDatabase();
-            } else {
+                    
+            } 
+            else {
                 GlassPanePopup.showPopup(Error);
                 Error.setData(new Model_Error("Error: Selected seat is no longer available. Please choose another seat."));
                 return;
             }
-            
+                
         }
         else if(rdRoundTrip.isSelected()){
-            arrivalStationID = findingStationID1(departureStationName);
-            departureStationID = findingStationID(arrivalStationName);
             if (isSeatAvailable(departureStationID, arrivalStationID)) {
+                    
                 insertTicketDatabase();
                 insertTicketDatabase1();
-            } else {
+                    
+                    
+            } 
+            else {
                 GlassPanePopup.showPopup(Error);
                 Error.setData(new Model_Error("Error: Selected seat is no longer available. Please choose another seat."));
                 return;
             }
         }
+        
+
+        
         SearchCoachType selectedType = (SearchCoachType) txtCoachType.getSelectedItem();
         String coachType = selectedType.name();
         SearchCoachType selectedType1 = (SearchCoachType) txtCoachType.getSelectedItem();
@@ -1463,6 +1516,8 @@ public class Form_Search1 extends javax.swing.JPanel {
         refreshTableData(table3, updatedData1);
         table2.repaint();
         table3.repaint();
+        DefaultTableModel model4 = (DefaultTableModel) table4.getModel();
+        model4.setRowCount(0);
         System.out.println(IDpassenger);
         System.out.println(finaltrainID);
         System.out.println(oneWayCoachID);
@@ -1493,6 +1548,7 @@ public class Form_Search1 extends javax.swing.JPanel {
         
     
         // Display the second table for round-trip if selected
+        
         if (rdRoundTrip.isSelected()) {
             
             //table1.setVisible(true);
