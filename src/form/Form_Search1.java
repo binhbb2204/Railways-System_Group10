@@ -23,6 +23,9 @@ import connection.ConnectData;
 import datechooser.SelectedDate;
 import glasspanepopup.GlassPanePopup;
 import model.Model_Error;
+import panelSearchList.RemoveTableActionCellEditor;
+import panelSearchList.RemoveTableActionEvent;
+import panelSearchList.RemoveTableCellRender;
 import panelSearchList.SearchActionCellRender;
 import panelSearchList.SearchCoachType;
 import panelSearchList.SearchTableActionCellEditor;
@@ -862,10 +865,22 @@ public class Form_Search1 extends javax.swing.JPanel {
                 }
             }
         };
+        RemoveTableActionEvent eventTable4 = new RemoveTableActionEvent() {
+            @Override
+            public void onRemove(int row) {
+                if(table4.isEditing()){
+                    table4.getCellEditor().stopCellEditing();
+                }
+                DefaultTableModel model = (DefaultTableModel) table4.getModel();
+                model.removeRow(row);
+            }
+        };
         table2.getColumnModel().getColumn(3).setCellRenderer(new SearchActionCellRender());
         table2.getColumnModel().getColumn(3).setCellEditor(new SearchTableActionCellEditor(eventTable2));
         table3.getColumnModel().getColumn(3).setCellRenderer(new SearchActionCellRender());
         table3.getColumnModel().getColumn(3).setCellEditor(new SearchTableActionCellEditor(eventTable3));
+        table4.getColumnModel().getColumn(4).setCellRenderer(new RemoveTableCellRender());
+        table4.getColumnModel().getColumn(4).setCellEditor(new RemoveTableActionCellEditor(eventTable4));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -1187,11 +1202,11 @@ public class Form_Search1 extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Train Name", "Coach Type", "Coach ID", "Seat Number"
+                "Train Name", "Coach Type", "Coach ID", "Seat Number", "Remove"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
