@@ -1096,7 +1096,7 @@ public class Form_Search1 extends javax.swing.JPanel {
             onewayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(onewayPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
                 .addContainerGap())
         );
         onewayPanelLayout.setVerticalGroup(
@@ -1237,16 +1237,16 @@ public class Form_Search1 extends javax.swing.JPanel {
         lbFirstName.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         lbFirstName.setForeground(new java.awt.Color(127, 127, 127));
         lbFirstName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lbFirstName.setText("First Name:");
+        lbFirstName.setText("First Name*:");
 
         lbLastName.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         lbLastName.setForeground(new java.awt.Color(127, 127, 127));
         lbLastName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lbLastName.setText("Last Name:");
+        lbLastName.setText("Last Name*:");
 
         lbPhoneNumber.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         lbPhoneNumber.setForeground(new java.awt.Color(127, 127, 127));
-        lbPhoneNumber.setText("Phone Number:");
+        lbPhoneNumber.setText("Phone Number*:");
 
         lbEmail.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         lbEmail.setForeground(new java.awt.Color(127, 127, 127));

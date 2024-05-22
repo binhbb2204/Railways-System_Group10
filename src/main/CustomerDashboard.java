@@ -8,6 +8,7 @@ import component.PanelLoading;
 
 import javax.swing.*;
 import event.EventMenuSelected;
+import form.Form_BookingInformation;
 import form.Form_Search;
 import form.Form_Search1;
 import form.Form_Timetable;
@@ -19,6 +20,7 @@ public class CustomerDashboard extends javax.swing.JFrame {
     private Form_Timetable timetable;
     private Form_Search search;
     private Form_Search1 search1;
+    private Form_BookingInformation bookingInformation;
 
     public CustomerDashboard() {
         GlassPanePopup.install(this);
@@ -28,6 +30,7 @@ public class CustomerDashboard extends javax.swing.JFrame {
         timetable = new Form_Timetable();
         search = new Form_Search();
         search1 = new Form_Search1();
+        bookingInformation = new Form_BookingInformation();
         menu.initMoving(CustomerDashboard.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
@@ -36,7 +39,7 @@ public class CustomerDashboard extends javax.swing.JFrame {
                     setForm(search1);
                 }
                 else if(index == 2){
-                    
+                    setForm(bookingInformation);
                 }
                 else if(index == 3){
                     
