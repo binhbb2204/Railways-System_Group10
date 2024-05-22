@@ -44,35 +44,47 @@ public class Form_Ticket extends javax.swing.JPanel {
 //SQL JDBC
 //-----------------------------------------------------------------------------------------------------
     private void populateTicketTable() {
-    String query = "SELECT ticketID, passengerID, trainID, coachID, seatID, departure_stationID, arrival_stationID, departureTime, departureDate, ticketPrice FROM railway_system.ticket";
+        String query = "SELECT ticketID, passengerID, trainID, coachID, seatID, departure_stationID, arrival_stationID, departureTime, departureDate, ticketPrice FROM railway_system.ticket";
 
-    try (Connection conn = new ConnectData().connect();
-         PreparedStatement pstmt = conn.prepareStatement(query);
-         ResultSet rs = pstmt.executeQuery()) {
+        try (Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery()) {
 
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setRowCount(0);
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            model.setRowCount(0);
 
-        while (rs.next()) {
-            int ticketID = rs.getInt("ticketID");
-            int passengerID = rs.getInt("passengerID");
-            String trainID = rs.getString("trainID");
-            String coachID = rs.getString("coachID");
-            int seatID = rs.getInt("seatID");
-            String departure_stationID = rs.getString("departure_stationID");
-            String arrival_stationID = rs.getString("arrival_stationID");
-            Time departureTime = rs.getTime("departureTime");
-            Date departureDate = rs.getDate("departureDate");
-            double ticketPrice = rs.getDouble("ticketPrice");
+            while (rs.next()) {
+                int ticketID = rs.getInt("ticketID");
+                int passengerID = rs.getInt("passengerID");
+                String trainID = rs.getString("trainID");
+                String coachID = rs.getString("coachID");
+                int seatID = rs.getInt("seatID");
+                String departure_stationID = rs.getString("departure_stationID");
+                String arrival_stationID = rs.getString("arrival_stationID");
+                Time departureTime = rs.getTime("departureTime");
+                Date departureDate = rs.getDate("departureDate");
+                double ticketPrice = rs.getDouble("ticketPrice");
 
-            // Assuming you have appropriate table columns to display the retrieved data
-            model.addRow(new Object[]{ticketID, passengerID, trainID, coachID, seatID, departure_stationID, arrival_stationID, departureTime, departureDate, ticketPrice});
+                // Assuming you have appropriate table columns to display the retrieved data
+                model.addRow(new Object[]{ticketID, passengerID, trainID, coachID, seatID, departure_stationID, arrival_stationID, departureTime, departureDate, ticketPrice});
+            }
+        } 
+        catch (SQLException e) {
+            e.printStackTrace();
+            // Handle SQLException
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        // Handle SQLException
     }
-}
+    public void deleteTicketDataFromDatabase(String ticketID){
+        String query = "DELETE FROM railway_system.ticket WHERE ticketID = ?";
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, ticketID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error deleting data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 //-----------------------------------------------------------------------------------------------------
     public Form_Ticket() {
         initComponents();
@@ -105,7 +117,7 @@ public class Form_Ticket extends javax.swing.JPanel {
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             String ticketID = model.getValueAt(row, 0).toString();
 
-            //deleteTicketDataFromDatabase(ticketID);
+            deleteTicketDataFromDatabase(ticketID);
             model.removeRow(row);
             updateTotalPassengerCountDisplay();
         }
