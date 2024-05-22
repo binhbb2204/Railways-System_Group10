@@ -50,6 +50,8 @@ public class Form_Search1 extends javax.swing.JPanel {
     private String roundTripCoachID;
     private String finaltrainID;
     private String finaltrainID1;
+    private String storingDepartureStationName;
+    private String storingArrivalStationName;
 //SQL JDBC
 //-----------------------------------------------------------------------------------------------------
     private HashMap<String, LocalDate> populateTimetableTable(String trainName, String departureStationName, String arrivalStationName, SelectedDate d) {
@@ -368,8 +370,8 @@ public class Form_Search1 extends javax.swing.JPanel {
         String query = "SELECT " +
                        "ct.type AS coach_type, " + 
                        "c.coachID," + 
-                       "s.seatNumber " +  // Added a space here
-                       "FROM coach_type ct " +  // Added a space here
+                       "s.seatNumber " +  
+                       "FROM coach_type ct " +  
                        "JOIN coach c ON ct.coach_typeID = c.coach_typeID " +
                        "JOIN seat s ON c.coachID = s.coachID " +
                        "JOIN train t ON c.trainID = t.trainID " +
@@ -502,81 +504,61 @@ public class Form_Search1 extends javax.swing.JPanel {
         }
         return -1; // Return -1 if something went wrong
     }
-    private void populatePriceTable(String trainName, String departureStationName, String arrivalStationName) {
+    private int getTicketPrice(String trainID, String departureStationName, String arrivalStationName, String coachType) {
         String query =
-                "SELECT DISTINCT " +
-                "    ct.type AS 'Type', " +
-                "    (ct.price * 1.5 * ( " +
-                "        SELECT COUNT(*) " +
-                "        FROM journey j " +
-                "        JOIN schedule sch ON j.scheduleID = sch.scheduleID " +
-                "        WHERE sch.trainID = t.trainID AND " +
-                "              j.stationID BETWEEN LEAST((SELECT stationID FROM station WHERE stationName = ?), " +
-                "                                        (SELECT stationID FROM station WHERE stationName = ?)) AND " +
-                "                                  GREATEST((SELECT stationID FROM station WHERE stationName = ?), " +
-                "                                            (SELECT stationID FROM station WHERE stationName = ?)) " +
-                "    )) AS 'Price' " +
-                "FROM " +
-                "    coach c " +
-                "JOIN " +
-                "    train t ON c.trainID = t.trainID " +
-                "JOIN " +
-                "    coach_type ct ON c.coach_typeID = ct.coach_typeID " +
-                "JOIN " +
-                "    schedule sch ON t.trainID = sch.trainID " +
-                "JOIN " +
-                "    journey j ON sch.scheduleID = j.scheduleID " +
-                "WHERE " +
-                "    t.trainName = ? AND " +
-                "    ct.price > 0 AND " +
-                "    ( " +
-                "        (sch.start_stationID = (SELECT stationID FROM station WHERE stationName = 'Ha Noi') AND " +
-                "         sch.end_stationID = (SELECT stationID FROM station WHERE stationName = 'Sai Gon') AND " +
-                "         j.stationID > LEAST((SELECT stationID FROM station WHERE stationName = ?), " +
-                "                               (SELECT stationID FROM station WHERE stationName = ?)) AND " +
-                "         j.stationID <= GREATEST((SELECT stationID FROM station WHERE stationName = ?), " +
-                "                                  (SELECT stationID FROM station WHERE stationName = ?))) " +
-                "    OR " +
-                "        (sch.start_stationID = (SELECT stationID FROM station WHERE stationName = 'Sai Gon') AND " +
-                "         sch.end_stationID = (SELECT stationID FROM station WHERE stationName = 'Ha Noi') AND " +
-                "         j.stationID < GREATEST((SELECT stationID FROM station WHERE stationName = ?), " +
-                "                                  (SELECT stationID FROM station WHERE stationName = ?)) AND " +
-                "         j.stationID >= LEAST((SELECT stationID FROM station WHERE stationName = ?), " +
-                "                               (SELECT stationID FROM station WHERE stationName = ?))) " +
-                "    ) AND " +
-                "    EXISTS (SELECT 1 FROM journey WHERE stationID = (SELECT stationID FROM station WHERE stationName = ?)) AND " +
-                "    EXISTS (SELECT 1 FROM journey WHERE stationID = (SELECT stationID FROM station WHERE stationName = ?));";
+            "SELECT DISTINCT " +
+            "    (ct.price * 1.5 * ( " +
+            "        SELECT COUNT(*) " +
+            "        FROM journey j " +
+            "        JOIN schedule sch ON j.scheduleID = sch.scheduleID " +
+            "        WHERE sch.trainID = t.trainID AND " +
+            "              j.stationID BETWEEN LEAST(dep.stationID, arr.stationID) AND " +
+            "                                  GREATEST(dep.stationID, arr.stationID) " +
+            "    )) AS 'Price' " +
+            "FROM " +
+            "    coach c " +
+            "JOIN " +
+            "    train t ON c.trainID = t.trainID " +
+            "JOIN " +
+            "    coach_type ct ON c.coach_typeID = ct.coach_typeID " +
+            "JOIN " +
+            "    schedule sch ON t.trainID = sch.trainID " +
+            "JOIN " +
+            "    journey j ON sch.scheduleID = j.scheduleID, " +
+            "    station dep, station arr " +
+            "WHERE " +
+            "    dep.stationName = ? AND " +
+            "    arr.stationName = ? AND " +
+            "    t.trainID = ? AND " +
+            "    ct.type = ? AND " +
+            "    ct.price > 0 AND " +
+            "    EXISTS (SELECT 1 FROM journey WHERE stationID = dep.stationID) AND " +
+            "    EXISTS (SELECT 1 FROM journey WHERE stationID = arr.stationID)";
+    
+        // Initialize with a default value indicating an error
+    
         try (Connection conn = new ConnectData().connect();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
+    
+            // Set parameters
             pstmt.setString(1, departureStationName);
             pstmt.setString(2, arrivalStationName);
-            pstmt.setString(3, departureStationName);
-            pstmt.setString(4, arrivalStationName);
-            pstmt.setString(5, trainName);
-            pstmt.setString(6, departureStationName);
-            pstmt.setString(7, arrivalStationName);
-            pstmt.setString(8, departureStationName);
-            pstmt.setString(9, arrivalStationName);
-            pstmt.setString(10, departureStationName);
-            pstmt.setString(11, arrivalStationName);
-            pstmt.setString(12, departureStationName);
-            pstmt.setString(13, arrivalStationName);
-            pstmt.setString(14, departureStationName);
-            pstmt.setString(15, arrivalStationName);
-    
+            pstmt.setString(3, trainID);
+            pstmt.setString(4, coachType);
     
             try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    int price = rs.getInt("Price");
-                    ticketPrice = price;
-                    
+                if (rs.next()) {
+                    ticketPrice = rs.getInt("Price");
+                    System.out.println(ticketPrice);
                 }
             }
         } catch (SQLException e) {
             GlassPanePopup.showPopup(Error);
-            Error.setData(new Model_Error("Error retrieving data "));
+            Error.setData(new Model_Error("Error retrieving data"));
             e.printStackTrace();
         }
+    
+        return ticketPrice;
     }
     private void findingTrainID(String trainName){
         String query = "select trainID from railway_system.train where trainName = ?";
@@ -674,21 +656,21 @@ public class Form_Search1 extends javax.swing.JPanel {
         }
         
     }
-    private void insertTicketDatabase(){
+    
+    private void insertTicketDatabase(int passengerID, String trainID, String coachID, int seatID, String station1ID, String station2ID, String departureTime,String departureDate, int price){
         String query = "INSERT INTO railway_system.ticket (passengerID, trainID, coachID, seatID, departure_stationID, arrival_stationID, departureTime, departureDate, ticketPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedDate = oneWayDepartureDate.format(formatter);
+        
         try (Connection conn = new ConnectData().connect();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setInt(1, IDpassenger);//OK
-            pstmt.setString(2, finaltrainID); //OK
-            pstmt.setString(3, oneWayCoachID); //OK
+            pstmt.setInt(1, passengerID);//OK
+            pstmt.setString(2, trainID); //OK
+            pstmt.setString(3, coachID); //OK
             pstmt.setInt(4, seatID); //OK
-            pstmt.setString(5, departureStationID); //OK
-            pstmt.setString(6, arrivalStationID); //OK
-            pstmt.setString(7, oneWayDepartureTime);
-            pstmt.setString(8, formattedDate); 
-            pstmt.setInt(9, ticketPrice); //NO
+            pstmt.setString(5, station1ID); //OK
+            pstmt.setString(6, station2ID); //OK
+            pstmt.setString(7, departureTime);
+            pstmt.setString(8, departureDate); 
+            pstmt.setInt(9, price); //NO
             pstmt.executeUpdate();
         }
         catch(SQLException e){
@@ -696,29 +678,7 @@ public class Form_Search1 extends javax.swing.JPanel {
         }
 
     }
-    private void insertTicketDatabase1(){
-        String query = "INSERT INTO railway_system.ticket (passengerID, trainID, coachID, seatID, departure_stationID, arrival_stationID, departureTime, departureDate, ticketPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedDate = roundTripDepartureDate.format(formatter);
-        try (Connection conn = new ConnectData().connect();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setInt(1, IDpassenger); //OK
-            pstmt.setString(2, finaltrainID1); //NO
-            pstmt.setString(3, roundTripCoachID); //OK
-            pstmt.setInt(4, seatID1); //OK
-            pstmt.setString(5, arrivalStationID);
-            pstmt.setString(6, departureStationID);
-            pstmt.setString(7, roundTripDepartureTime);
-            pstmt.setString(8, formattedDate); 
-            pstmt.setInt(9, ticketPrice);
-            pstmt.executeUpdate();
-            
-        }
-        catch(SQLException e){
-
-        }
-
-    }
+    
     private boolean isSeatAvailable(String departureStationID, String arrivalStationID) {
         String query = "SELECT COUNT(*) AS count FROM ticket WHERE coachID = ? AND seatID = ?";
         try (Connection conn = new ConnectData().connect();
@@ -869,8 +829,16 @@ public class Form_Search1 extends javax.swing.JPanel {
                     findSeatID(coachID, seatNumber);
                     // Add the selected row data to table4
                     oneWayCoachID = coachID;
+                    String departureStationName = storingDepartureStationName;
+                    System.out.println(departureStationName);
+                    String arrivalStationName = storingArrivalStationName;
+                    SearchCoachType coachTypeConst = SearchCoachType.fromString(coachType);
+                    System.out.println(arrivalStationName);
+                    System.out.println(finaltrainID);
+                    System.out.println(coachTypeConst.name());
+                    int ticketPrice = getTicketPrice(finaltrainID, departureStationName, arrivalStationName, coachTypeConst.name());
                     DefaultTableModel model4 = (DefaultTableModel) table4.getModel();
-                    model4.addRow(new Object[]{currentTrainName, coachType, coachID, seatNumber});
+                    model4.addRow(new Object[]{currentTrainName, coachType, coachID, seatNumber, ticketPrice});
                 }
             }
         };
@@ -884,9 +852,13 @@ public class Form_Search1 extends javax.swing.JPanel {
                     int seatNumber = Integer.parseInt(model3.getValueAt(row, 2).toString()); 
                     findSeatID1(coachID, seatNumber);
                     roundTripCoachID = coachID;
+                    String departureStationName = storingArrivalStationName;
+                    String arrivalStationName = storingDepartureStationName;
+                    SearchCoachType coachTypeConst = SearchCoachType.fromString(coachType);
                     // Add the selected row data to table4
+                    int ticketPrice = getTicketPrice(finaltrainID1, departureStationName, arrivalStationName, coachTypeConst.name());
                     DefaultTableModel model4 = (DefaultTableModel) table4.getModel();
-                    model4.addRow(new Object[]{currentTrainName1, coachType, coachID, seatNumber});
+                    model4.addRow(new Object[]{currentTrainName1, coachType, coachID, seatNumber, ticketPrice});
                 }
             }
         };
@@ -916,8 +888,8 @@ public class Form_Search1 extends javax.swing.JPanel {
         table2.getColumnModel().getColumn(3).setCellEditor(new SearchTableActionCellEditor(eventTable2));
         table3.getColumnModel().getColumn(3).setCellRenderer(new SearchActionCellRender());
         table3.getColumnModel().getColumn(3).setCellEditor(new SearchTableActionCellEditor(eventTable3));
-        table4.getColumnModel().getColumn(4).setCellRenderer(new RemoveTableCellRender());
-        table4.getColumnModel().getColumn(4).setCellEditor(new RemoveTableActionCellEditor(eventTable4));
+        table4.getColumnModel().getColumn(5).setCellRenderer(new RemoveTableCellRender());
+        table4.getColumnModel().getColumn(5).setCellEditor(new RemoveTableActionCellEditor(eventTable4));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -1239,11 +1211,11 @@ public class Form_Search1 extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Train Name", "Coach Type", "Coach ID", "Seat Number", "Remove"
+                "Train Name", "Coach Type", "Coach ID", "Seat Number", "Price", "Remove"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true
+                false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1473,13 +1445,16 @@ public class Form_Search1 extends javax.swing.JPanel {
         
         String departureStationName = ((ComboSuggestionUI)txtFrom.getUI()).getSelectedText();
         String arrivalStationName = ((ComboSuggestionUI)txtTo.getUI()).getSelectedText();
+        
         departureStationID = findingStationID(departureStationName);
         arrivalStationID = findingStationID1(arrivalStationName);
         if(rdOneWay.isSelected()){
 
             if (isSeatAvailable(departureStationID, arrivalStationID)) {
-                    
-                insertTicketDatabase();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                String formattedDate = oneWayDepartureDate.format(formatter);    
+               // insertTicketDatabase();
+               insertTicketDatabase(IDpassenger, finaltrainID, oneWayCoachID, seatID, departureStationID, arrivalStationID, oneWayDepartureTime, formattedDate, ticketPrice);
                     
             } 
             else {
@@ -1492,8 +1467,14 @@ public class Form_Search1 extends javax.swing.JPanel {
         else if(rdRoundTrip.isSelected()){
             if (isSeatAvailable(departureStationID, arrivalStationID)) {
                     
-                insertTicketDatabase();
-                insertTicketDatabase1();
+                // insertTicketDatabase();
+                // insertTicketDatabase1();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                String oneWayFormattedDate = oneWayDepartureDate.format(formatter);    
+                String roundTripFormattedDate = roundTripDepartureDate.format(formatter);
+               // insertTicketDatabase();
+               insertTicketDatabase(IDpassenger, finaltrainID, oneWayCoachID, seatID, departureStationID, arrivalStationID, oneWayDepartureTime, oneWayFormattedDate, ticketPrice);
+               insertTicketDatabase(IDpassenger, finaltrainID1, roundTripCoachID, seatID1, arrivalStationID, departureStationID, roundTripDepartureTime, roundTripFormattedDate, ticketPrice);
                     
                     
             } 
@@ -1532,6 +1513,8 @@ public class Form_Search1 extends javax.swing.JPanel {
         String arrivalStationName = ((ComboSuggestionUI)txtTo.getUI()).getSelectedText();
         SelectedDate departureDate = dateDeparture.getSelectedDate();
         SelectedDate returnDate = dateReturn.getSelectedDate();
+        storingDepartureStationName = departureStationName;
+        storingArrivalStationName = arrivalStationName;
     
         // Check if the round-trip radio button is selected
         // if (rdRoundTrip.isSelected()) {

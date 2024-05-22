@@ -13,6 +13,7 @@ public enum SearchCoachType {
     POWER_CAR("Power Car"),
     DOUBLE_DECK_COACH("Double Deck Coach");
 
+    
     private final String description;
 
     SearchCoachType(String description) {
@@ -25,5 +26,13 @@ public enum SearchCoachType {
     @Override
     public String toString() {
         return description; 
+    }
+    public static SearchCoachType fromString(String description) {
+        for (SearchCoachType type : SearchCoachType.values()) {
+            if (type.getDescription().equals(description)) {
+                return type;
+            }
+        }
+        throw new IllegalArgumentException("No constant with description " + description);
     }
 }

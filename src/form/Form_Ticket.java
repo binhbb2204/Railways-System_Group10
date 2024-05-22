@@ -2,13 +2,21 @@
 package form;
 
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.util.Date;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
+import connection.ConnectData;
 import model.Model_Card;
 import swing.AddingActionEvent;
 import swing.ScrollBar;
@@ -33,7 +41,39 @@ public class Form_Ticket extends javax.swing.JPanel {
     public void onSwitchBackToSchedule() {
         updateTotalPassengerCountDisplay();
     }
+//SQL JDBC
+//-----------------------------------------------------------------------------------------------------
+    private void populateTicketTable() {
+    String query = "SELECT ticketID, passengerID, trainID, coachID, seatID, departure_stationID, arrival_stationID, departureTime, departureDate, ticketPrice FROM railway_system.ticket";
 
+    try (Connection conn = new ConnectData().connect();
+         PreparedStatement pstmt = conn.prepareStatement(query);
+         ResultSet rs = pstmt.executeQuery()) {
+
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        while (rs.next()) {
+            int ticketID = rs.getInt("ticketID");
+            int passengerID = rs.getInt("passengerID");
+            String trainID = rs.getString("trainID");
+            String coachID = rs.getString("coachID");
+            int seatID = rs.getInt("seatID");
+            String departure_stationID = rs.getString("departure_stationID");
+            String arrival_stationID = rs.getString("arrival_stationID");
+            Time departureTime = rs.getTime("departureTime");
+            Date departureDate = rs.getDate("departureDate");
+            double ticketPrice = rs.getDouble("ticketPrice");
+
+            // Assuming you have appropriate table columns to display the retrieved data
+            model.addRow(new Object[]{ticketID, passengerID, trainID, coachID, seatID, departure_stationID, arrival_stationID, departureTime, departureDate, ticketPrice});
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Handle SQLException
+    }
+}
+//-----------------------------------------------------------------------------------------------------
     public Form_Ticket() {
         initComponents();
 
@@ -75,16 +115,7 @@ public class Form_Ticket extends javax.swing.JPanel {
             ((DefaultTableModel)table.getModel()).fireTableDataChanged();
             updateTotalPassengerCountDisplay();
             DefaultTableModel model = (DefaultTableModel) table.getModel();
-            String ticketID = model.getValueAt(row, 0).toString();
-            int passengerID = Integer.parseInt(model.getValueAt(row, 1).toString());
-            String trainID = model.getValueAt(row, 2).toString();
-            String coachID = model.getValueAt(row, 3).toString();
-            String seatID = model.getValueAt(row, 4).toString();
-            String departure_stationID = model.getValueAt(row, 5).toString();
-            String arrival_stationID = model.getValueAt(row, 6).toString();
-            String departureTime = model.getValueAt(row, 7).toString();
-            String departureDate = model.getValueAt(row, 8).toString();
-            String ticketPrice = model.getValueAt(row, 9).toString();
+
             //String ticketStatus = model.getValueAt(row, 10).toString();
 
             //if (checkIfPassengerIdExists()) {
@@ -97,14 +128,15 @@ public class Form_Ticket extends javax.swing.JPanel {
             table.revalidate();
             updateTotalPassengerCountDisplay();
             //populateTicketTable();
+            populateTicketTable();
         
         }
 
 
 
     };
-        table.getColumnModel().getColumn(4).setCellRenderer(new TableActionCellRender());
-        table.getColumnModel().getColumn(4).setCellEditor(new TableActionCellEditor(event));
+        table.getColumnModel().getColumn(10).setCellRenderer(new TableActionCellRender());
+        table.getColumnModel().getColumn(10).setCellEditor(new TableActionCellEditor(event));
         card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
         updateTotalPassengerCountDisplay();
@@ -118,6 +150,7 @@ public class Form_Ticket extends javax.swing.JPanel {
         p.setBackground(Color.WHITE);
         //if Ticket Status is a JComboBox
         //sPTable.getColumnModel().getColumn(10).setCellEditor(new DefaultCellEditor(new JComboBox<>(ticketStatus.values())));
+        populateTicketTable();
     }
     
     @SuppressWarnings("unchecked")
@@ -146,11 +179,11 @@ public class Form_Ticket extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Ticket ID", "Passenger ID", "Train ID", "Coach ID", "Seat ID", "Departure Station ID", "Arrival Station ID", "Departure Time", "Departure Date", "Ticket Price"
+                "Ticket ID", "Passenger ID", "Train ID", "Coach ID", "Seat ID", "Departure Station ID", "Arrival Station ID", "Departure Time", "Departure Date", "Ticket Price", "Action"
             }
         ) {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                if(columnIndex == 9){
+                if(columnIndex == 10){
                     return true;
                 }
                 return rowIndex == editableRow && editable;
