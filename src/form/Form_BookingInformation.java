@@ -1,12 +1,116 @@
 
 package form;
 
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+
+import connection.ConnectData;
+import glasspanepopup.GlassPanePopup;
+import model.Model_Error;
+
+import java.awt.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import swing.ScrollBar;
+
 
 public class Form_BookingInformation extends javax.swing.JPanel {
 
+//SQL JDBC
+//-----------------------------------------------------------------------------------------------------
+    private void populateBookingInformationDatabase(String firstName, String lastName, String phoneNumber, String email){
+        String query = "SELECT " +
+               "    p.first_name, " +
+               "    p.last_name, " +
+               "    tr.trainName AS train_name, " +
+               "    ti.coachID, " +
+               "    s.seatNumber, " +
+               "    ds.stationName AS departure_station_name, " +
+               "    st.stationName AS arrival_station_name, " +
+               "    j.arrivalTime, " +
+               "    j.departureTime, " +
+               "    ti.departureDate, " +
+               "    ti.ticketPrice " +
+               "FROM " +
+               "    passenger p " +
+               "JOIN " +
+               "    ticket ti ON p.passengerID = ti.passengerID " +
+               "JOIN " +
+               "    train tr ON ti.trainID = tr.trainID " +
+               "JOIN " +
+               "    coach c ON ti.coachID = c.coachID " +
+               "JOIN " +
+               "    seat s ON ti.seatID = s.seatID " +
+               "JOIN " +
+               "    schedule sch ON ti.trainID = sch.trainID " +
+               "JOIN " +
+               "    station ds ON ti.departure_stationID = ds.stationID " +
+               "JOIN " +
+               "    station st ON ti.arrival_stationID = st.stationID " +
+               "JOIN " +
+               "    journey j ON sch.scheduleID = j.scheduleID AND ds.stationID = j.stationID " +
+               "WHERE " +
+               "    ti.departure_stationID = j.stationID " +
+               "    AND p.first_name = ? " +
+               "    AND p.last_name = ? " +
+               "    AND (p.phone_number = ? OR p.email = ?);";
+        try(Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query)){
+            pstmt.setString(1, firstName);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, phoneNumber);
+            pstmt.setString(4, email);
+            
+            try( ResultSet rs = pstmt.executeQuery()){
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.setRowCount(0);
+                if (!rs.isBeforeFirst()) { 
+                    GlassPanePopup.showPopup(Error);
+                    Error.setData(new Model_Error("Error: No tickets found for customer "+ firstName + " " + lastName));
+                    return;
+                }
+                while(rs.next()){
+                    spTable.setVisible(true);
+                    spTable.repaint();
+                    String trainName = rs.getString("train_name");
+                    String coachID = rs.getString("coachID");
+                    int seatNumber = rs.getInt("seatNumber");
+                    String departureStationName = rs.getString("departure_station_name");
+                    String arrivalStationName = rs.getString("arrival_station_name");
+                    String arrivalTime = rs.getString("arrivalTime");
+                    String departureTime = rs.getString("departureTime");
+                    String departureDate = rs.getString("departureDate");
+                    int ticketPrice = rs.getInt("ticketPrice");
+            
+                    model.addRow(new Object[]{firstName + " " + lastName, trainName, coachID, seatNumber, departureStationName, arrivalStationName, arrivalTime, departureTime, departureDate, ticketPrice});
+                }
+            }
+            
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+//-----------------------------------------------------------------------------------------------------
 
     public Form_BookingInformation() {
+        
         initComponents();
+        
+         
+        spTable.setVisible(false);
+        jLabel1.setVisible(false);
+        spTable.setVerticalScrollBar(new ScrollBar());
+        spTable.getVerticalScrollBar().setBackground(Color.WHITE);
+        JPanel p = new JPanel();
+        p.setBackground(Color.WHITE);
+        spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
+
+        
     }
 
     /**
@@ -18,6 +122,7 @@ public class Form_BookingInformation extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Error = new component.PanelError();
         panelRound1 = new swing.PanelRound();
         lbFirstName = new javax.swing.JLabel();
         txtFirstName = new swing.MyTextField();
@@ -25,6 +130,7 @@ public class Form_BookingInformation extends javax.swing.JPanel {
         txtLastName = new swing.MyTextField();
         lbPhoneNumber = new javax.swing.JLabel();
         txtPhonenumber = new swing.MyTextField();
+        searchButton = new swing.Button();
         panelBorder1 = new swing.PanelBorder();
         spTable = new javax.swing.JScrollPane();
         table = new swing.BookInformationTable();
@@ -49,6 +155,16 @@ public class Form_BookingInformation extends javax.swing.JPanel {
         lbPhoneNumber.setForeground(new java.awt.Color(127, 127, 127));
         lbPhoneNumber.setText("Phone Number/Email:");
 
+        searchButton.setBackground(new java.awt.Color(0, 102, 255));
+        searchButton.setForeground(new java.awt.Color(255, 255, 255));
+        searchButton.setText("Search");
+        searchButton.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelRound1Layout = new javax.swing.GroupLayout(panelRound1);
         panelRound1.setLayout(panelRound1Layout);
         panelRound1Layout.setHorizontalGroup(
@@ -62,7 +178,7 @@ public class Form_BookingInformation extends javax.swing.JPanel {
                 .addGroup(panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelRound1Layout.createSequentialGroup()
                         .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lbLastName)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -70,6 +186,10 @@ public class Form_BookingInformation extends javax.swing.JPanel {
                     .addGroup(panelRound1Layout.createSequentialGroup()
                         .addComponent(txtPhonenumber, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRound1Layout.createSequentialGroup()
+                .addContainerGap(356, Short.MAX_VALUE)
+                .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(356, 356, 356))
         );
         panelRound1Layout.setVerticalGroup(
             panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -84,12 +204,13 @@ public class Form_BookingInformation extends javax.swing.JPanel {
                 .addGroup(panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPhonenumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
+                .addGap(18, 18, 18)
+                .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
 
-        spTable.setBackground(new java.awt.Color(255, 255, 255));
         spTable.setBorder(null);
 
         table.setModel(new javax.swing.table.DefaultTableModel(
@@ -108,6 +229,7 @@ public class Form_BookingInformation extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        table.setSelectionBackground(new java.awt.Color(255, 255, 255));
         spTable.setViewportView(table);
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
@@ -130,10 +252,10 @@ public class Form_BookingInformation extends javax.swing.JPanel {
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addGap(20, 20, 20)
                 .addComponent(jLabel1)
                 .addGap(20, 20, 20)
-                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
+                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
                 .addGap(20, 20, 20))
         );
 
@@ -153,9 +275,9 @@ public class Form_BookingInformation extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(panelRound1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
+                .addGap(18, 18, 18)
                 .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(20, 20, 20))
+                .addGap(17, 17, 17))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -163,14 +285,33 @@ public class Form_BookingInformation extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFirstNameActionPerformed
 
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        
+        String firstName = txtFirstName.getText();
+        String lastName = txtLastName.getText();
+        String phoneNumber = txtPhonenumber.getText();
+        
+        populateBookingInformationDatabase(firstName, lastName, phoneNumber, phoneNumber);
+        if (table.getModel().getRowCount() == 0) {
+            spTable.setVisible(false);
+            jLabel1.setVisible(false);
+        } else {
+            spTable.setVisible(true);
+            jLabel1.setVisible(true);
+        }
+        
+    }//GEN-LAST:event_searchButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private component.PanelError Error;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lbFirstName;
     private javax.swing.JLabel lbLastName;
     private javax.swing.JLabel lbPhoneNumber;
     private swing.PanelBorder panelBorder1;
     private swing.PanelRound panelRound1;
+    private swing.Button searchButton;
     private javax.swing.JScrollPane spTable;
     private swing.BookInformationTable table;
     private swing.MyTextField txtFirstName;
