@@ -1,6 +1,8 @@
 package form;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,6 +20,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import combo_suggestion.ComboSuggestionUI;
+import component.PanelMessage;
+import component.PanelSuccess;
 import scrollbar.ScrollBarCustom;
 import connection.ConnectData;
 import datechooser.SelectedDate;
@@ -36,6 +40,7 @@ public class Form_Search1 extends javax.swing.JPanel {
     private String currentTrainName;
     private String currentTrainName1;
     private int ticketPrice;
+    private int ticketPrice1;
     private int IDpassenger;
     private String oneWayDepartureTime;
     private String roundTripDepartureTime; 
@@ -536,7 +541,7 @@ public class Form_Search1 extends javax.swing.JPanel {
             "    EXISTS (SELECT 1 FROM journey WHERE stationID = arr.stationID)";
     
         // Initialize with a default value indicating an error
-    
+        int price = -1;
         try (Connection conn = new ConnectData().connect();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
     
@@ -548,8 +553,8 @@ public class Form_Search1 extends javax.swing.JPanel {
     
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    ticketPrice = rs.getInt("Price");
-                    System.out.println(ticketPrice);
+                    price = rs.getInt("Price");
+                    
                 }
             }
         } catch (SQLException e) {
@@ -558,7 +563,7 @@ public class Form_Search1 extends javax.swing.JPanel {
             e.printStackTrace();
         }
     
-        return ticketPrice;
+        return price;
     }
     private void findingTrainID(String trainName){
         String query = "select trainID from railway_system.train where trainName = ?";
@@ -836,7 +841,15 @@ public class Form_Search1 extends javax.swing.JPanel {
                     System.out.println(arrivalStationName);
                     System.out.println(finaltrainID);
                     System.out.println(coachTypeConst.name());
-                    int ticketPrice = getTicketPrice(finaltrainID, departureStationName, arrivalStationName, coachTypeConst.name());
+                    int Price = getTicketPrice(finaltrainID, departureStationName, arrivalStationName, coachTypeConst.name());
+                    if(rdRoundTrip.isSelected()){
+                        ticketPrice = (Price * 90)/100;
+                        System.out.println(ticketPrice);
+                    }
+                    else{
+                        ticketPrice = Price;
+                        System.out.println(ticketPrice);
+                    }
                     DefaultTableModel model4 = (DefaultTableModel) table4.getModel();
                     model4.addRow(new Object[]{currentTrainName, coachType, coachID, seatNumber, ticketPrice});
                 }
@@ -856,9 +869,17 @@ public class Form_Search1 extends javax.swing.JPanel {
                     String arrivalStationName = storingDepartureStationName;
                     SearchCoachType coachTypeConst = SearchCoachType.fromString(coachType);
                     // Add the selected row data to table4
-                    int ticketPrice = getTicketPrice(finaltrainID1, departureStationName, arrivalStationName, coachTypeConst.name());
+                    int Price = getTicketPrice(finaltrainID1, departureStationName, arrivalStationName, coachTypeConst.name());
+                    if(rdRoundTrip.isSelected()){
+                        ticketPrice1 = (Price * 90)/100;
+                        System.out.println(ticketPrice1);
+                    }
+                    else{
+                        ticketPrice1 = Price;
+                        System.out.println(ticketPrice1);
+                    }
                     DefaultTableModel model4 = (DefaultTableModel) table4.getModel();
-                    model4.addRow(new Object[]{currentTrainName1, coachType, coachID, seatNumber, ticketPrice});
+                    model4.addRow(new Object[]{currentTrainName1, coachType, coachID, seatNumber, ticketPrice1});
                 }
             }
         };
@@ -902,6 +923,7 @@ public class Form_Search1 extends javax.swing.JPanel {
         buttonGroup1 = new javax.swing.ButtonGroup();
         Loading = new component.PanelLoading();
         Success = new component.PanelSuccess();
+        Message = new component.PanelMessage();
         panelRound1 = new swing.PanelRound();
         jLabel1 = new javax.swing.JLabel();
         txtTo = new combo_suggestion.ComboBoxSuggestion();
@@ -1424,6 +1446,9 @@ public class Form_Search1 extends javax.swing.JPanel {
         String lastName = txtLastName.getText();
         String phoneNumber = txtPhoneNumber.getText();
         String email = txtEmail.getText();
+        // DefaultTableModel model = (DefaultTableModel) table4.getModel();
+        // int rowCount = table4.getRowCount();
+
         if (firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty()) {
             GlassPanePopup.showPopup(Error);
             Error.setData(new Model_Error("Error: Please fill in all required fields (First Name, Last Name, Phone Number)."));
@@ -1434,12 +1459,6 @@ public class Form_Search1 extends javax.swing.JPanel {
             Error.setData(new Model_Error("Error: Please select a ticket type (One Way or Round Trip)."));
             return;
         }
-        
-        GlassPanePopup.showPopup(Success);
-        Success.setData(new Model_Error("Success: Ticket booked successfully."));
-        
-        DefaultTableModel model = (DefaultTableModel) table4.getModel();
-        int rowCount = table4.getRowCount();
         insertPassengerDatabase(firstName, lastName, phoneNumber, email);
         
         
@@ -1448,44 +1467,66 @@ public class Form_Search1 extends javax.swing.JPanel {
         
         departureStationID = findingStationID(departureStationName);
         arrivalStationID = findingStationID1(arrivalStationName);
-        if(rdOneWay.isSelected()){
 
-            if (isSeatAvailable(departureStationID, arrivalStationID)) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                String formattedDate = oneWayDepartureDate.format(formatter);    
-               // insertTicketDatabase();
-               insertTicketDatabase(IDpassenger, finaltrainID, oneWayCoachID, seatID, departureStationID, arrivalStationID, oneWayDepartureTime, formattedDate, ticketPrice);
-                    
-            } 
-            else {
-                GlassPanePopup.showPopup(Error);
-                Error.setData(new Model_Error("Error: Selected seat is no longer available. Please choose another seat."));
-                return;
-            }
+       PanelMessage obj = new PanelMessage();
+        
+        obj.eventBook(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Click!");
+                GlassPanePopup.closePopupLast();
                 
-        }
-        else if(rdRoundTrip.isSelected()){
-            if (isSeatAvailable(departureStationID, arrivalStationID)) {
+
+                boolean isOneWay = rdOneWay.isSelected();
+                boolean isRoundTrip = rdRoundTrip.isSelected();
+                DefaultTableModel model = (DefaultTableModel) table4.getModel();
+
+                if ((isOneWay || isRoundTrip) && isSeatAvailable(departureStationID, arrivalStationID)) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    String formattedDate = oneWayDepartureDate.format(formatter);
+
+                    if (isOneWay) {
+                        insertTicketDatabase(IDpassenger, finaltrainID, oneWayCoachID, seatID, departureStationID, arrivalStationID, oneWayDepartureTime, formattedDate, ticketPrice);
+                        model.setRowCount(0);
+                        return;
+                    } 
+                    else if (isRoundTrip) {
+                        String oneWayFormattedDate = oneWayDepartureDate.format(formatter);
+                        String roundTripFormattedDate = roundTripDepartureDate.format(formatter);
+
+                        insertTicketDatabase(IDpassenger, finaltrainID, oneWayCoachID, seatID, departureStationID, arrivalStationID, oneWayDepartureTime, oneWayFormattedDate, ticketPrice);
+                        insertTicketDatabase(IDpassenger, finaltrainID1, roundTripCoachID, seatID1, arrivalStationID, departureStationID, roundTripDepartureTime, roundTripFormattedDate, ticketPrice1);
+                        model.setRowCount(0);
+                        return;
+                    }
                     
-                // insertTicketDatabase();
-                // insertTicketDatabase1();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                String oneWayFormattedDate = oneWayDepartureDate.format(formatter);    
-                String roundTripFormattedDate = roundTripDepartureDate.format(formatter);
-               // insertTicketDatabase();
-               insertTicketDatabase(IDpassenger, finaltrainID, oneWayCoachID, seatID, departureStationID, arrivalStationID, oneWayDepartureTime, oneWayFormattedDate, ticketPrice);
-               insertTicketDatabase(IDpassenger, finaltrainID1, roundTripCoachID, seatID1, arrivalStationID, departureStationID, roundTripDepartureTime, roundTripFormattedDate, ticketPrice);
                     
+                    GlassPanePopup.showPopup(Success);
+                    Success.setData(new Model_Error("Success: Ticket booked successfully."));
                     
-            } 
-            else {
-                GlassPanePopup.showPopup(Error);
-                Error.setData(new Model_Error("Error: Selected seat is no longer available. Please choose another seat."));
-                return;
+                
+                    // Reset form and state
+                
+                } 
+                else {
+                    GlassPanePopup.showPopup(Error);
+                    Error.setData(new Model_Error("Error: Selected seat is no longer available. Please choose another seat."));
+                }
+                
             }
-        }
+            
+        });
+        GlassPanePopup.showPopup(obj);
+
         
 
+        
+        
+        
+        
+        
+        
+        
         
         SearchCoachType selectedType = (SearchCoachType) txtCoachType.getSelectedItem();
         String coachType = selectedType.name();
@@ -1497,8 +1538,9 @@ public class Form_Search1 extends javax.swing.JPanel {
         refreshTableData(table3, updatedData1);
         table2.repaint();
         table3.repaint();
-        DefaultTableModel model4 = (DefaultTableModel) table4.getModel();
-        model4.setRowCount(0);
+        
+        
+        
         System.out.println(IDpassenger);
         System.out.println(finaltrainID);
         System.out.println(oneWayCoachID);
@@ -1506,7 +1548,21 @@ public class Form_Search1 extends javax.swing.JPanel {
         System.out.println(departureStationID);
         System.out.println(arrivalStationID);
         System.out.println(ticketPrice);
+        return;
     }//GEN-LAST:event_buttonBookActionPerformed
+    private void resetForm() {
+        txtFirstName.setText("");
+        txtLastName.setText("");
+        txtPhoneNumber.setText("");
+        txtEmail.setText("");
+        txtFrom.setSelectedItem(null);
+        txtTo.setSelectedItem(null);
+        rdOneWay.setSelected(false);
+        rdRoundTrip.setSelected(false);
+        txtCoachType.setSelectedItem(null);
+        oneWayDepartureDate = null;
+        roundTripDepartureDate = null;
+    }
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {
         String departureStationName = ((ComboSuggestionUI)txtFrom.getUI()).getSelectedText();
@@ -1605,6 +1661,7 @@ public class Form_Search1 extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private component.PanelError Error;
     private component.PanelLoading Loading;
+    private component.PanelMessage Message;
     private component.PanelSuccess Success;
     private swing.Button buttonBook;
     private javax.swing.ButtonGroup buttonGroup1;

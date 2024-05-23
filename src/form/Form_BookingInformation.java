@@ -86,7 +86,7 @@ public class Form_BookingInformation extends javax.swing.JPanel {
                     String departureDate = rs.getString("departureDate");
                     int ticketPrice = rs.getInt("ticketPrice");
             
-                    model.addRow(new Object[]{firstName + " " + lastName, trainName, coachID, seatNumber, departureStationName, arrivalStationName, arrivalTime, departureTime, departureDate, ticketPrice});
+                    model.addRow(new Object[]{firstName + " " + lastName, trainName, coachID, seatNumber, departureStationName, arrivalStationName, arrivalTime, departureDate, ticketPrice});
                 }
             }
             
