@@ -57,6 +57,7 @@ public class Form_Search1 extends javax.swing.JPanel {
     private String finaltrainID1;
     private String storingDepartureStationName;
     private String storingArrivalStationName;
+    private boolean refresh = false;
 //SQL JDBC
 //-----------------------------------------------------------------------------------------------------
     private HashMap<String, LocalDate> populateTimetableTable(String trainName, String departureStationName, String arrivalStationName, SelectedDate d) {
@@ -775,6 +776,8 @@ public class Form_Search1 extends javax.swing.JPanel {
         lbEmail.setVisible(false);
         spTable4.setVisible(false);
         buttonBook.setVisible(false);
+        buttonAdd.setVisible(false);
+        buttonBook.setEnabled(false);
 
         txtDDirection.setVisible(false);
         txtRDirection.setVisible(false);
@@ -964,6 +967,7 @@ public class Form_Search1 extends javax.swing.JPanel {
         txtEmail = new swing.MyTextField();
         lbEmail = new javax.swing.JLabel();
         buttonBook = new swing.Button();
+        buttonAdd = new swing.Button();
 
         dateDeparture.setTextRefernce(date);
 
@@ -1285,26 +1289,37 @@ public class Form_Search1 extends javax.swing.JPanel {
             }
         });
 
+        buttonAdd.setBackground(new java.awt.Color(0, 102, 255));
+        buttonAdd.setForeground(new java.awt.Color(255, 255, 255));
+        buttonAdd.setText("Add Info");
+        buttonAdd.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        buttonAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAddActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
+                        .addComponent(lbTicket)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lbTicket)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtDDirection)
+                                    .addComponent(txtRDirection)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtDDirection)
-                                            .addComponent(txtRDirection)
+                                        .addGap(6, 6, 6)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(buttonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(6, 6, 6)
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                     .addComponent(lbFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(lbLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1315,25 +1330,23 @@ public class Form_Search1 extends javax.swing.JPanel {
                                                     .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(txtPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(onewayPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(returnPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGap(12, 12, 12)))
+                                                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(onewayPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(returnPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(12, 12, 12)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(spTable3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(spTable2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(spTable3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                    .addComponent(spTable2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(spTable4, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtCoachType1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtCoachType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 7, Short.MAX_VALUE))))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(353, 353, 353)
-                        .addComponent(buttonBook, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(spTable4, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCoachType1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCoachType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buttonBook, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 7, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -1378,9 +1391,11 @@ public class Form_Search1 extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(51, 51, 51)
                         .addComponent(spTable4, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(buttonBook, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(456, 456, 456))
+                .addGap(48, 48, 48)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonBook, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(426, 426, 426))
         );
 
         spPane.setViewportView(jPanel1);
@@ -1448,18 +1463,19 @@ public class Form_Search1 extends javax.swing.JPanel {
         String email = txtEmail.getText();
         // DefaultTableModel model = (DefaultTableModel) table4.getModel();
         // int rowCount = table4.getRowCount();
-
+        
         if (firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty()) {
             GlassPanePopup.showPopup(Error);
             Error.setData(new Model_Error("Error: Please fill in all required fields (First Name, Last Name, Phone Number)."));
             return;
         }
+        insertPassengerDatabase(firstName, lastName, phoneNumber, email);
         if (!rdOneWay.isSelected() && !rdRoundTrip.isSelected()) {
             GlassPanePopup.showPopup(Error);
             Error.setData(new Model_Error("Error: Please select a ticket type (One Way or Round Trip)."));
             return;
         }
-        insertPassengerDatabase(firstName, lastName, phoneNumber, email);
+        
         
         
         String departureStationName = ((ComboSuggestionUI)txtFrom.getUI()).getSelectedText();
@@ -1468,13 +1484,26 @@ public class Form_Search1 extends javax.swing.JPanel {
         departureStationID = findingStationID(departureStationName);
         arrivalStationID = findingStationID1(arrivalStationName);
 
-       PanelMessage obj = new PanelMessage();
         
+
+        PanelMessage obj = new PanelMessage();
+        SearchCoachType selectedType = (SearchCoachType) txtCoachType.getSelectedItem();
+        String coachType = selectedType.name();
+        SearchCoachType selectedType1 = (SearchCoachType) txtCoachType.getSelectedItem();
+        String coachType1 = selectedType1.name();
         obj.eventBook(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Click!");
+                
+                refresh = true;
+                System.out.println(refresh);
+                
                 GlassPanePopup.closePopupLast();
+
+                GlassPanePopup.showPopup(Success);
+                Success.setData(new Model_Error("Success: Ticket booked successfully."));
+
                 
 
                 boolean isOneWay = rdOneWay.isSelected();
@@ -1501,8 +1530,7 @@ public class Form_Search1 extends javax.swing.JPanel {
                     }
                     
                     
-                    GlassPanePopup.showPopup(Success);
-                    Success.setData(new Model_Error("Success: Ticket booked successfully."));
+                    
                     
                 
                     // Reset form and state
@@ -1512,8 +1540,19 @@ public class Form_Search1 extends javax.swing.JPanel {
                     GlassPanePopup.showPopup(Error);
                     Error.setData(new Model_Error("Error: Selected seat is no longer available. Please choose another seat."));
                 }
+                if(refresh){
+            
+                    List<Object[]> updatedData = fetchUpdatedData(currentTrainName, coachType);
+                    List<Object[]> updatedData1 = fetchUpdatedData(currentTrainName1, coachType1);
+                    refreshTableData(table2, updatedData);
+                    refreshTableData(table3, updatedData1);
+                    table2.repaint();
+                    table3.repaint();
+                }
+                
                 
             }
+            
             
         });
         GlassPanePopup.showPopup(obj);
@@ -1522,22 +1561,22 @@ public class Form_Search1 extends javax.swing.JPanel {
 
         
         
+        if(refresh){
+            
+            List<Object[]> updatedData = fetchUpdatedData(currentTrainName, coachType);
+            List<Object[]> updatedData1 = fetchUpdatedData(currentTrainName1, coachType1);
+            refreshTableData(table2, updatedData);
+            refreshTableData(table3, updatedData1);
+            table2.repaint();
+            table3.repaint();
+            
+        }
         
         
         
         
         
         
-        SearchCoachType selectedType = (SearchCoachType) txtCoachType.getSelectedItem();
-        String coachType = selectedType.name();
-        SearchCoachType selectedType1 = (SearchCoachType) txtCoachType.getSelectedItem();
-        String coachType1 = selectedType1.name();
-        List<Object[]> updatedData = fetchUpdatedData(currentTrainName, coachType);
-        List<Object[]> updatedData1 = fetchUpdatedData(currentTrainName1, coachType1);
-        refreshTableData(table2, updatedData);
-        refreshTableData(table3, updatedData1);
-        table2.repaint();
-        table3.repaint();
         
         
         
@@ -1550,6 +1589,25 @@ public class Form_Search1 extends javax.swing.JPanel {
         System.out.println(ticketPrice);
         return;
     }//GEN-LAST:event_buttonBookActionPerformed
+
+    private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed
+        String firstName = txtFirstName.getText();
+        String lastName = txtLastName.getText();
+        String phoneNumber = txtPhoneNumber.getText();
+        String email = txtEmail.getText();
+        // DefaultTableModel model = (DefaultTableModel) table4.getModel();
+        // int rowCount = table4.getRowCount();
+
+        if (firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty()) {
+            GlassPanePopup.showPopup(Error);
+            Error.setData(new Model_Error("Error: Please fill in all required fields (First Name, Last Name, Phone Number)."));
+            return;
+        }
+        insertPassengerDatabase(firstName, lastName, phoneNumber, email);
+        GlassPanePopup.showPopup(Success);
+        Success.setData(new Model_Error("Your information has been stored!"));
+        buttonBook.setEnabled(true);
+    }//GEN-LAST:event_buttonAddActionPerformed
     private void resetForm() {
         txtFirstName.setText("");
         txtLastName.setText("");
@@ -1571,7 +1629,8 @@ public class Form_Search1 extends javax.swing.JPanel {
         SelectedDate returnDate = dateReturn.getSelectedDate();
         storingDepartureStationName = departureStationName;
         storingArrivalStationName = arrivalStationName;
-    
+        
+      
         // Check if the round-trip radio button is selected
         // if (rdRoundTrip.isSelected()) {
         //     returnDate = dateReturn.getSelectedDate();
@@ -1612,6 +1671,7 @@ public class Form_Search1 extends javax.swing.JPanel {
             lbEmail.setVisible(true);
             spTable4.setVisible(true);
             buttonBook.setVisible(true);
+            buttonAdd.setVisible(true);
         }
         else if(rdOneWay.isSelected()){
             onewayPanel.setVisible(true);
@@ -1634,6 +1694,7 @@ public class Form_Search1 extends javax.swing.JPanel {
             lbEmail.setVisible(true);
             spTable4.setVisible(true);
             buttonBook.setVisible(true);
+            buttonAdd.setVisible(true);
         } 
         else {
             //table1.setVisible(false);
@@ -1655,6 +1716,7 @@ public class Form_Search1 extends javax.swing.JPanel {
             lbEmail.setVisible(false);
             spTable4.setVisible(false);
             buttonBook.setVisible(false);
+            buttonAdd.setVisible(false);
         }
     }                                            
 
@@ -1663,6 +1725,7 @@ public class Form_Search1 extends javax.swing.JPanel {
     private component.PanelLoading Loading;
     private component.PanelMessage Message;
     private component.PanelSuccess Success;
+    private swing.Button buttonAdd;
     private swing.Button buttonBook;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JTextField date;

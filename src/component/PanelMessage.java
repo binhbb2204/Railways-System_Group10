@@ -1,13 +1,16 @@
 
 package component;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
+
+import javax.swing.Timer;
 
 import glasspanepopup.GlassPanePopup;
 
 public class PanelMessage extends javax.swing.JPanel {
-
+    private int countdown = 5;
  
     public PanelMessage() {
         initComponents();
@@ -15,6 +18,24 @@ public class PanelMessage extends javax.swing.JPanel {
         txt.setBackground(new Color(0, 0, 0, 0));
         txt.setSelectionColor(new Color(173, 216, 230, 200));
         txt.setOpaque(false);
+
+        cmdBook.setEnabled(false);
+        cmdBook.setText(String.valueOf(countdown));
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                countdown--;
+                if (countdown > 0) {
+                    cmdBook.setText(String.valueOf(countdown));
+                } else {
+                    ((Timer) e.getSource()).stop();
+                    cmdBook.setText("Book");
+                    cmdBook.setEnabled(true);
+                }
+                cmdBook.repaint();  // Request a repaint to update the blur effect
+            }
+        });
+        timer.start();
         
     }
     @Override
