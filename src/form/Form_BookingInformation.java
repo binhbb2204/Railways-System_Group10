@@ -107,6 +107,7 @@ public class Form_BookingInformation extends javax.swing.JPanel {
         spTable.getVerticalScrollBar().setBackground(Color.WHITE);
         JPanel p = new JPanel();
         p.setBackground(Color.WHITE);
+        spTable.getViewport().setBackground(Color.WHITE);
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
 
         
