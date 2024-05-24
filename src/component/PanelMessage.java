@@ -75,10 +75,12 @@ public class PanelMessage extends javax.swing.JPanel {
         cmdBook.setBackground(new java.awt.Color(0, 51, 255));
         cmdBook.setForeground(new java.awt.Color(255, 255, 255));
         cmdBook.setText("Book");
+        cmdBook.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
 
         cmdCancel.setBackground(new java.awt.Color(255, 51, 51));
         cmdCancel.setForeground(new java.awt.Color(255, 255, 255));
         cmdCancel.setText("Cancel");
+        cmdCancel.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         cmdCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdCancelActionPerformed(evt);

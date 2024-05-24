@@ -63,7 +63,7 @@ public class Form_Ticket extends javax.swing.JPanel {
                 String arrival_stationID = rs.getString("arrival_stationID");
                 Time departureTime = rs.getTime("departureTime");
                 Date departureDate = rs.getDate("departureDate");
-                double ticketPrice = rs.getDouble("ticketPrice");
+                int ticketPrice = rs.getInt("ticketPrice");
 
                 // Assuming you have appropriate table columns to display the retrieved data
                 model.addRow(new Object[]{ticketID, passengerID, trainID, coachID, seatID, departure_stationID, arrival_stationID, departureTime, departureDate, ticketPrice});
