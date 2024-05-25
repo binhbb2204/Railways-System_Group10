@@ -46,6 +46,7 @@ public class LoginSignup extends javax.swing.JFrame {
     public LoginSignup() {
         initComponents();
         init();
+        setLocationRelativeTo(null);
     }
 
     private void init(){
