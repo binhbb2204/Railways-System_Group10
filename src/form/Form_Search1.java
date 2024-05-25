@@ -153,87 +153,92 @@ public class Form_Search1 extends javax.swing.JPanel {
     
         // Query for outbound journey
         String queryOutbound = 
-            "SELECT "+
-            "    t.trainName AS 'Train Name', "+
-            "    (SUM(ct.capacity) - COALESCE(COUNT(tk.ticketID), 0)) AS 'Available Capacity', "+
-            "    j_departure.departureTime AS 'Departure Time', "+
-            "    j_arrival.arrivalTime AS 'Arrival Time' "+
-            "FROM "+
-            "    train t "+
-            "JOIN "+
-            "    schedule sch ON t.trainID = sch.trainID "+
-            "JOIN "+
-            "    journey j_departure ON sch.scheduleID = j_departure.scheduleID "+
-            "JOIN "+
-            "    journey j_arrival ON sch.scheduleID = j_arrival.scheduleID "+
-            "JOIN "+
-            "    station s_departure ON j_departure.stationID = s_departure.stationID "+
-            "JOIN "+
-            "    station s_arrival ON j_arrival.stationID = s_arrival.stationID "+
-            "JOIN "+
-            "    coach c ON t.trainID = c.trainID "+
-            "JOIN "+
-            "    coach_type ct ON c.coach_typeID = ct.coach_typeID "+
-            "LEFT JOIN "+
-            "    (SELECT DISTINCT tk.ticketID, tk.coachID "+
-            "     FROM ticket tk "+
-            "     JOIN schedule s ON tk.trainID = s.trainID "+
-            "     JOIN journey jd ON s.scheduleID = jd.scheduleID "+
-            "     JOIN station sd ON jd.stationID = sd.stationID "+
-            "     JOIN journey ja ON s.scheduleID = ja.scheduleID "+
-            "     JOIN station sa ON ja.stationID = sa.stationID "+
-            "     WHERE sd.stationName = ? AND sa.stationName = ?) tk "+
-            "     ON c.coachID = tk.coachID "+
-            "WHERE "+
-            "    s_departure.stationName = ? AND "+
-            "    s_arrival.stationName = ? AND "+
-            "    j_departure.journeyID < j_arrival.journeyID "+
-            "GROUP BY "+
-            "    t.trainName, "+
-            "    j_departure.departureTime, "+
-            "    j_arrival.arrivalTime;";
+                            "SELECT " +
+                            "    t.trainName AS 'Train Name', " +
+                            "    SUM(ct.capacity - IFNULL(ticket_counts.tickets_sold, 0)) AS 'Available Capacity', " +
+                            "    j_departure.departureTime AS 'Departure Time', " +
+                            "    j_arrival.arrivalTime AS 'Arrival Time' " +
+                            "FROM " +
+                            "    train t " +
+                            "JOIN " +
+                            "    schedule sch ON t.trainID = sch.trainID " +
+                            "JOIN " +
+                            "    journey j_departure ON sch.scheduleID = j_departure.scheduleID " +
+                            "JOIN " +
+                            "    journey j_arrival ON sch.scheduleID = j_arrival.scheduleID " +
+                            "JOIN " +
+                            "    station s_departure ON j_departure.stationID = s_departure.stationID " +
+                            "JOIN " +
+                            "    station s_arrival ON j_arrival.stationID = s_arrival.stationID " +
+                            "JOIN " +
+                            "    coach c ON t.trainID = c.trainID " +
+                            "JOIN " +
+                            "    coach_type ct ON c.coach_typeID = ct.coach_typeID " +
+                            "LEFT JOIN ( " +
+                            "    SELECT " +
+                            "        tk.coachID, " +
+                            "        COUNT(tk.ticketID) AS tickets_sold " +
+                            "    FROM " +
+                            "        ticket tk " +
+                            "    WHERE " +
+                            "        tk.seatID IS NOT NULL " +
+                            "    GROUP BY " +
+                            "        tk.coachID " +
+                            ") AS ticket_counts ON c.coachID = ticket_counts.coachID " +
+                            "WHERE " +
+                            "    s_departure.stationName = ? AND " +  
+                            "    s_arrival.stationName = ? AND " +    
+                            "    j_departure.journeyID < j_arrival.journeyID " +
+                            "GROUP BY " +
+                            "    t.trainName, " +
+                            "    j_departure.departureTime, " +
+                            "    j_arrival.arrivalTime;";
+
         
     
         // Query for return journey (reversed departure and arrival stations)
-        String queryReturn = "SELECT "+
-        "    t.trainName AS 'Train Name', "+
-        "    (SUM(ct.capacity) - COALESCE(COUNT(tk.ticketID), 0)) AS 'Available Capacity', "+
-        "    j_departure.departureTime AS 'Departure Time', "+
-        "    j_arrival.arrivalTime AS 'Arrival Time' "+
-        "FROM "+
-        "    train t "+
-        "JOIN "+
-        "    schedule sch ON t.trainID = sch.trainID "+
-        "JOIN "+
-        "    journey j_departure ON sch.scheduleID = j_departure.scheduleID "+
-        "JOIN "+
-        "    journey j_arrival ON sch.scheduleID = j_arrival.scheduleID "+
-        "JOIN "+
-        "    station s_departure ON j_departure.stationID = s_departure.stationID "+
-        "JOIN "+
-        "    station s_arrival ON j_arrival.stationID = s_arrival.stationID "+
-        "JOIN "+
-        "    coach c ON t.trainID = c.trainID "+
-        "JOIN "+
-        "    coach_type ct ON c.coach_typeID = ct.coach_typeID "+
-        "LEFT JOIN "+
-        "    (SELECT DISTINCT tk.ticketID, tk.coachID "+
-        "     FROM ticket tk "+
-        "     JOIN schedule s ON tk.trainID = s.trainID "+
-        "     JOIN journey jd ON s.scheduleID = jd.scheduleID "+
-        "     JOIN station sd ON jd.stationID = sd.stationID "+
-        "     JOIN journey ja ON s.scheduleID = ja.scheduleID "+
-        "     JOIN station sa ON ja.stationID = sa.stationID "+
-        "     WHERE sd.stationName = ? AND sa.stationName = ?) tk "+
-        "     ON c.coachID = tk.coachID "+
-        "WHERE "+
-        "    s_departure.stationName = ? AND "+
-        "    s_arrival.stationName = ? AND "+
-        "    j_departure.journeyID < j_arrival.journeyID "+
-        "GROUP BY "+
-        "    t.trainName, "+
-        "    j_departure.departureTime, "+
-        "    j_arrival.arrivalTime;";
+        String queryReturn = 
+                            "SELECT " +
+                            "    t.trainName AS 'Train Name', " +
+                            "    SUM(ct.capacity - IFNULL(ticket_counts.tickets_sold, 0)) AS 'Available Capacity', " +
+                            "    j_departure.departureTime AS 'Departure Time', " +
+                            "    j_arrival.arrivalTime AS 'Arrival Time' " +
+                            "FROM " +
+                            "    train t " +
+                            "JOIN " +
+                            "    schedule sch ON t.trainID = sch.trainID " +
+                            "JOIN " +
+                            "    journey j_departure ON sch.scheduleID = j_departure.scheduleID " +
+                            "JOIN " +
+                            "    journey j_arrival ON sch.scheduleID = j_arrival.scheduleID " +
+                            "JOIN " +
+                            "    station s_departure ON j_departure.stationID = s_departure.stationID " +
+                            "JOIN " +
+                            "    station s_arrival ON j_arrival.stationID = s_arrival.stationID " +
+                            "JOIN " +
+                            "    coach c ON t.trainID = c.trainID " +
+                            "JOIN " +
+                            "    coach_type ct ON c.coach_typeID = ct.coach_typeID " +
+                            "LEFT JOIN ( " +
+                            "    SELECT " +
+                            "        tk.coachID, " +
+                            "        COUNT(tk.ticketID) AS tickets_sold " +
+                            "    FROM " +
+                            "        ticket tk " +
+                            "    WHERE " +
+                            "        tk.seatID IS NOT NULL " +
+                            "    GROUP BY " +
+                            "        tk.coachID " +
+                            ") AS ticket_counts ON c.coachID = ticket_counts.coachID " +
+                            "WHERE " +
+                            "    s_departure.stationName = ? AND " +  
+                            "    s_arrival.stationName = ? AND " +    
+                            "    j_departure.journeyID < j_arrival.journeyID " +
+                            "GROUP BY " +
+                            "    t.trainName, " +
+                            "    j_departure.departureTime, " +
+                            "    j_arrival.arrivalTime;";
+
     
         
         try (Connection conn = new ConnectData().connect();
@@ -242,14 +247,12 @@ public class Form_Search1 extends javax.swing.JPanel {
             // Set parameters for both queries
             pstmtOutbound.setString(1, departureStationName);
             pstmtOutbound.setString(2, arrivalStationName);
-            pstmtOutbound.setString(3, departureStationName);
-            pstmtOutbound.setString(4, arrivalStationName);
+
     
     
             pstmtReturn.setString(1, arrivalStationName);
             pstmtReturn.setString(2, departureStationName);
-            pstmtReturn.setString(3, arrivalStationName);
-            pstmtReturn.setString(4, departureStationName);
+
     
     
             try (ResultSet rsOutbound = pstmtOutbound.executeQuery(); ResultSet rsReturn = pstmtReturn.executeQuery()) {
