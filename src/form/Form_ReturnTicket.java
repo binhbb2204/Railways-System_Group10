@@ -97,6 +97,35 @@ public class Form_ReturnTicket extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
+    private void returnTicketDatabase(String firstName, String lastName, String trainName, String coachID, int seatNumber, String departureDate) {
+        String query = "delete FROM railway_system.ticket  " +
+                       "WHERE passengerID IN (SELECT passengerID FROM passenger WHERE first_name = ? AND last_name = ?) " +
+                       "AND trainID IN (SELECT trainID FROM train WHERE trainName = ?) " +
+                       "AND coachID = ? " +
+                       "AND seatID IN (SELECT seatID FROM seat WHERE seatNumber = ? AND coachID = ?) " +
+                       "AND departureDate = ?";
+        
+        try (Connection conn = new ConnectData().connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, firstName);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, trainName);
+            pstmt.setString(4, coachID);
+            pstmt.setInt(5, seatNumber);
+            pstmt.setString(6, coachID); // Added to ensure the seat is in the correct coach
+            pstmt.setString(7, departureDate);
+        
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Ticket successfully returned.");
+            } else {
+                System.out.println("Error: Ticket not found.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
 //-----------------------------------------------------------------------------------------------------
 
     public Form_ReturnTicket() {
@@ -169,6 +198,7 @@ public class Form_ReturnTicket extends javax.swing.JPanel {
     private void initComponents() {
 
         Error = new component.PanelError();
+        Success = new component.PanelSuccess();
         panelRound1 = new swing.PanelRound();
         lbFirstName = new javax.swing.JLabel();
         txtFirstName = new swing.MyTextField();
@@ -382,7 +412,7 @@ public class Form_ReturnTicket extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFirstNameActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtFirstNameActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
@@ -412,12 +442,39 @@ public class Form_ReturnTicket extends javax.swing.JPanel {
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButtonActionPerformed
-        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) table2.getModel();
+        int rowCount = table2.getRowCount();
+        if(rowCount > 0){
+            if(table2.isEditing()){
+                table2.getCellEditor().stopCellEditing();
+            }
+            for(int i = rowCount - 1; i >= 0; i--){
+                String fullName = model.getValueAt(i, 0).toString();
+                String trainName = model.getValueAt(i, 1).toString();
+                String coachID = model.getValueAt(i, 2).toString();
+                int seatNumber = Integer.parseInt(model.getValueAt(i, 3).toString());
+                String departureDate = model.getValueAt(i, 7).toString();
+                String[] names = fullName.split(" ");
+                String firstName = names[0];
+                String lastName = names[1];
+
+                returnTicketDatabase(firstName, lastName, trainName, coachID, seatNumber, departureDate);
+
+                model.removeRow(i);
+            }
+            GlassPanePopup.showPopup(Success);
+            Success.setData(new Model_Error("Your ticket has been returned."));
+        }
+        else{
+            GlassPanePopup.showPopup(Error);
+            Error.setData(new Model_Error("No ticket selected for return."));
+        }
     }//GEN-LAST:event_returnButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private component.PanelError Error;
+    private component.PanelSuccess Success;
     private javax.swing.JLabel lbBooking;
     private javax.swing.JLabel lbFirstName;
     private javax.swing.JLabel lbLastName;
