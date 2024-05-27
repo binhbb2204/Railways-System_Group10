@@ -34,19 +34,11 @@ public class Form_Journey extends javax.swing.JPanel {
     private boolean editable = false;
     private int editableRow = -1;
     private DateChooser dateChooser;
+    private Form_Ticket ticketForm;
+    private Form_Passenger passengerForm;
     
 
-    private void updateTotalPassengerCountDisplay() {
-        // Retrieve the total passenger count from the PassengerManager
-        int count = PassengerManager.getInstance().getTotalPassengers();
-        // Format the total count and update the card display
-        String formattedTotal = String.format("%,d", count);
-        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", formattedTotal, "increased by 5%"));
-    }
-    public void onSwitchBackToSchedule() {
-        updateTotalPassengerCountDisplay();
-    }
-    
+
 //SQL JDBC
 //-----------------------------------------------------------------------------------------------------
     public void insertJourneyDataToDatabase(String journeyID, String scheduleID, String stationID, String departureDate, String arrivalTime, String departureTime){
@@ -169,7 +161,11 @@ public class Form_Journey extends javax.swing.JPanel {
         initComponents();
 
         dateChooser = new DateChooser();
+        ticketForm = new Form_Ticket();
+        int totalProfit = ticketForm.populateTotalTicketPrice();
         
+        passengerForm = new Form_Passenger();
+        int totalPassenger = passengerForm.populateTotalPassenger();
 
         this.add(dateChooser);
 
@@ -225,8 +221,8 @@ public class Form_Journey extends javax.swing.JPanel {
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
                 model.addRow(new Object[]{"", "", "", "", "", ""});
                 model.fireTableDataChanged();
-                updateTotalPassengerCountDisplay();
-
+                // passengerForm.populateTotalPassenger();
+                // ticketForm.populateTotalTicketPrice();
                 
             }
             
@@ -239,10 +235,11 @@ public class Form_Journey extends javax.swing.JPanel {
                 editableRow = row;
                 editable = true;
                 ((DefaultTableModel)table.getModel()).fireTableDataChanged();
-
+                // passengerForm.populateTotalPassenger();
+                // ticketForm.populateTotalTicketPrice();
                 table.repaint();
                 table.revalidate();
-                updateTotalPassengerCountDisplay();
+                
                 
             }
             @Override
@@ -254,9 +251,10 @@ public class Form_Journey extends javax.swing.JPanel {
                 String journeyID = model.getValueAt(row, 0).toString();
 
                 // Delete data from the database
+                // passengerForm.populateTotalPassenger();
+                // ticketForm.populateTotalTicketPrice();
                 deleteJourneyDataFromDatabase(journeyID);
                 model.removeRow(row);
-                updateTotalPassengerCountDisplay();
             }
             @Override
             public void onView(int row) {
@@ -277,10 +275,11 @@ public class Form_Journey extends javax.swing.JPanel {
                     // Journey ID does not exist, so insert a new record
                     insertJourneyDataToDatabase(journeyID, scheduleID, stationID, departureDate, arrivalTime, departureTime);
                 }
-                updateTotalPassengerCountDisplay();
+
                 table.repaint();
                 table.revalidate();
-                
+                // passengerForm.populateTotalPassenger();
+                // ticketForm.populateTotalTicketPrice();
                 populateJourneyTable();
             }
             
@@ -288,10 +287,13 @@ public class Form_Journey extends javax.swing.JPanel {
         };
         table.getColumnModel().getColumn(6).setCellRenderer(new TableActionCellRender());
         table.getColumnModel().getColumn(6).setCellEditor(new TableActionCellEditor(event));
+        
 
-        card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
+        String formattedProfit = String.format("₫ %,d", totalProfit);
+        String formattedPassenger = String.format("%,d", totalPassenger);
+        card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", formattedProfit, "increased by 5%"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
-        updateTotalPassengerCountDisplay();
+        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", formattedPassenger, "increased by 5%"));
 
         //add row table
         spTable.setVerticalScrollBar(new ScrollBar());

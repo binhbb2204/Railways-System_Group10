@@ -29,17 +29,9 @@ import swing.TableActionEvent;
 public class Form_CoachType extends javax.swing.JPanel {
     private boolean editable = false;
     private int editableRow = -1;
+    private Form_Ticket ticketForm;
+    private Form_Passenger passengerForm;
 
-    private void updateTotalPassengerCountDisplay() {
-        // Retrieve the total passenger count from the PassengerManager
-        int count = PassengerManager.getInstance().getTotalPassengers();
-        // Format the total count and update the card display
-        String formattedTotal = String.format("%,d", count);
-        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", formattedTotal, "increased by 5%"));
-    }
-    public void onSwitchBackToSchedule() {
-        updateTotalPassengerCountDisplay();
-    }
 
 //SQL JDBC
 //-----------------------------------------------------------------------------------------------------
@@ -136,8 +128,11 @@ public class Form_CoachType extends javax.swing.JPanel {
 
     public Form_CoachType() {
         initComponents();
-
-        updateTotalPassengerCountDisplay();
+        ticketForm = new Form_Ticket();
+        int totalProfit = ticketForm.populateTotalTicketPrice();
+        
+        passengerForm = new Form_Passenger();
+        int totalPassenger = passengerForm.populateTotalPassenger();
 
         AddingActionEvent event1 = new AddingActionEvent() {
             @Override
@@ -145,7 +140,8 @@ public class Form_CoachType extends javax.swing.JPanel {
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
                 model.addRow(new Object[]{"", CoachType.HARD_SEAT, "", ""});
                 model.fireTableDataChanged();
-                updateTotalPassengerCountDisplay();
+                //passengerForm.populateTotalPassenger();
+
             }
             
         };
@@ -157,10 +153,10 @@ public class Form_CoachType extends javax.swing.JPanel {
                 editableRow = row;
                 editable = true;
                 ((DefaultTableModel)table.getModel()).fireTableDataChanged();
-
+                //passengerForm.populateTotalPassenger();
                 table.repaint();
                 table.revalidate();
-                updateTotalPassengerCountDisplay();
+
                 
             }
             @Override
@@ -171,8 +167,9 @@ public class Form_CoachType extends javax.swing.JPanel {
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
                 String coach_typeID = (String) model.getValueAt(row, 0);
                 deleteCoachTypeDataFromDatabase(coach_typeID);
+                //passengerForm.populateTotalPassenger();
                 model.removeRow(row);
-                updateTotalPassengerCountDisplay();
+
                 
             }
             @Override
@@ -180,7 +177,6 @@ public class Form_CoachType extends javax.swing.JPanel {
                 editableRow = row;
                 editable = false;
                 ((DefaultTableModel)table.getModel()).fireTableDataChanged();
-                updateTotalPassengerCountDisplay();
                 DefaultTableModel model = (DefaultTableModel) table.getModel(); 
                 String coach_typeID = model.getValueAt(row, 0).toString();
                 String type = model.getValueAt(row, 1).toString();
@@ -193,10 +189,10 @@ public class Form_CoachType extends javax.swing.JPanel {
                     //insert new record
                     insertCoachTypeDataToDatabase(coach_typeID, type, price, capacity);
                 }
-                updateTotalPassengerCountDisplay();
                 table.repaint();
                 table.revalidate();
                 populateCoachTypeTable();
+                //passengerForm.populateTotalPassenger();
                 
             }
             
@@ -205,9 +201,12 @@ public class Form_CoachType extends javax.swing.JPanel {
         table.getColumnModel().getColumn(4).setCellRenderer(new TableActionCellRender());
         table.getColumnModel().getColumn(4).setCellEditor(new TableActionCellEditor(event));
 
-        card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
-        card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
 
+        String formattedProfit = String.format("₫ %,d", totalProfit);
+        String formattedPassenger = String.format("%,d", totalPassenger);
+        card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", formattedProfit, "increased by 5%"));
+        card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
+        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", formattedPassenger, "increased by 5%"));
         spTable.setVerticalScrollBar(new ScrollBar());
         spTable.getVerticalScrollBar().setBackground(Color.WHITE);
         spTable.getViewport().setBackground(Color.WHITE);

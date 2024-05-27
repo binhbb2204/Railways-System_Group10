@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="org">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/org/AbsoluteLayout-RELEASE200.jar!/" />
+      <root url="jar://$PROJECT_DIR$/org/swing-worker-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/org/miglayout-4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/org/filters-2.0.235.jar!/" />
+      <root url="jar://$PROJECT_DIR$/org/TimingFramework-0.55.jar!/" />
+      <root url="jar://$PROJECT_DIR$/org/mssql-jdbc-12.6.1.jre11.jar!/" />
+      <root url="jar://$PROJECT_DIR$/org/activation-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/org/mysql-connector-j-8.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/org/javax.mail.jar!/" />
+      <root url="jar://$PROJECT_DIR$/org/swingx-1.6.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

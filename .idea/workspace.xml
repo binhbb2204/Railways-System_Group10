@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="541366a6-a6f8-4b59-b03d-3f10c73483d4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/form/Form_Journey.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/form/Form_Journey.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/form/Form_Schedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/form/Form_Schedule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/form/Form_Station.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/form/Form_Station.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/form/Form_Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/form/Form_Ticket.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2h2KTOL7j1IGberk8gWbG4QVstz" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/PDM - Database/Railways-System_Group10/src"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="541366a6-a6f8-4b59-b03d-3f10c73483d4" name="Changes" comment="" />
+      <created>1716786738667</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1716786738667</updated>
+    </task>
+    <servers />
+  </component>
+</project>

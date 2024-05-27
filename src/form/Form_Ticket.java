@@ -28,21 +28,50 @@ import javax.swing.JTable;
 public class Form_Ticket extends javax.swing.JPanel {
     private boolean editable = false;
     private int editableRow = -1;
+    private int totalPrice;
 
 
-
-    private void updateTotalPassengerCountDisplay() {
-        // Retrieve the total passenger count from the PassengerManager
-        int count = PassengerManager.getInstance().getTotalPassengers();
-        // Format the total count and update the card display
-        String formattedTotal = String.format("%,d", count);
-        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", formattedTotal, "increased by 5%"));
-    }
-    public void onSwitchBackToSchedule() {
-        updateTotalPassengerCountDisplay();
-    }
 //SQL JDBC
 //-----------------------------------------------------------------------------------------------------
+    //I had to call this like-method from passenger form simple bc the stupid runtime error make this one cannot run
+    private  int populateTotalPassenger() {
+        String query = "SELECT COUNT(passengerID) AS TotalPassenger FROM railway_system.passenger";
+        int total = 0;
+
+        try (Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery()) {
+    
+        
+            if (rs.next()) {
+                total = rs.getInt("TotalPassenger");
+            }
+    
+        } 
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error retrieving data: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return total;
+    }
+
+    public int populateTotalTicketPrice(){
+        String query = "SELECT SUM(ticketPrice) AS TotalTicketPrice " + 
+                        "FROM ticket;";
+        int Price = 0;
+        try(Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery()){
+            while(rs.next()){
+                Price = rs.getInt("TotalTicketPrice");
+            }
+        }
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(this, "Error retrieving data: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return Price;
+    }
     private void populateTicketTable() {
         String query = "SELECT ticketID, passengerID, trainID, coachID, seatID, departure_stationID, arrival_stationID, departureTime, departureDate, ticketPrice FROM railway_system.ticket";
 
@@ -88,6 +117,13 @@ public class Form_Ticket extends javax.swing.JPanel {
 //-----------------------------------------------------------------------------------------------------
     public Form_Ticket() {
         initComponents();
+        //passengerForm = new Form_Passenger();
+        //int totalPassenger = passengerForm.populateTotalPassenger();
+
+        int totalProfit = populateTotalTicketPrice();
+        int totalPassenger = populateTotalPassenger();
+        
+        
 
         // AddingActionEvent event1 = new AddingActionEvent() {
         //     @Override
@@ -107,7 +143,7 @@ public class Form_Ticket extends javax.swing.JPanel {
 
             table.repaint();
             table.revalidate();
-            updateTotalPassengerCountDisplay();
+            
         }
         @Override
         public void onDelete(int row) {
@@ -119,13 +155,13 @@ public class Form_Ticket extends javax.swing.JPanel {
 
             deleteTicketDataFromDatabase(ticketID);
             model.removeRow(row);
-            updateTotalPassengerCountDisplay();
+            
         }
         public void onView(int row) {
             editableRow = row;
             editable = false;
             ((DefaultTableModel)table.getModel()).fireTableDataChanged();
-            updateTotalPassengerCountDisplay();
+            
             DefaultTableModel model = (DefaultTableModel) table.getModel();
 
             //String ticketStatus = model.getValueAt(row, 10).toString();
@@ -138,7 +174,7 @@ public class Form_Ticket extends javax.swing.JPanel {
             
             table.repaint();
             table.revalidate();
-            updateTotalPassengerCountDisplay();
+            
             //populateTicketTable();
             populateTicketTable();
         
@@ -149,10 +185,14 @@ public class Form_Ticket extends javax.swing.JPanel {
     };
         table.getColumnModel().getColumn(10).setCellRenderer(new TableActionCellRender());
         table.getColumnModel().getColumn(10).setCellEditor(new TableActionCellEditor(event));
-        card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
+
+        
+        String formattedProfit = String.format("₫ %,d", totalProfit);
+        String formattedPassenger = String.format("%,d", totalPassenger);
+        card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", formattedProfit, "increased by 5%"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
-        updateTotalPassengerCountDisplay();
-        //card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", "₫ 9,112,001,000", "increased by 5%"));
+        
+        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", formattedPassenger, "increased by 5%"));
         
         //add row table
         sPTable.setVerticalScrollBar(new ScrollBar());

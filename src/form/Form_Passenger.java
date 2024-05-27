@@ -26,56 +26,41 @@ import swing.TableActionEvent;
 import model.Model_Card;
 import model.PassengerStatus;
 
-class PassengerManager {
-    private static PassengerManager instance;
-    private int totalPassengers;
-
-    private PassengerManager() {
-        // Private constructor to prevent instantiation
-    }
-
-    public static PassengerManager getInstance() {
-        if (instance == null) {
-            instance = new PassengerManager();
-        }
-        return instance;
-    }
-
-    public int getTotalPassengers() {
-        return totalPassengers;
-    }
-
-    public void setTotalPassengers(int totalPassengers) {
-        this.totalPassengers = totalPassengers;
-    }
-}
-
 
 public class Form_Passenger extends javax.swing.JPanel {
     private boolean editable = false;
     private int editableRow = -1;
-    private static int totalPassengers;
+    private Form_Ticket ticketForm;
+    private int totalPassengers;
 
 
-    // Method to update the total passenger count
-    public void updateTotalPassengerCount() {
-        int count = table.getModel().getRowCount();
-        PassengerManager.getInstance().setTotalPassengers(count);
-        // Update the display
-        refreshDisplay();
-    }
-    public void refreshDisplay() {
-        int count = PassengerManager.getInstance().getTotalPassengers();
-        String formattedTotal = String.format("%,d", count);
-        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", formattedTotal, "increased by 5%"));
-    }
 
-
-    public static int getTotalPassengers(){
-        return totalPassengers;
-    }
 //SQL JDBC
 //-----------------------------------------------------------------------------------------------------
+    public int populateTotalPassenger() {
+        String query = "SELECT COUNT(passengerID) AS TotalPassenger FROM railway_system.passenger";
+        int total = 0;
+
+        // Use try-with-resources to ensure all resources are closed
+        try (Connection conn = new ConnectData().connect();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery()) {
+        
+            
+            if (rs.next()) {
+            total = rs.getInt("TotalPassenger");
+        }
+        
+        } 
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error retrieving data: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+
+        return total;
+    }
+    
     private int insertPassengerDataToDatabase(String firstName, String lastName, String phoneNumber, String email, String status) {
         int generatedPassengerID = -1;
         String query = "INSERT INTO railway_system.passenger (first_name, last_name, phone_number, email, status) VALUES (?, ?, ?, ?, ?)";
@@ -198,7 +183,7 @@ public class Form_Passenger extends javax.swing.JPanel {
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
                 model.addRow(new Object[]{generatedPassengerID, "", "", "", "", PassengerStatus.TICKETED});
                 model.fireTableDataChanged();
-                updateTotalPassengerCount();
+                populatePassengerTable();
                 
             }
             
@@ -226,7 +211,7 @@ public class Form_Passenger extends javax.swing.JPanel {
                 int passengerID = Integer.parseInt(model.getValueAt(row, 0).toString());
                 deletePassengerDataFromDatabase(passengerID);
                 model.removeRow(row);
-                updateTotalPassengerCount();
+                populatePassengerTable();
             }
             @Override
             public void onView(int row) {
@@ -265,10 +250,15 @@ public class Form_Passenger extends javax.swing.JPanel {
         
 
 
+        ticketForm = new Form_Ticket();
+        int totalProfit = ticketForm.populateTotalTicketPrice();
+        String formattedProfit = String.format("₫ %,d", totalProfit);
 
-        card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
+        int totalPassenger = populateTotalPassenger();
+        String formattedPassenger = String.format("%,d", totalPassenger);
+        card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", formattedProfit, "increased by 5%"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
-
+        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", formattedPassenger, "increased by 5%"));
         
         // card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", formattedTotal, "increased by 5%"));
         
@@ -281,20 +271,10 @@ public class Form_Passenger extends javax.swing.JPanel {
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
         //table.getColumModel is used for the status column because it's a JComboBox
         table.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JComboBox<>(PassengerStatus.values())));
-        // table.addRow(new Object[]{"01","Tran", "Thanh An", "0983127301", "thanhan@gmail.com",PassengerStatus.TICKETED});
-        // table.addRow(new Object[]{"02","Nguyen", "Le Binh", "0957483948", "lebinh@gmail.com",PassengerStatus.TICKETED});
-        // table.addRow(new Object[]{"03","Pham", "Van Cuong", "0956473849", "vancuong@gmail.com",PassengerStatus.CANCELLED});
-        // table.addRow(new Object[]{"04","Le", "Trang Dao", "0984930293", "trangdao@gmail.com",PassengerStatus.TICKETED});
-        // table.addRow(new Object[]{"05","Ly", "Minh Thong", "0949303938", "minhthong@gmail.com",PassengerStatus.ARRIVED});
-        // table.addRow(new Object[]{"06","Nguyen", "Tien Dat", "0955584939", "tiendat@gmail.com",PassengerStatus.TICKETED});
-        // table.addRow(new Object[]{"07","Mike", "Tyson", "0984877449", "mike@gmail.com",PassengerStatus.ARRIVED});
-        // table.addRow(new Object[]{"08","Mc", "John", "0911122345", "john@gmail.com",PassengerStatus.CANCELLED});
-        // table.addRow(new Object[]{"09","Tran", "Van Cao", "0940459345", "tom@gmail.com",PassengerStatus.TICKETED});
-        // table.addRow(new Object[]{"10","Michael", "Jackson", "0983857491", "michael@gmail.com",PassengerStatus.TICKETED});
         populatePassengerTable();
 
-        //this calls is used to count the total passenger, which is from that method, placing it beneath the table.addRow 
-        updateTotalPassengerCount();
+
+
 
     }
 

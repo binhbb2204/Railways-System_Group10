@@ -24,17 +24,8 @@ import java.awt.*;
 public class Form_Seat extends javax.swing.JPanel {
     private boolean editable = false;
     private int editableRow = -1;
-
-    private void updateTotalPassengerCountDisplay() {
-        // Retrieve the total passenger count from the PassengerManager
-        int count = PassengerManager.getInstance().getTotalPassengers();
-        // Format the total count and update the card display
-        String formattedTotal = String.format("%,d", count);
-        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", formattedTotal, "increased by 5%"));
-    }
-    public void onSwitchBackToSeat() {
-        updateTotalPassengerCountDisplay();
-    }
+    private Form_Ticket ticketForm;
+    private Form_Passenger passengerForm;
 //SQL JDBC
 //-----------------------------------------------------------------------------------------------------
 public void insertSeatDataToDatabase(String coachID, int seatNumber, DefaultTableModel model) {
@@ -129,7 +120,11 @@ public void populateSeatTable() {
 //-----------------------------------------------------------------------------------------------------
     public Form_Seat() {
         initComponents();
-
+        ticketForm = new Form_Ticket();
+        int totalProfit = ticketForm.populateTotalTicketPrice();
+        
+        passengerForm = new Form_Passenger();
+        int totalPassenger = passengerForm.populateTotalPassenger();
 
 
         TableActionEvent event = new TableActionEvent() {
@@ -138,10 +133,9 @@ public void populateSeatTable() {
                 editableRow = row;
                 editable = true;
                 ((DefaultTableModel)table.getModel()).fireTableDataChanged();
-
+                passengerForm.populateTotalPassenger();
                 table.repaint();
                 table.revalidate();
-                updateTotalPassengerCountDisplay();
                 
             }
             @Override
@@ -151,14 +145,14 @@ public void populateSeatTable() {
                 }
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
                 model.removeRow(row);
-                
+                //passengerForm.populateTotalPassenger();
             }
             @Override
             public void onView(int row) {
                 editableRow = row;
                 editable = false;
                 ((DefaultTableModel)table.getModel()).fireTableDataChanged();
-                updateTotalPassengerCountDisplay();
+                //passengerForm.populateTotalPassenger();
                 table.repaint();
                 table.revalidate();
                 populateSeatTable();
@@ -170,19 +164,19 @@ public void populateSeatTable() {
         table.getColumnModel().getColumn(3).setCellRenderer(new TableActionCellRender());
         table.getColumnModel().getColumn(3).setCellEditor(new TableActionCellEditor(event));
 
-        
-        card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", "₫ 9,112,001,000", "increased by 5%"));
+
+        String formattedProfit = String.format("₫ %,d", totalProfit);
+        String formattedPassenger = String.format("%,d", totalPassenger);
+        card1.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/profit.png")), "Total profit", formattedProfit, "increased by 5%"));
         card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/transport.png")), "Ticket Price", "₫ 80,000", "Price can be changed by the occasion"));
-        updateTotalPassengerCountDisplay();
+        card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/icons/train-station.png")), "Total Passenger Count", formattedPassenger, "increased by 5%"));
         spTable.setVerticalScrollBar(new ScrollBar());
         spTable.getVerticalScrollBar().setBackground(Color.WHITE);
         spTable.getViewport().setBackground(Color.WHITE);
         JPanel p = new JPanel();
         p.setBackground(Color.WHITE);
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
-        // table.addRow(new Object[]{"Seat01", "02", "10"});
-        // table.addRow(new Object[]{"Seat02", "02", "11"});
-        // table.addRow(new Object[]{"Seat03", "02", "12"});
+
         populateSeatTable();
     }
 
