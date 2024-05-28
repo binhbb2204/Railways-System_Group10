@@ -1,20 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
-package form;
 
-/**
- *
- * @author binhb
- */
+package form;
+import java.awt.*;
+
 public class Form_About extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Form_About
-     */
+
     public Form_About() {
         initComponents();
+        txt1.setBackground(new Color(0, 0, 0, 0));
+        txt1.setSelectionColor(new Color(173, 216, 230, 200));
+        txt1.setOpaque(false);
+
+        txt2.setBackground(new Color(0, 0, 0, 0));
+        txt2.setSelectionColor(new Color(173, 216, 230, 200));
+        txt2.setOpaque(false);
     }
 
     /**
@@ -29,9 +28,9 @@ public class Form_About extends javax.swing.JPanel {
         panelBorder1 = new swing.PanelBorder();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextPane1 = new javax.swing.JTextPane();
+        txt1 = new javax.swing.JTextPane();
         jLabel3 = new javax.swing.JLabel();
-        jTextPane2 = new javax.swing.JTextPane();
+        txt2 = new javax.swing.JTextPane();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -46,17 +45,17 @@ public class Form_About extends javax.swing.JPanel {
         jLabel2.setForeground(new java.awt.Color(63, 128, 199));
         jLabel2.setText("Who We Are");
 
-        jTextPane1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jTextPane1.setForeground(new java.awt.Color(127, 127, 127));
-        jTextPane1.setText("Railway System App was founded in 2024 by a group of enthusiastic Computer Science students with a concrete goal: to make train travel accessible and enjoyable for everyone between the North and the South.");
+        txt1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txt1.setForeground(new java.awt.Color(127, 127, 127));
+        txt1.setText("Railway System App was founded in 2024 by a group of enthusiastic Computer Science students with a concrete goal: to make train travel accessible and enjoyable for everyone from the North to the South and vice versa. ");
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(63, 128, 199));
         jLabel3.setText("Our Vision");
 
-        jTextPane2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jTextPane2.setForeground(new java.awt.Color(127, 127, 127));
-        jTextPane2.setText("Imagining the future of Vietnam’s transportation – Our dream is to make your travelling a unique trip that carries you not only quickly and safely, but also shows you the true soul of our nation. We work to establish ourselves as the first choice of travelers – comfort, convenience, and the trip being as fulfilling as the destination. Ready to explore? Let's get you on board!\nBook your tickets today and unlock an unforgettable travel experience!\n");
+        txt2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txt2.setForeground(new java.awt.Color(127, 127, 127));
+        txt2.setText("Railway System App strives to provide a user-friendly platform that is designed for ease of use, offering you tickets with reasonable prices in just a few minutes. We also connect you with a vast railway network, offering a wide range of travel options. Railway System App makes sure that you stay informed with up-to-date train schedules and fares. Your safety and employ secure payment gateways are also prioritized to ensure a smooth booking experience. Last but not least, our friendly customer support team is always available to assist you with any questions or concerns.\n\nRailway System App is not only a booking platform but also a reliable partner in creating convenient and unforgettable train expeditions. Ready to explore? Let's get you on board!\n\nBook your tickets today and unlock an unforgettable travel experience!\n\n");
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(63, 128, 199));
@@ -81,12 +80,12 @@ public class Form_About extends javax.swing.JPanel {
                 .addGap(20, 20, 20)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addComponent(jTextPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 798, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt2, javax.swing.GroupLayout.PREFERRED_SIZE, 798, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(jLabel4)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
-                    .addComponent(jTextPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 798, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txt1, javax.swing.GroupLayout.PREFERRED_SIZE, 798, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -96,18 +95,18 @@ public class Form_About extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addGap(5, 5, 5)
-                .addComponent(jTextPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(jLabel3)
                 .addGap(5, 5, 5)
-                .addComponent(jTextPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
-                .addContainerGap(72, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -136,8 +135,8 @@ public class Form_About extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JTextPane jTextPane1;
-    private javax.swing.JTextPane jTextPane2;
     private swing.PanelBorder panelBorder1;
+    private javax.swing.JTextPane txt1;
+    private javax.swing.JTextPane txt2;
     // End of variables declaration//GEN-END:variables
 }

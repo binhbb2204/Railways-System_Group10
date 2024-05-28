@@ -52,12 +52,12 @@
                   <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextPane2" alignment="0" min="-2" pref="798" max="-2" attributes="0"/>
+                      <Component id="txt2" alignment="0" min="-2" pref="798" max="-2" attributes="0"/>
                       <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextPane1" min="-2" pref="798" max="-2" attributes="0"/>
+                      <Component id="txt1" min="-2" pref="798" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -70,18 +70,18 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                  <Component id="jTextPane1" min="-2" max="-2" attributes="0"/>
+                  <Component id="txt1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                  <Component id="jTextPane2" min="-2" max="-2" attributes="0"/>
+                  <Component id="txt2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="72" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -109,7 +109,7 @@
             <Property name="text" type="java.lang.String" value="Who We Are"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextPane" name="jTextPane1">
+        <Component class="javax.swing.JTextPane" name="txt1">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="SansSerif" size="14" style="0"/>
@@ -117,7 +117,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="7f" green="7f" red="7f" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Railway System App was founded in 2024 by a group of enthusiastic Computer Science students with a concrete goal: to make train travel accessible and enjoyable for everyone between the North and the South."/>
+            <Property name="text" type="java.lang.String" value="Railway System App was founded in 2024 by a group of enthusiastic Computer Science students with a concrete goal: to make train travel accessible and enjoyable for everyone from the North to the South and vice versa. "/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
@@ -131,7 +131,7 @@
             <Property name="text" type="java.lang.String" value="Our Vision"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextPane" name="jTextPane2">
+        <Component class="javax.swing.JTextPane" name="txt2">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="SansSerif" size="14" style="0"/>
@@ -139,7 +139,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="7f" green="7f" red="7f" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Imagining the future of Vietnam&#x2019;s transportation &#x2013; Our dream is to make your travelling a unique trip that carries you not only quickly and safely, but also shows you the true soul of our nation. We work to establish ourselves as the first choice of travelers &#x2013; comfort, convenience, and the trip being as fulfilling as the destination. Ready to explore? Let&apos;s get you on board!&#xa;Book your tickets today and unlock an unforgettable travel experience!&#xa;"/>
+            <Property name="text" type="java.lang.String" value="Railway System App strives to provide a user-friendly platform that is designed for ease of use, offering you tickets with reasonable prices in just a few minutes. We also connect you with a vast railway network, offering a wide range of travel options. Railway System App makes sure that you stay informed with up-to-date train schedules and fares. Your safety and employ secure payment gateways are also prioritized to ensure a smooth booking experience. Last but not least, our friendly customer support team is always available to assist you with any questions or concerns.&#xa;&#xa;Railway System App is not only a booking platform but also a reliable partner in creating convenient and unforgettable train expeditions. Ready to explore? Let&apos;s get you on board!&#xa;&#xa;Book your tickets today and unlock an unforgettable travel experience!&#xa;&#xa;"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
