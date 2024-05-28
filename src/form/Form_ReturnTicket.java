@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
+import component.PanelMessage1;
 import connection.ConnectData;
 import glasspanepopup.GlassPanePopup;
 import model.Model_Error;
@@ -13,6 +14,8 @@ import panelSearchList.SearchTableActionCellEditor;
 import panelSearchList.SearchTableActionEvent;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -199,6 +202,7 @@ public class Form_ReturnTicket extends javax.swing.JPanel {
 
         Error = new component.PanelError();
         Success = new component.PanelSuccess();
+        Message = new component.PanelMessage1();
         panelRound1 = new swing.PanelRound();
         lbFirstName = new javax.swing.JLabel();
         txtFirstName = new swing.MyTextField();
@@ -442,38 +446,50 @@ public class Form_ReturnTicket extends javax.swing.JPanel {
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButtonActionPerformed
-        DefaultTableModel model = (DefaultTableModel) table2.getModel();
-        int rowCount = table2.getRowCount();
-        if(rowCount > 0){
-            if(table2.isEditing()){
-                table2.getCellEditor().stopCellEditing();
-            }
-            for(int i = rowCount - 1; i >= 0; i--){
-                String fullName = model.getValueAt(i, 0).toString();
-                String trainName = model.getValueAt(i, 1).toString();
-                String coachID = model.getValueAt(i, 2).toString();
-                int seatNumber = Integer.parseInt(model.getValueAt(i, 3).toString());
-                String departureDate = model.getValueAt(i, 7).toString();
-                String[] names = fullName.split(" ");
-                String firstName = names[0];
-                String lastName = names[1];
+        PanelMessage1 obj = new PanelMessage1();
+        obj.eventBook(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GlassPanePopup.closePopupLast();
 
-                returnTicketDatabase(firstName, lastName, trainName, coachID, seatNumber, departureDate);
+                DefaultTableModel model = (DefaultTableModel) table2.getModel();
+                int rowCount = table2.getRowCount();
+                if(rowCount > 0){
+                    if(table2.isEditing()){
+                    table2.getCellEditor().stopCellEditing();
+                    }
+                    for(int i = rowCount - 1; i >= 0; i--){
+                    String fullName = model.getValueAt(i, 0).toString();
+                    String trainName = model.getValueAt(i, 1).toString();
+                    String coachID = model.getValueAt(i, 2).toString();
+                    int seatNumber = Integer.parseInt(model.getValueAt(i, 3).toString());
+                    String departureDate = model.getValueAt(i, 7).toString();
+                    String[] names = fullName.split(" ");
+                    String firstName = names[0];
+                    String lastName = names[1];
 
-                model.removeRow(i);
+                    returnTicketDatabase(firstName, lastName, trainName, coachID, seatNumber, departureDate);
+
+                    model.removeRow(i);
+                }
+                GlassPanePopup.showPopup(Success);
+                Success.setData(new Model_Error("Your ticket has been returned."));
+                }
+                else{
+                    GlassPanePopup.showPopup(Error);
+                    Error.setData(new Model_Error("No ticket selected for return."));
+                }
+
             }
-            GlassPanePopup.showPopup(Success);
-            Success.setData(new Model_Error("Your ticket has been returned."));
-        }
-        else{
-            GlassPanePopup.showPopup(Error);
-            Error.setData(new Model_Error("No ticket selected for return."));
-        }
+        });
+        GlassPanePopup.showPopup(obj);
+        
     }//GEN-LAST:event_returnButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private component.PanelError Error;
+    private component.PanelMessage1 Message;
     private component.PanelSuccess Success;
     private javax.swing.JLabel lbBooking;
     private javax.swing.JLabel lbFirstName;

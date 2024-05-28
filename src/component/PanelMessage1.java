@@ -9,10 +9,10 @@ import javax.swing.Timer;
 
 import glasspanepopup.GlassPanePopup;
 
-public class PanelMessage extends javax.swing.JPanel {
+public class PanelMessage1 extends javax.swing.JPanel {
     private int countdown = 5;
  
-    public PanelMessage() {
+    public PanelMessage1() {
         initComponents();
         setOpaque(false);
         txt.setBackground(new Color(0, 0, 0, 0));
@@ -29,7 +29,7 @@ public class PanelMessage extends javax.swing.JPanel {
                     cmdBook.setText(String.valueOf(countdown));
                 } else {
                     ((Timer) e.getSource()).stop();
-                    cmdBook.setText("Book");
+                    cmdBook.setText("Return");
                     cmdBook.setEnabled(true);
                 }
                 cmdBook.repaint();  // Request a repaint to update the blur effect
@@ -70,11 +70,11 @@ public class PanelMessage extends javax.swing.JPanel {
 
         txt.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         txt.setForeground(new java.awt.Color(133, 133, 133));
-        txt.setText("Thank you for choosing our service! By clicking ‘Book,’ you’re confirming your reservation. Your selected ticket will be secured. If you have any questions or need assistance, feel free to reach out to our customer support. Safe travels!");
+        txt.setText("Thank you for using our service! If you need to return your ticket, simply click ‘Return Ticket’ to initiate the process. Your reservation will be promptly updated. Should you have any questions or require assistance, our customer support team is here to help. We wish you all the best and look forward to serving you again in the future.");
 
         cmdBook.setBackground(new java.awt.Color(0, 51, 255));
         cmdBook.setForeground(new java.awt.Color(255, 255, 255));
-        cmdBook.setText("Book");
+        cmdBook.setText("Return");
         cmdBook.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
 
         cmdCancel.setBackground(new java.awt.Color(255, 51, 51));

@@ -78,7 +78,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="85" green="85" red="85" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Thank you for choosing our service! By clicking &#x2018;Book,&#x2019; you&#x2019;re confirming your reservation. Your selected ticket will be secured. If you have any questions or need assistance, feel free to reach out to our customer support. Safe travels!"/>
+        <Property name="text" type="java.lang.String" value="Thank you for using our service! If you need to return your ticket, simply click &#x2018;Return Ticket&#x2019; to initiate the process. Your reservation will be promptly updated. Should you have any questions or require assistance, our customer support team is here to help. We wish you all the best and look forward to serving you again in the future."/>
       </Properties>
     </Component>
     <Component class="swing.Button" name="cmdBook">
@@ -89,7 +89,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Book"/>
+        <Property name="text" type="java.lang.String" value="Return"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="SansSerif" size="14" style="1"/>
         </Property>

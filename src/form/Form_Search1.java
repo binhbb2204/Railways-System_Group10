@@ -1499,10 +1499,10 @@ public class Form_Search1 extends javax.swing.JPanel {
         obj.eventBook(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Click!");
+                //System.out.println("Click!");
                 
                 refresh = true;
-                System.out.println(refresh);
+                //System.out.println(refresh);
                 
                 GlassPanePopup.closePopupLast();
 
