@@ -4,12 +4,16 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_Search1.java</file>
-            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_Timetable.java</file>
+            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/component/PanelMessage1.java</file>
             <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_Track.java</file>
+            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/component/PanelMessage.java</file>
             <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/component/Card.java</file>
+            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/swing/TableStatus.java</file>
+            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/component/PanelError.java</file>
+            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_Timetable.java</file>
+            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/component/PanelSuccess.java</file>
             <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_Station.java</file>
             <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/scrollbar/PanelScrollBar.java</file>
-            <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/swing/TableStatus.java</file>
             <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_BookingInformation.java</file>
             <file>file:/D:/PDM%20-%20Database/Railways-System_Group10/src/form/Form_ReturnTicket.java</file>
         </group>
