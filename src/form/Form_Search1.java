@@ -1530,7 +1530,7 @@ public class Form_Search1 extends javax.swing.JPanel {
                             insertTicketDatabase(IDpassenger, finaltrainID, oneWayCoachID, seatID, departureStationID, arrivalStationID, oneWayDepartureTime, formattedDate, ticketPrice);
                             insertTicketDatabase(IDpassenger, finaltrainID1, roundTripCoachID, seatID1, arrivalStationID, departureStationID, roundTripDepartureTime, roundTripFormattedDate, ticketPrice1);
                             model.setRowCount(0);
-                            // return;
+                            return;
                         }
                         
                         // Reset form and state
@@ -1542,6 +1542,7 @@ public class Form_Search1 extends javax.swing.JPanel {
                     }
                     
                 }
+                model.setRowCount(0);
                 if(refresh){
             
                     List<Object[]> updatedData = fetchUpdatedData(currentTrainName, coachType);

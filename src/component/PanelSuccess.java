@@ -65,7 +65,7 @@ public class PanelSuccess extends javax.swing.JPanel {
         txt1.setForeground(new java.awt.Color(255, 255, 255));
         txt1.setText("For more information about this issue and possible fixes, please double-check the input data for any inaccuracies.");
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/qrcode.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/qr.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
