@@ -27,18 +27,87 @@ public class Form_About extends javax.swing.JPanel {
     private void initComponents() {
 
         panelBorder1 = new swing.PanelBorder();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jTextPane1 = new javax.swing.JTextPane();
+        jLabel3 = new javax.swing.JLabel();
+        jTextPane2 = new javax.swing.JTextPane();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(63, 128, 199));
+        jLabel1.setText("ABOUT US");
+
+        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(63, 128, 199));
+        jLabel2.setText("Who We Are");
+
+        jTextPane1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jTextPane1.setForeground(new java.awt.Color(127, 127, 127));
+        jTextPane1.setText("Railway System App was founded in 2024 by a group of enthusiastic Computer Science students with a concrete goal: to make train travel accessible and enjoyable for everyone between the North and the South.");
+
+        jLabel3.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(63, 128, 199));
+        jLabel3.setText("Our Vision");
+
+        jTextPane2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jTextPane2.setForeground(new java.awt.Color(127, 127, 127));
+        jTextPane2.setText("Imagining the future of Vietnam’s transportation – Our dream is to make your travelling a unique trip that carries you not only quickly and safely, but also shows you the true soul of our nation. We work to establish ourselves as the first choice of travelers – comfort, convenience, and the trip being as fulfilling as the destination. Ready to explore? Let's get you on board!\nBook your tickets today and unlock an unforgettable travel experience!\n");
+
+        jLabel4.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(63, 128, 199));
+        jLabel4.setText("Connect With Us");
+
+        jLabel5.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(127, 127, 127));
+        jLabel5.setText("Customer Service Hotline:  1900 1812");
+
+        jLabel6.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(127, 127, 127));
+        jLabel6.setText("Email: nsrs@gmail.com");
 
         javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
         panelBorder1.setLayout(panelBorder1Layout);
         panelBorder1Layout.setHorizontalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 847, Short.MAX_VALUE)
+            .addGroup(panelBorder1Layout.createSequentialGroup()
+                .addGap(330, 330, 330)
+                .addComponent(jLabel1))
+            .addGroup(panelBorder1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jTextPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 798, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 798, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 377, Short.MAX_VALUE)
+            .addGroup(panelBorder1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addGap(5, 5, 5)
+                .addComponent(jTextPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(jLabel3)
+                .addGap(5, 5, 5)
+                .addComponent(jTextPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addContainerGap(72, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -61,6 +130,14 @@ public class Form_About extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JTextPane jTextPane2;
     private swing.PanelBorder panelBorder1;
     // End of variables declaration//GEN-END:variables
 }
