@@ -466,7 +466,13 @@ public class Form_ReturnTicket extends javax.swing.JPanel {
                     String departureDate = model.getValueAt(i, 7).toString();
                     String[] names = fullName.split(" ");
                     String firstName = names[0];
-                    String lastName = names[1];
+                    String lastName = "";
+                    for (int j = 1; j < names.length; j++) {
+                        lastName += names[j];
+                        if (j < names.length - 1) {
+                            lastName += " ";
+                        }
+                    }
 
                     returnTicketDatabase(firstName, lastName, trainName, coachID, seatNumber, departureDate);
 
